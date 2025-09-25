@@ -60,19 +60,31 @@ export const HistoryPanel: React.FC = () => {
                         {(() => {
                           // Handle backward compatibility and null checks
                           const stateToShow = item.fullState || (item as any).changes || {};
+                          
+                          // Additional safety check to ensure stateToShow is an object
+                          if (!stateToShow || typeof stateToShow !== 'object') {
+                            return <div className="text-xs text-muted-foreground">No data available</div>;
+                          }
+                          
                           const entries = Object.entries(stateToShow);
                           
-                           return entries.slice(0, 3).map(([key, value]) => (
-                             <div key={key} className="truncate">
-                               <span className="font-medium">{key}:</span>{' '}
-                               <span className="text-muted-foreground">
-                                 "{typeof value === 'string' && value.length > 30 ? value.substring(0, 30) + '...' : String(value || '')}"
-                               </span>
-                             </div>
-                           ));
+                          return entries.slice(0, 3).map(([key, value]) => (
+                            <div key={key} className="truncate">
+                              <span className="font-medium">{key}:</span>{' '}
+                              <span className="text-muted-foreground">
+                                "{typeof value === 'string' && value.length > 30 ? value.substring(0, 30) + '...' : String(value || '')}"
+                              </span>
+                            </div>
+                          ));
                         })()}
                         {(() => {
                           const stateToShow = item.fullState || (item as any).changes || {};
+                          
+                          // Additional safety check to ensure stateToShow is an object
+                          if (!stateToShow || typeof stateToShow !== 'object') {
+                            return null;
+                          }
+                          
                           const totalItems = Object.keys(stateToShow).length;
                           if (totalItems > 3) {
                             return (
