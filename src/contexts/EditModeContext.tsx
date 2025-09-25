@@ -135,8 +135,8 @@ export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) 
   };
 
   const restoreFromHistory = (historyItem: ChangeHistory) => {
-    // Restore to the complete state at that point in time
-    const stateToRestore = historyItem.fullState;
+    // Handle backward compatibility - use fullState or fall back to changes
+    const stateToRestore = historyItem.fullState || (historyItem as any).changes || {};
     
     // Clear all current content from DOM first
     const allEditableElements = document.querySelectorAll('[data-edit-id]');
@@ -152,7 +152,7 @@ export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) 
     Object.entries(stateToRestore).forEach(([id, content]) => {
       const element = document.querySelector(`[data-edit-id="${id}"]`);
       if (element) {
-        element.textContent = content;
+        element.textContent = String(content || '');
       }
     });
 

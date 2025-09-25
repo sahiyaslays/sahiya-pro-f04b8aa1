@@ -57,19 +57,32 @@ export const HistoryPanel: React.FC = () => {
                         {formatTimestamp(item.timestamp)}
                       </div>
                       <div className="text-xs space-y-1">
-                        {Object.entries(item.fullState).slice(0, 3).map(([key, value]) => (
-                          <div key={key} className="truncate">
-                            <span className="font-medium">{key}:</span>{' '}
-                            <span className="text-muted-foreground">
-                              "{value.length > 30 ? value.substring(0, 30) + '...' : value}"
-                            </span>
-                          </div>
-                        ))}
-                        {Object.keys(item.fullState).length > 3 && (
-                          <div className="text-xs text-muted-foreground">
-                            ...and {Object.keys(item.fullState).length - 3} more items
-                          </div>
-                        )}
+                        {(() => {
+                          // Handle backward compatibility and null checks
+                          const stateToShow = item.fullState || (item as any).changes || {};
+                          const entries = Object.entries(stateToShow);
+                          
+                           return entries.slice(0, 3).map(([key, value]) => (
+                             <div key={key} className="truncate">
+                               <span className="font-medium">{key}:</span>{' '}
+                               <span className="text-muted-foreground">
+                                 "{typeof value === 'string' && value.length > 30 ? value.substring(0, 30) + '...' : String(value || '')}"
+                               </span>
+                             </div>
+                           ));
+                        })()}
+                        {(() => {
+                          const stateToShow = item.fullState || (item as any).changes || {};
+                          const totalItems = Object.keys(stateToShow).length;
+                          if (totalItems > 3) {
+                            return (
+                              <div className="text-xs text-muted-foreground">
+                                ...and {totalItems - 3} more items
+                              </div>
+                            );
+                          }
+                          return null;
+                        })()}
                       </div>
                     </div>
                     <Button
