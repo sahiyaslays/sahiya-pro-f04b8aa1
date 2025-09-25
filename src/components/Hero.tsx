@@ -1,4 +1,5 @@
 import { Instagram, MessageCircle } from "lucide-react";
+import { EditableText } from "@/components/EditableText";
 
 const Hero = () => {
   return (
@@ -27,12 +28,20 @@ const Hero = () => {
               loading="eager"
             />
           </div>
-          <h1 className="text-5xl md:text-6xl font-normal tracking-widest mb-2 text-white">
+          <EditableText 
+            id="hero-title" 
+            as="h1" 
+            className="text-5xl md:text-6xl font-normal tracking-widest mb-2 text-white"
+          >
             SAHIYA SLAYS
-          </h1>
-          <p className="text-primary text-xl md:text-2xl tracking-wider">
+          </EditableText>
+          <EditableText 
+            id="hero-subtitle" 
+            as="p" 
+            className="text-primary text-xl md:text-2xl tracking-wider"
+          >
             HAIR • BEAUTY • NAILS
-          </p>
+          </EditableText>
         </div>
       </div>
 
@@ -62,9 +71,9 @@ const Hero = () => {
           {/* Address */}
           <div className="text-base md:text-lg tracking-wide leading-relaxed mb-3 text-white">
             <div className="uppercase">
-              <div>415 WICK LANE</div>
-              <div>TRADESTARS BLOCK G</div>
-              <div>BOW, LONDON E3 2JG</div>
+              <EditableText id="address-line1" as="div">415 WICK LANE</EditableText>
+              <EditableText id="address-line2" as="div">TRADESTARS BLOCK G</EditableText>
+              <EditableText id="address-line3" as="div">BOW, LONDON E3 2JG</EditableText>
             </div>
           </div>
 
@@ -74,13 +83,13 @@ const Hero = () => {
               href="tel:07809441074"
               className="text-primary hover:text-white transition-colors duration-300 tracking-wide"
             >
-              07809441074
+              <EditableText id="phone-number">07809441074</EditableText>
             </a>
             <a 
               href="mailto:contact@sahiyaslays.com"
               className="text-primary hover:text-white transition-colors duration-300 tracking-wide"
             >
-              contact@sahiyaslays.com
+              <EditableText id="email-address">contact@sahiyaslays.com</EditableText>
             </a>
           </div>
         </div>

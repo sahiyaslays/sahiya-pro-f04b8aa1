@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { CartProvider } from "@/hooks/useCart";
 import { CartDrawer } from "@/components/shop/CartDrawer";
+import { EditModeProvider } from "@/contexts/EditModeContext";
+import { EditModeButton } from "@/components/EditModeButton";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Team from "./pages/Team";
@@ -44,12 +46,14 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <CartProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <ScrollToTop />
-            <CartDrawer />
-            <Routes>
+          <EditModeProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ScrollToTop />
+              <CartDrawer />
+              <EditModeButton />
+              <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
               <Route path="/team" element={<Team />} />
@@ -71,6 +75,7 @@ const App = () => {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
+          </EditModeProvider>
         </CartProvider>
       </TooltipProvider>
     </QueryClientProvider>
