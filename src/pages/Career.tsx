@@ -2,6 +2,7 @@ import { Instagram } from "lucide-react";
 import Header from "@/components/Header";
 import { useEffect } from "react";
 import { Footer } from "@/components/Footer";
+import { EditableText } from "@/components/EditableText";
 
 const Career = () => {
   // Scroll to top on route change
@@ -18,19 +19,27 @@ const Career = () => {
         <div className="text-center max-w-4xl mx-auto">
           {/* Optional small label */}
           <div className="text-primary text-xs md:text-sm tracking-widest mb-4 uppercase">
-            SS • HAIR • BEAUTY • NAILS
+            <EditableText id="career-page-label">SS • HAIR • BEAUTY • NAILS</EditableText>
           </div>
           
-          <h1 className="text-[27px] md:text-[37px] font-normal tracking-[0.2em] mb-6 text-[#121212] uppercase">
+          <EditableText 
+            id="career-page-title" 
+            as="h1" 
+            className="text-[27px] md:text-[37px] font-normal tracking-[0.2em] mb-6 text-[#121212] uppercase"
+          >
             CAREER
-          </h1>
+          </EditableText>
           
           {/* Thin gold hairline */}
           <div className="w-10 h-[2px] bg-primary mx-auto mb-6"></div>
           
-          <p className="text-base md:text-lg text-[#5D6776] tracking-wide leading-relaxed">
+          <EditableText 
+            id="career-page-subtitle" 
+            as="p" 
+            className="text-base md:text-lg text-[#5D6776] tracking-wide leading-relaxed"
+          >
             Join our talented team.
-          </p>
+          </EditableText>
         </div>
       </section>
 

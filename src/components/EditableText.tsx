@@ -21,7 +21,21 @@ export const EditableText: React.FC<EditableTextProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const currentContent = editedContent[id] || (typeof children === 'string' ? children : '');
+  // Get current content from edited state, localStorage, or original children
+  const getInitialContent = () => {
+    if (editedContent[id]) return editedContent[id];
+    
+    // Check localStorage for persisted content
+    const savedContent = localStorage.getItem('editableContent');
+    if (savedContent) {
+      const parsed = JSON.parse(savedContent);
+      if (parsed[id]) return parsed[id];
+    }
+    
+    return typeof children === 'string' ? children : '';
+  };
+
+  const currentContent = getInitialContent();
   const isMultiline = currentContent.length > 50 || currentContent.includes('\n');
 
   useEffect(() => {

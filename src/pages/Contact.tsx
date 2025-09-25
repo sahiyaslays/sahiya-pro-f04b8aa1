@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import { useEffect } from "react";
 import { Instagram, Phone, Mail, MapPin, Clock } from "lucide-react";
 import { Footer } from "@/components/Footer";
+import { EditableText } from "@/components/EditableText";
 
 const Contact = () => {
   // Scroll to top on route change
@@ -18,19 +19,27 @@ const Contact = () => {
         <div className="text-center max-w-4xl mx-auto">
           {/* Small label */}
           <div className="text-primary text-xs md:text-sm tracking-widest mb-4 uppercase">
-            SS • HAIR • BEAUTY • NAILS
+            <EditableText id="contact-page-label">SS • HAIR • BEAUTY • NAILS</EditableText>
           </div>
           
-          <h1 className="text-[27px] md:text-[37px] font-normal tracking-[0.2em] mb-6 text-foreground uppercase">
+          <EditableText 
+            id="contact-page-title" 
+            as="h1" 
+            className="text-[27px] md:text-[37px] font-normal tracking-[0.2em] mb-6 text-foreground uppercase"
+          >
             CONTACT
-          </h1>
+          </EditableText>
           
           {/* Thin gold hairline */}
           <div className="w-10 h-[2px] bg-primary mx-auto mb-6"></div>
           
-          <p className="text-base md:text-lg text-muted-foreground tracking-wide leading-relaxed">
+          <EditableText 
+            id="contact-page-subtitle" 
+            as="p" 
+            className="text-base md:text-lg text-muted-foreground tracking-wide leading-relaxed"
+          >
             Get in touch with us today.
-          </p>
+          </EditableText>
         </div>
       </section>
 
@@ -63,10 +72,10 @@ const Contact = () => {
                 ADDRESS
               </h3>
               <div className="text-sm leading-relaxed text-muted-foreground space-y-1">
-                <div>415 WICK LANE</div>
-                <div>TRADESTARS BLOCK G</div>
-                <div>BOW</div>
-                <div>LONDON E3 2JG</div>
+                <EditableText id="contact-address-line1" as="div">415 WICK LANE</EditableText>
+                <EditableText id="contact-address-line2" as="div">TRADESTARS BLOCK G</EditableText>
+                <EditableText id="contact-address-line3" as="div">BOW</EditableText>
+                <EditableText id="contact-address-line4" as="div">LONDON E3 2JG</EditableText>
               </div>
             </div>
             
@@ -79,10 +88,10 @@ const Contact = () => {
                 HOURS
               </h3>
               <div className="text-sm leading-relaxed text-muted-foreground space-y-1">
-                <div className="font-medium">MONDAY - SUNDAY</div>
-                <div>9:30am - 8:00pm</div>
-                <div>Open 7 days a week</div>
-                <div>Closed Bank Holidays</div>
+                <EditableText id="contact-hours-days" as="div" className="font-medium">MONDAY - SUNDAY</EditableText>
+                <EditableText id="contact-hours-time" as="div">9:30am - 8:00pm</EditableText>
+                <EditableText id="contact-hours-note1" as="div">Open 7 days a week</EditableText>
+                <EditableText id="contact-hours-note2" as="div">Closed Bank Holidays</EditableText>
               </div>
             </div>
             
@@ -99,13 +108,13 @@ const Contact = () => {
                   href="tel:07809441074"
                   className="block hover:text-primary transition-colors duration-300"
                 >
-                  07809441074
+                  <EditableText id="contact-phone">07809441074</EditableText>
                 </a>
                 <a 
                   href="mailto:contact@sahiyaslays.com"
                   className="block hover:text-primary transition-colors duration-300"
                 >
-                  contact@sahiyaslays.com
+                  <EditableText id="contact-email">contact@sahiyaslays.com</EditableText>
                 </a>
               </div>
             </div>
