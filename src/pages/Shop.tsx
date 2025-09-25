@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/shop/ProductCard';
+import { EditableText } from '@/components/EditableText';
 import { PRODUCTS } from '@/data/shopData';
 import { SortOption } from '@/types/shop';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -77,7 +78,13 @@ export default function Shop() {
           <div className="container mx-auto px-4 py-8">
             {/* Page Header */}
             <div className="mb-8">
-              <h1 className="text-3xl font-bold mb-2">Shop</h1>
+              <EditableText 
+                id="shop-page-title" 
+                as="h1" 
+                className="text-3xl font-bold mb-2"
+              >
+                Shop
+              </EditableText>
               <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground">
                 <ol className="flex items-center space-x-2">
                   <li>

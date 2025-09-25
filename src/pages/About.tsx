@@ -2,6 +2,7 @@ import { Instagram } from "lucide-react";
 import Header from "@/components/Header";
 import { useEffect } from "react";
 import { Footer } from "@/components/Footer";
+import { EditableText } from "@/components/EditableText";
 
 const About = () => {
   // Scroll to top on route change
@@ -18,19 +19,27 @@ const About = () => {
         <div className="text-center max-w-4xl mx-auto">
           {/* Optional small label */}
           <div className="text-primary text-xs md:text-sm tracking-widest mb-4 uppercase">
-            SS • HAIR • BEAUTY • NAILS
+            <EditableText id="about-page-label">SS • HAIR • BEAUTY • NAILS</EditableText>
           </div>
           
-          <h1 className="text-[27px] md:text-[37px] font-normal tracking-[0.2em] mb-6 text-[#121212] uppercase">
+          <EditableText 
+            id="about-page-title" 
+            as="h1" 
+            className="text-[27px] md:text-[37px] font-normal tracking-[0.2em] mb-6 text-[#121212] uppercase"
+          >
             ABOUT
-          </h1>
+          </EditableText>
           
           {/* Thin gold hairline */}
           <div className="w-10 h-[2px] bg-primary mx-auto mb-6"></div>
           
-          <p className="text-base md:text-lg text-[#5D6776] tracking-wide leading-relaxed">
+          <EditableText 
+            id="about-page-subtitle" 
+            as="p" 
+            className="text-base md:text-lg text-[#5D6776] tracking-wide leading-relaxed"
+          >
             Elevating beauty through artistry.
-          </p>
+          </EditableText>
         </div>
       </section>
 
@@ -48,14 +57,22 @@ const About = () => {
       {/* Centered Intro Block */}
       <section className="py-20 md:py-24 px-4">
         <div className="max-w-[1040px] mx-auto text-center">
-          <h2 className="text-[24px] md:text-[32px] font-normal tracking-wider mb-12 text-[#121212] uppercase">
+          <EditableText 
+            id="about-main-title" 
+            as="h2" 
+            className="text-[24px] md:text-[32px] font-normal tracking-wider mb-12 text-[#121212] uppercase"
+          >
             SAHIYA SLAYS
-          </h2>
+          </EditableText>
           
           <div className="max-w-[920px] mx-auto">
-            <p className="text-base leading-[1.7] text-[#121212]">
+            <EditableText 
+              id="about-main-description" 
+              as="p" 
+              className="text-base leading-[1.7] text-[#121212]"
+            >
               Sahiya Slays blends quality, care, and style in the heart of East London. Our talented team of hair, beauty, and nail professionals deliver an exclusive salon experience in a warm, welcoming environment. Combining experience and creativity, we provide a personal service tailored to your natural beauty. Book your appointment today and enjoy cutting-edge style with effortless elegance.
-            </p>
+            </EditableText>
           </div>
         </div>
       </section>
@@ -68,35 +85,59 @@ const About = () => {
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-[#121212]"></div>
           </div>
           
-          <h3 className="text-sm md:text-base font-normal tracking-widest mb-6 text-[#121212] uppercase">
+          <EditableText 
+            id="about-services-title" 
+            as="h3" 
+            className="text-sm md:text-base font-normal tracking-widest mb-6 text-[#121212] uppercase"
+          >
             SERVICES
-          </h3>
+          </EditableText>
           
-          <p className="text-[17px] md:text-[18px] font-medium text-[#121212] leading-[1.6] max-w-[800px] mx-auto">
+          <EditableText 
+            id="about-services-description" 
+            as="p" 
+            className="text-[17px] md:text-[18px] font-medium text-[#121212] leading-[1.6] max-w-[800px] mx-auto"
+          >
             We offer highly skilled specialists for all your hairdressing, beauty, nail, and spa treatments. Bridal and event services available.
-          </p>
+          </EditableText>
         </div>
       </section>
 
       {/* Long-form Body - Three Centered Paragraphs */}
       <section className="py-20 md:py-24 px-4">
         <div className="max-w-[1040px] mx-auto text-center">
-          <h3 className="text-[22px] md:text-[28px] font-normal tracking-wider mb-16 text-[#121212]">
+          <EditableText 
+            id="about-detailed-title" 
+            as="h3" 
+            className="text-[22px] md:text-[28px] font-normal tracking-wider mb-16 text-[#121212]"
+          >
             Sahiya Slays
-          </h3>
+          </EditableText>
           
           <div className="max-w-[980px] mx-auto space-y-12">
-            <p className="text-base leading-[1.7] text-[#121212]">
+            <EditableText 
+              id="about-detailed-para1" 
+              as="p" 
+              className="text-base leading-[1.7] text-[#121212]"
+            >
               Sahiya Slays is a total beauty destination in Bow, East London. We offer not only hair and nail services, but also makeup, brow treatments, and a variety of rejuvenating services to enhance your look.
-            </p>
+            </EditableText>
             
-            <p className="text-base leading-[1.7] text-[#121212]">
+            <EditableText 
+              id="about-detailed-para2" 
+              as="p" 
+              className="text-base leading-[1.7] text-[#121212]"
+            >
               Our team's meticulous attention to detail and sophisticated techniques bring out your inner self — not just your appearance — and provide you with a natural, refined style.
-            </p>
+            </EditableText>
             
-            <p className="text-base leading-[1.7] text-[#121212]">
+            <EditableText 
+              id="about-detailed-para3" 
+              as="p" 
+              className="text-base leading-[1.7] text-[#121212]"
+            >
               Our bright, modern studio is designed as a relaxing space where you can forget about the rush of everyday life for a while. We provide high-quality services that go beyond the scope of a typical salon experience.
-            </p>
+            </EditableText>
           </div>
         </div>
       </section>

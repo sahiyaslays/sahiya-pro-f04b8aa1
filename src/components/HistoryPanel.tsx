@@ -57,7 +57,7 @@ export const HistoryPanel: React.FC = () => {
                         {formatTimestamp(item.timestamp)}
                       </div>
                       <div className="text-xs space-y-1">
-                        {Object.entries(item.changes).map(([key, value]) => (
+                        {Object.entries(item.fullState).slice(0, 3).map(([key, value]) => (
                           <div key={key} className="truncate">
                             <span className="font-medium">{key}:</span>{' '}
                             <span className="text-muted-foreground">
@@ -65,6 +65,11 @@ export const HistoryPanel: React.FC = () => {
                             </span>
                           </div>
                         ))}
+                        {Object.keys(item.fullState).length > 3 && (
+                          <div className="text-xs text-muted-foreground">
+                            ...and {Object.keys(item.fullState).length - 3} more items
+                          </div>
+                        )}
                       </div>
                     </div>
                     <Button

@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
+import { EditableText } from '@/components/EditableText';
 
 export default function PrivacyPolicy() {
   return (
@@ -15,8 +16,20 @@ export default function PrivacyPolicy() {
         
         <main className="pt-20">
           <div className="container mx-auto px-4 py-8 max-w-4xl">
-            <h1 className="text-3xl font-bold mb-2">Privacy Policy</h1>
-            <p className="text-muted-foreground mb-8">Last updated: 27 Aug 2025</p>
+            <EditableText 
+              id="privacy-page-title" 
+              as="h1" 
+              className="text-3xl font-bold mb-2"
+            >
+              Privacy Policy
+            </EditableText>
+            <EditableText 
+              id="privacy-page-date" 
+              as="p" 
+              className="text-muted-foreground mb-8"
+            >
+              Last updated: 27 Aug 2025
+            </EditableText>
             
             <div className="space-y-8 text-foreground">
               <section>

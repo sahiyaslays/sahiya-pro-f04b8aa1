@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { EditableText } from "@/components/EditableText";
 
 const Team = () => {
   const teamMembers = [
@@ -58,19 +59,27 @@ const Team = () => {
         <div className="text-center max-w-4xl mx-auto">
           {/* Brand tagline */}
           <div className="text-primary text-xs md:text-sm tracking-widest mb-4 uppercase">
-            SS • HAIR • BEAUTY • NAILS
+            <EditableText id="team-page-label">SS • HAIR • BEAUTY • NAILS</EditableText>
           </div>
           
-          <h1 className="text-[27px] md:text-[37px] font-normal tracking-[0.2em] mb-6 text-[#121212] uppercase">
+          <EditableText 
+            id="team-page-title" 
+            as="h1" 
+            className="text-[27px] md:text-[37px] font-normal tracking-[0.2em] mb-6 text-[#121212] uppercase"
+          >
             TEAM
-          </h1>
+          </EditableText>
           
           {/* Thin gold hairline */}
           <div className="w-10 h-[2px] bg-primary mx-auto mb-6"></div>
           
-          <p className="text-base md:text-lg text-[#5D6776] tracking-wide leading-relaxed">
+          <EditableText 
+            id="team-page-subtitle" 
+            as="p" 
+            className="text-base md:text-lg text-[#5D6776] tracking-wide leading-relaxed"
+          >
             Meet our talented team of experienced professionals dedicated to elevating your beauty through artistic excellence.
-          </p>
+          </EditableText>
         </div>
       </section>
 

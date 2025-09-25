@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
+import { EditableText } from '@/components/EditableText';
 
 export default function TermsConditions() {
   return (
@@ -15,8 +16,20 @@ export default function TermsConditions() {
         
         <main className="pt-20">
           <div className="container mx-auto px-4 py-8 max-w-4xl">
-            <h1 className="text-3xl font-bold mb-2">Terms & Conditions</h1>
-            <p className="text-muted-foreground mb-8">Last updated: 27 Aug 2025</p>
+            <EditableText 
+              id="terms-page-title" 
+              as="h1" 
+              className="text-3xl font-bold mb-2"
+            >
+              Terms & Conditions
+            </EditableText>
+            <EditableText 
+              id="terms-page-date" 
+              as="p" 
+              className="text-muted-foreground mb-8"
+            >
+              Last updated: 27 Aug 2025
+            </EditableText>
             
             <div className="space-y-8 text-foreground">
               <section>

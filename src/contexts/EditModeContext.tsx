@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, ReactNode, useEffect } from
 interface ChangeHistory {
   id: string;
   timestamp: number;
-  changes: Record<string, string>;
+  fullState: Record<string, string>; // Store complete state instead of just changes
   description: string;
 }
 
@@ -102,11 +102,14 @@ export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) 
     const timestamp = Date.now();
     const changes = { ...editedContent };
     
-    // Create history entry
+    // Calculate new complete state
+    const newCompleteState = { ...persistedContent, ...changes };
+    
+    // Create history entry with full state
     const historyEntry: ChangeHistory = {
       id: `change-${timestamp}`,
       timestamp,
-      changes,
+      fullState: { ...newCompleteState }, // Store complete state at this point
       description: `Updated ${Object.keys(changes).length} item(s)`
     };
 
@@ -116,7 +119,6 @@ export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) 
     localStorage.setItem('editHistory', JSON.stringify(newHistory));
 
     // Apply changes to DOM and save to localStorage
-    const newPersistedContent = { ...persistedContent, ...changes };
     Object.entries(changes).forEach(([id, content]) => {
       const element = document.querySelector(`[data-edit-id="${id}"]`);
       if (element) {
@@ -124,8 +126,8 @@ export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) 
       }
     });
     
-    setPersistedContent(newPersistedContent);
-    localStorage.setItem('editableContent', JSON.stringify(newPersistedContent));
+    setPersistedContent(newCompleteState);
+    localStorage.setItem('editableContent', JSON.stringify(newCompleteState));
     
     setEditedContent({});
     setHasChanges(false);
@@ -133,18 +135,30 @@ export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) 
   };
 
   const restoreFromHistory = (historyItem: ChangeHistory) => {
-    // Apply historical changes to DOM
-    Object.entries(historyItem.changes).forEach(([id, content]) => {
+    // Restore to the complete state at that point in time
+    const stateToRestore = historyItem.fullState;
+    
+    // Clear all current content from DOM first
+    const allEditableElements = document.querySelectorAll('[data-edit-id]');
+    allEditableElements.forEach(element => {
+      const id = element.getAttribute('data-edit-id');
+      if (id && !stateToRestore[id]) {
+        // If this element doesn't exist in the restored state, clear it
+        element.textContent = element.getAttribute('data-original-content') || '';
+      }
+    });
+    
+    // Apply the restored state to DOM
+    Object.entries(stateToRestore).forEach(([id, content]) => {
       const element = document.querySelector(`[data-edit-id="${id}"]`);
       if (element) {
         element.textContent = content;
       }
     });
 
-    // Update persisted content
-    const newPersistedContent = { ...persistedContent, ...historyItem.changes };
-    setPersistedContent(newPersistedContent);
-    localStorage.setItem('editableContent', JSON.stringify(newPersistedContent));
+    // Update persisted content to match the restored state
+    setPersistedContent(stateToRestore);
+    localStorage.setItem('editableContent', JSON.stringify(stateToRestore));
     
     setShowHistory(false);
   };

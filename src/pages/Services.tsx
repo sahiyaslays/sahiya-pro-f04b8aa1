@@ -8,6 +8,7 @@ import { ServiceBookingModal } from "@/components/booking/ServiceBookingModal";
 import { Search, ChevronDown, ChevronRight } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Footer } from "@/components/Footer";
+import { EditableText } from "@/components/EditableText";
 
 const Services = () => {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
@@ -90,19 +91,27 @@ const Services = () => {
         <div className="text-center max-w-4xl mx-auto">
           {/* Brand tagline */}
           <div className="text-primary text-xs md:text-sm tracking-widest mb-4 uppercase">
-            SS • HAIR • BEAUTY • NAILS
+            <EditableText id="services-page-label">SS • HAIR • BEAUTY • NAILS</EditableText>
           </div>
           
-          <h1 className="text-[27px] md:text-[37px] font-normal tracking-[0.2em] mb-6 text-[#121212] uppercase">
+          <EditableText 
+            id="services-page-title" 
+            as="h1" 
+            className="text-[27px] md:text-[37px] font-normal tracking-[0.2em] mb-6 text-[#121212] uppercase"
+          >
             SERVICES
-          </h1>
+          </EditableText>
           
           {/* Thin gold hairline */}
           <div className="w-10 h-[2px] bg-primary mx-auto mb-6"></div>
           
-          <p className="text-base md:text-lg text-[#5D6776] tracking-wide leading-relaxed">
+          <EditableText 
+            id="services-page-subtitle" 
+            as="p" 
+            className="text-base md:text-lg text-[#5D6776] tracking-wide leading-relaxed"
+          >
             Transparent, simple 'from' pricing.
-          </p>
+          </EditableText>
         </div>
       </section>
 

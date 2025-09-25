@@ -2,6 +2,7 @@ import { Instagram } from "lucide-react";
 import Header from "@/components/Header";
 import { useEffect } from "react";
 import { Footer } from "@/components/Footer";
+import { EditableText } from "@/components/EditableText";
 
 const News = () => {
   // Scroll to top on route change
@@ -16,9 +17,13 @@ const News = () => {
       {/* Hero Section */}
       <section className="h-[30vh] bg-white flex items-center justify-center px-4 pt-20">
         <div className="text-center">
-          <h1 className="text-[32px] md:text-[42px] font-normal tracking-[0.2em] text-[#121212] uppercase">
+          <EditableText 
+            id="news-page-title" 
+            as="h1" 
+            className="text-[32px] md:text-[42px] font-normal tracking-[0.2em] text-[#121212] uppercase"
+          >
             NEWS
-          </h1>
+          </EditableText>
           <div className="w-12 h-[2px] bg-primary mx-auto mt-6"></div>
         </div>
       </section>
