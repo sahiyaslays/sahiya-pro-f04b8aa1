@@ -199,9 +199,13 @@ const Services = () => {
                                 <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200">
                                   <div className="flex-1 text-left">
                                     <div className="flex items-center gap-2">
-                                      <h4 className="text-foreground text-sm md:text-base font-normal tracking-wide uppercase">
+                                      <EditableText
+                                        id={`service-name-${service.id}`}
+                                        as="h4"
+                                        className="text-foreground text-sm md:text-base font-normal tracking-wide uppercase"
+                                      >
                                         {service.name}
-                                      </h4>
+                                      </EditableText>
                                       <span className="text-xs text-muted-foreground bg-gray-100 px-2 py-0.5 rounded">
                                         {service.options.length} options
                                       </span>
@@ -229,17 +233,25 @@ const Services = () => {
                                   {service.options.map((option, index) => (
                                     <div key={index} className="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-100">
                                       <div className="flex-1">
-                                        <span className="text-sm font-medium text-foreground">
+                                        <EditableText
+                                          id={`service-option-label-${service.id}-${index}`}
+                                          as="span"
+                                          className="text-sm font-medium text-foreground"
+                                        >
                                           {option.label}
-                                        </span>
+                                        </EditableText>
                                         <div className="text-xs text-muted-foreground">
                                           {formatDuration(option.duration)}
                                         </div>
                                       </div>
                                       <div className="flex items-center gap-3">
-                                        <span className="text-sm font-medium text-primary">
+                                        <EditableText
+                                          id={`service-option-price-${service.id}-${index}`}
+                                          as="span"
+                                          className="text-sm font-medium text-primary"
+                                        >
                                           {formatPrice(option.price)}
-                                        </span>
+                                        </EditableText>
                                         <Button
                                           onClick={() => setSelectedService(service)}
                                           size="sm"
@@ -258,12 +270,22 @@ const Services = () => {
                               <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200">
                                 <div className="flex-1 text-left">
                                   <div className="flex items-center gap-2">
-                                    <h4 className="text-foreground text-sm md:text-base font-normal tracking-wide uppercase">
+                                    <EditableText
+                                      id={`service-name-${service.id}`}
+                                      as="h4"
+                                      className="text-foreground text-sm md:text-base font-normal tracking-wide uppercase"
+                                    >
                                       {service.name}
-                                    </h4>
+                                    </EditableText>
                                   </div>
                                   <div className="text-xs text-muted-foreground mt-0.5">
-                                    {displayInfo.duration} • {displayInfo.price}
+                                    {displayInfo.duration} • <EditableText
+                                      id={`service-price-${service.id}`}
+                                      as="span"
+                                      className="text-xs text-muted-foreground"
+                                    >
+                                      {displayInfo.price}
+                                    </EditableText>
                                   </div>
                                 </div>
                                 
