@@ -15,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Minus, Plus, ZoomIn, Star, Shield, Truck, CreditCard } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { EditableText } from '@/components/EditableText';
 export default function ProductDetail() {
   const {
     slug
@@ -170,13 +171,34 @@ export default function ProductDetail() {
               {/* Product Info */}
               <div className="space-y-6">
                 <div>
-                  <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
-                  <p className="text-sm text-muted-foreground">Brand: Sahiya Slays</p>
+                  <h1 className="text-3xl font-bold mb-2">
+                    <EditableText 
+                      id={`product-detail-title-${product.id}`}
+                      className="text-3xl font-bold"
+                    >
+                      {product.title}
+                    </EditableText>
+                  </h1>
+                  <p className="text-sm text-muted-foreground">
+                    <EditableText 
+                      id={`product-detail-brand-${product.id}`}
+                      className="text-sm text-muted-foreground"
+                    >
+                      Brand: Sahiya Slays
+                    </EditableText>
+                  </p>
                 </div>
 
                 <div className="prose prose-sm max-w-none">
                   <ul className="space-y-1">
-                    {product.short_description.split('.').filter(Boolean).map((point, index) => <li key={index} className="text-sm">{point.trim()}.</li>)}
+                    {product.short_description.split('.').filter(Boolean).map((point, index) => <li key={index} className="text-sm">
+                      <EditableText 
+                        id={`product-detail-desc-${product.id}-${index}`}
+                        className="text-sm"
+                      >
+                        {point.trim()}.
+                      </EditableText>
+                    </li>)}
                   </ul>
                 </div>
 
@@ -234,29 +256,54 @@ export default function ProductDetail() {
 
                 {/* Processing Time */}
                 {product.processing_time_note && <p className="text-sm text-muted-foreground">
-                    {product.processing_time_note}
+                    <EditableText 
+                      id={`product-detail-processing-${product.id}`}
+                      className="text-sm text-muted-foreground"
+                    >
+                      {product.processing_time_note}
+                    </EditableText>
                   </p>}
 
                 {/* Trust Badges */}
                 <div className="flex items-center justify-between py-4 border-t border-b">
                   <div className="flex items-center gap-2 text-sm">
                     <Shield className="h-4 w-4 text-primary" />
-                    <span>Secure payments</span>
+                    <EditableText 
+                      id={`product-detail-badge-secure-${product.id}`}
+                      className="text-sm"
+                    >
+                      Secure payments
+                    </EditableText>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Truck className="h-4 w-4 text-primary" />
-                    <span>Fast delivery</span>
+                    <EditableText 
+                      id={`product-detail-badge-delivery-${product.id}`}
+                      className="text-sm"
+                    >
+                      Fast delivery
+                    </EditableText>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Star className="h-4 w-4 text-primary" />
-                    <span>Premium quality</span>
+                    <EditableText 
+                      id={`product-detail-badge-quality-${product.id}`}
+                      className="text-sm"
+                    >
+                      Premium quality
+                    </EditableText>
                   </div>
                 </div>
 
                 {/* Payment Icons */}
                 <div className="flex items-center gap-2">
                   <CreditCard className="h-6 w-6 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Visa, Mastercard, PayPal accepted</span>
+                  <EditableText 
+                    id={`product-detail-payment-${product.id}`}
+                    className="text-sm text-muted-foreground"
+                  >
+                    Visa, Mastercard, PayPal accepted
+                  </EditableText>
                 </div>
               </div>
             </div>
@@ -278,28 +325,93 @@ export default function ProductDetail() {
                 
                 <TabsContent value="care" className="mt-6">
                   <div className="prose prose-sm max-w-none">
-                    <h3>Hair Care Instructions</h3>
+                    <h3>
+                      <EditableText 
+                        id={`product-detail-care-title-${product.id}`}
+                        as="h3"
+                      >
+                        Hair Care Instructions
+                      </EditableText>
+                    </h3>
                     <ul>
-                      <li>Wash with sulfate-free shampoo and conditioner</li>
-                      <li>Use a wide-tooth comb when wet</li>
-                      <li>Apply heat protectant before styling</li>
-                      <li>Store on a wig stand or hanger when not in use</li>
-                      <li>Deep condition weekly for best results</li>
+                      <li>
+                        <EditableText id={`product-detail-care-1-${product.id}`}>
+                          Wash with sulfate-free shampoo and conditioner
+                        </EditableText>
+                      </li>
+                      <li>
+                        <EditableText id={`product-detail-care-2-${product.id}`}>
+                          Use a wide-tooth comb when wet
+                        </EditableText>
+                      </li>
+                      <li>
+                        <EditableText id={`product-detail-care-3-${product.id}`}>
+                          Apply heat protectant before styling
+                        </EditableText>
+                      </li>
+                      <li>
+                        <EditableText id={`product-detail-care-4-${product.id}`}>
+                          Store on a wig stand or hanger when not in use
+                        </EditableText>
+                      </li>
+                      <li>
+                        <EditableText id={`product-detail-care-5-${product.id}`}>
+                          Deep condition weekly for best results
+                        </EditableText>
+                      </li>
                     </ul>
                   </div>
                 </TabsContent>
                 
                 <TabsContent value="shipping" className="mt-6">
                   <div className="prose prose-sm max-w-none">
-                    <h3>Shipping Information</h3>
-                    <p>Standard delivery: 3-5 business days</p>
-                    <p>Express delivery: 1-2 business days</p>
-                    <p>Free shipping on orders over £100</p>
+                    <h3>
+                      <EditableText 
+                        id={`product-detail-shipping-title-${product.id}`}
+                        as="h3"
+                      >
+                        Shipping Information
+                      </EditableText>
+                    </h3>
+                    <p>
+                      <EditableText id={`product-detail-shipping-1-${product.id}`}>
+                        Standard delivery: 3-5 business days
+                      </EditableText>
+                    </p>
+                    <p>
+                      <EditableText id={`product-detail-shipping-2-${product.id}`}>
+                        Express delivery: 1-2 business days
+                      </EditableText>
+                    </p>
+                    <p>
+                      <EditableText id={`product-detail-shipping-3-${product.id}`}>
+                        Free shipping on orders over £100
+                      </EditableText>
+                    </p>
                     
-                    <h3>Returns Policy</h3>
-                    <p>30-day return policy for unopened items</p>
-                    <p>Items must be in original packaging</p>
-                    <p>Return shipping fees may apply</p>
+                    <h3>
+                      <EditableText 
+                        id={`product-detail-returns-title-${product.id}`}
+                        as="h3"
+                      >
+                        Returns Policy
+                      </EditableText>
+                    </h3>
+                    <p>
+                      <EditableText id={`product-detail-returns-1-${product.id}`}>
+                        30-day return policy for unopened items
+                      </EditableText>
+                    </p>
+                    <p>
+                      <EditableText id={`product-detail-returns-2-${product.id}`}>
+                        Items must be in original packaging
+                      </EditableText>
+                    </p>
+                    <p>
+                      <EditableText id={`product-detail-returns-3-${product.id}`}>
+                        Return shipping fees may apply
+                      </EditableText>
+                    </p>
                   </div>
                 </TabsContent>
               </Tabs>
