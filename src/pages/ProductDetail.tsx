@@ -16,6 +16,8 @@ import { Badge } from '@/components/ui/badge';
 import { Minus, Plus, ZoomIn, Star, Shield, Truck, CreditCard } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { EditableText } from '@/components/EditableText';
+import { EditableVariants } from '@/components/shop/EditableVariants';
+import { useEditMode } from '@/contexts/EditModeContext';
 export default function ProductDetail() {
   const {
     slug
@@ -28,20 +30,40 @@ export default function ProductDetail() {
   const {
     toast
   } = useToast();
+  const { isEditMode } = useEditMode();
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showZoom, setShowZoom] = useState(false);
+  const [customVariants, setCustomVariants] = useState<Variant[]>([]);
   const product = PRODUCTS.find(p => p.slug === slug);
+  
+  // Load custom variants from localStorage
   useEffect(() => {
-    if (product && product.variants.length === 1) {
-      setSelectedVariant(product.variants[0]);
+    if (product) {
+      const stored = localStorage.getItem(`variants-${product.id}`);
+      if (stored) {
+        try {
+          setCustomVariants(JSON.parse(stored));
+        } catch (e) {
+          setCustomVariants(product.variants);
+        }
+      } else {
+        setCustomVariants(product.variants);
+      }
+    }
+  }, [product]);
+  
+  const displayVariants = customVariants.length > 0 ? customVariants : product?.variants || [];
+  useEffect(() => {
+    if (product && displayVariants.length === 1) {
+      setSelectedVariant(displayVariants[0]);
     } else {
       setSelectedVariant(null);
     }
     setQuantity(1);
     setSelectedImageIndex(0);
-  }, [product]);
+  }, [product, displayVariants]);
   if (!product) {
     return <div className="min-h-screen bg-background">
         <Header />
@@ -218,22 +240,31 @@ export default function ProductDetail() {
                 </div>
 
                 {/* Variant Selection */}
-                {product.variants.length > 1 && <div className="space-y-2">
+                {displayVariants.length > 1 && <div className="space-y-2">
                     <label htmlFor="length-select" className="text-sm font-medium">Size *</label>
                     <Select value={selectedVariant?.length || ''} onValueChange={length => {
-                  const variant = product.variants.find(v => v.length === length);
+                  const variant = displayVariants.find(v => v.length === length);
                   setSelectedVariant(variant || null);
                 }}>
                       <SelectTrigger id="length-select">
                         <SelectValue placeholder="Choose an option" />
                       </SelectTrigger>
                       <SelectContent>
-                        {product.variants.map(variant => <SelectItem key={variant.length} value={variant.length}>
+                        {displayVariants.map(variant => <SelectItem key={variant.length} value={variant.length}>
                             {variant.length} - {formatPrice(variant.sale_price || variant.price)}
                           </SelectItem>)}
                       </SelectContent>
                     </Select>
                   </div>}
+
+                {/* Editable Variants - Only shown in edit mode */}
+                {isEditMode && product && (
+                  <EditableVariants 
+                    productId={product.id}
+                    variants={displayVariants}
+                    onVariantChange={setCustomVariants}
+                  />
+                )}
 
                 {/* Quantity */}
                 <div className="space-y-2">
@@ -318,9 +349,14 @@ export default function ProductDetail() {
                 </TabsList>
                 
                 <TabsContent value="description" className="mt-6">
-                  <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{
-                  __html: product.description_long
-                }} />
+                  <div className="prose prose-sm max-w-none">
+                    <EditableText 
+                      id={`product-detail-description-${product.id}`}
+                      className="prose prose-sm max-w-none"
+                    >
+                      {product.description_long}
+                    </EditableText>
+                  </div>
                 </TabsContent>
                 
                 <TabsContent value="care" className="mt-6">
