@@ -231,6 +231,63 @@ export const servicesData: ServiceCategory[] = [
     title: 'HAIR',
     subcategories: [
       {
+        id: 'ladies-hair-colouring',
+        title: "Ladies' - Hair Colouring",
+        services: [
+          {
+            id: 'root-tint',
+            name: 'Root Tint',
+            options: [
+              { label: 'Short', duration: 75, price: 45 },
+              { label: 'Medium', duration: 90, price: 55 },
+              { label: 'Long', duration: 105, price: 65 }
+            ]
+          },
+          {
+            id: 'full-head-tint',
+            name: 'Full Head Tint',
+            options: [
+              { label: 'Short', duration: 90, price: 55 },
+              { label: 'Medium', duration: 105, price: 65 },
+              { label: 'Long', duration: 120, price: 75 }
+            ]
+          },
+          {
+            id: 'semi-permanent-colour',
+            name: 'Semi-Permanent Colour',
+            options: [
+              { label: 'Short', duration: 60, price: 45 },
+              { label: 'Medium', duration: 75, price: 55 },
+              { label: 'Long', duration: 90, price: 65 }
+            ]
+          },
+          {
+            id: 'glossing',
+            name: 'Glossing',
+            options: [
+              { label: 'Short', duration: 45, price: 35 },
+              { label: 'Medium', duration: 60, price: 45 },
+              { label: 'Long', duration: 75, price: 55 }
+            ]
+          },
+          {
+            id: 'colour-correction-consultation',
+            name: 'Colour Correction (Consultation)',
+            options: [{ label: 'Standard', duration: 30, price: 0 }]
+          },
+          {
+            id: 'colour-patch-test',
+            name: 'Colour Patch Test',
+            options: [{ label: 'Standard', duration: 15, price: 0 }]
+          },
+          {
+            id: 'bleach-bath',
+            name: 'Bleach Bath',
+            options: [{ label: 'Standard', duration: 60, price: 60 }]
+          }
+        ]
+      },
+      {
         id: 'hair-styling',
         title: 'Styling',
         services: [
@@ -412,63 +469,6 @@ export const servicesData: ServiceCategory[] = [
               { label: 'Medium Hair', duration: 75, price: 70 },
               { label: 'Short Hair', duration: 60, price: 60 }
             ]
-          }
-        ]
-      },
-      {
-        id: 'ladies-hair-colouring',
-        title: "Ladies' - Hair Colouring",
-        services: [
-          {
-            id: 'root-tint',
-            name: 'Root Tint',
-            options: [
-              { label: 'Short', duration: 75, price: 45 },
-              { label: 'Medium', duration: 90, price: 55 },
-              { label: 'Long', duration: 105, price: 65 }
-            ]
-          },
-          {
-            id: 'full-head-tint',
-            name: 'Full Head Tint',
-            options: [
-              { label: 'Short', duration: 90, price: 55 },
-              { label: 'Medium', duration: 105, price: 65 },
-              { label: 'Long', duration: 120, price: 75 }
-            ]
-          },
-          {
-            id: 'semi-permanent-colour',
-            name: 'Semi-Permanent Colour',
-            options: [
-              { label: 'Short', duration: 60, price: 45 },
-              { label: 'Medium', duration: 75, price: 55 },
-              { label: 'Long', duration: 90, price: 65 }
-            ]
-          },
-          {
-            id: 'glossing',
-            name: 'Glossing',
-            options: [
-              { label: 'Short', duration: 45, price: 35 },
-              { label: 'Medium', duration: 60, price: 45 },
-              { label: 'Long', duration: 75, price: 55 }
-            ]
-          },
-          {
-            id: 'colour-correction-consultation',
-            name: 'Colour Correction (Consultation)',
-            options: [{ label: 'Standard', duration: 30, price: 0 }]
-          },
-          {
-            id: 'colour-patch-test',
-            name: 'Colour Patch Test',
-            options: [{ label: 'Standard', duration: 15, price: 0 }]
-          },
-          {
-            id: 'bleach-bath',
-            name: 'Bleach Bath',
-            options: [{ label: 'Standard', duration: 60, price: 60 }]
           }
         ]
       },
