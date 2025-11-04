@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CreditCard, Shield, Truck, Star } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { PayPalButton } from '@/components/PayPalButton';
 
 const COUNTRIES = [
   'United Kingdom',
@@ -48,6 +49,8 @@ export default function Checkout() {
   });
 
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showPayPal, setShowPayPal] = useState(false);
+  const [currentOrderId, setCurrentOrderId] = useState<string>('');
 
   const updateFormData = (field: keyof CheckoutFormData, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -60,6 +63,62 @@ export default function Checkout() {
     
     return requiredFields.every(field => formData[field]?.toString().trim()) && 
            formData.agreeToTerms;
+  };
+
+  const handlePayPalSuccess = async () => {
+    try {
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      const orderData = { 
+        ...formData, 
+        items: cart.items, 
+        total: cart.subtotal,
+        orderId: currentOrderId,
+        createdAt: new Date().toISOString()
+      };
+      
+      // Store order in localStorage
+      localStorage.setItem(`order_${currentOrderId}`, JSON.stringify(orderData));
+      
+      // Send order confirmation emails
+      try {
+        await supabase.functions.invoke('send-order-email', {
+          body: {
+            orderId: currentOrderId,
+            customerEmail: formData.email,
+            customerName: `${formData.firstName} ${formData.lastName}`,
+            items: cart.items,
+            total: cart.subtotal,
+            shippingAddress: {
+              address: formData.address,
+              city: formData.city,
+              postcode: formData.postcode,
+              country: formData.country,
+            },
+            paymentMethod: 'paypal',
+          },
+        });
+      } catch (emailError) {
+        console.error('Error sending order emails:', emailError);
+      }
+      
+      // Clear cart and redirect
+      clearCart();
+      navigate(`/order-confirmation/${currentOrderId}`, { 
+        state: { orderData } 
+      });
+      
+      toast({
+        title: "Payment successful!",
+        description: `Your order #${currentOrderId} has been confirmed.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Order processing failed",
+        description: "Payment was successful but order processing failed. Please contact support.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -83,51 +142,20 @@ export default function Checkout() {
       return;
     }
 
+    // For PayPal, show the payment buttons
+    if (formData.paymentMethod === 'paypal') {
+      const orderId = `SS${Date.now()}`;
+      setCurrentOrderId(orderId);
+      setShowPayPal(true);
+      return;
+    }
+
+    // For salon payment, process immediately
     setIsProcessing(true);
 
     try {
       const orderId = `SS${Date.now()}`;
       const { supabase } = await import('@/integrations/supabase/client');
-
-      // Handle PayPal payment
-      if (formData.paymentMethod === 'paypal') {
-        try {
-          const { data: paymentData, error: paymentError } = await supabase.functions.invoke('process-paypal-payment', {
-            body: {
-              amount: cart.subtotal,
-              currency: 'GBP',
-              orderId,
-              type: 'order',
-            },
-          });
-
-          if (paymentError) {
-            console.error('PayPal payment error:', paymentError);
-            throw new Error('Payment processing failed. Please try again or choose "Pay in Salon".');
-          }
-
-          if (!paymentData?.success) {
-            throw new Error('Payment processing failed. Please try again or choose "Pay in Salon".');
-          }
-
-          // Open PayPal approval URL in new window
-          if (paymentData.approvalUrl) {
-            const paypalWindow = window.open(paymentData.approvalUrl, '_blank');
-            if (!paypalWindow) {
-              throw new Error('Please allow pop-ups to complete PayPal payment');
-            }
-          }
-        } catch (paypalError) {
-          console.error('PayPal error:', paypalError);
-          setIsProcessing(false);
-          toast({
-            title: "PayPal Payment Error",
-            description: paypalError instanceof Error ? paypalError.message : "Please try again or choose 'Pay in Salon'",
-            variant: "destructive",
-          });
-          return;
-        }
-      }
       
       const orderData = { 
         ...formData, 
@@ -137,7 +165,7 @@ export default function Checkout() {
         createdAt: new Date().toISOString()
       };
       
-      // Store order in localStorage for order confirmation
+      // Store order in localStorage
       localStorage.setItem(`order_${orderId}`, JSON.stringify(orderData));
       
       // Send order confirmation emails
@@ -160,10 +188,9 @@ export default function Checkout() {
         });
       } catch (emailError) {
         console.error('Error sending order emails:', emailError);
-        // Don't block order completion if email fails
       }
       
-      // Clear cart and redirect to confirmation
+      // Clear cart and redirect
       clearCart();
       navigate(`/order-confirmation/${orderId}`, { 
         state: { orderData } 
@@ -175,7 +202,7 @@ export default function Checkout() {
       });
     } catch (error) {
       toast({
-        title: "Payment failed",
+        title: "Order failed",
         description: "Please try again or contact support.",
         variant: "destructive",
       });
@@ -457,13 +484,43 @@ export default function Checkout() {
                           </div>
                         </div>
 
-                        <Button
-                          type="submit"
-                          className="w-full py-3 text-lg"
-                          disabled={!isFormValid() || isProcessing}
-                        >
-                          {isProcessing ? 'Processing...' : 'Place Order'}
-                        </Button>
+                        {showPayPal ? (
+                          <div className="space-y-4">
+                            <div className="text-center p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
+                              <p className="text-sm text-blue-900 dark:text-blue-100 mb-2">
+                                Complete your payment with PayPal
+                              </p>
+                            </div>
+                            <PayPalButton
+                              amount={cart.subtotal}
+                              orderId={currentOrderId}
+                              onSuccess={handlePayPalSuccess}
+                              onError={(error) => {
+                                setShowPayPal(false);
+                                toast({
+                                  title: "Payment Error",
+                                  description: error,
+                                  variant: "destructive",
+                                });
+                              }}
+                            />
+                            <Button
+                              variant="outline"
+                              className="w-full"
+                              onClick={() => setShowPayPal(false)}
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        ) : (
+                          <Button
+                            type="submit"
+                            className="w-full py-3 text-lg"
+                            disabled={!isFormValid() || isProcessing}
+                          >
+                            {isProcessing ? 'Processing...' : formData.paymentMethod === 'paypal' ? 'Continue to Payment' : 'Place Order'}
+                          </Button>
+                        )}
 
                         {/* Trust Badges */}
                         <div className="flex items-center justify-center gap-4 pt-4 text-xs text-muted-foreground">

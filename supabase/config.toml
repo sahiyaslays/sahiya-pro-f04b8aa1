@@ -5,3 +5,12 @@ verify_jwt = false
 
 [functions.send-booking-email]
 verify_jwt = false
+
+[functions.get-paypal-client-id]
+verify_jwt = false
+
+[functions.create-paypal-order]
+verify_jwt = false
+
+[functions.capture-paypal-order]
+verify_jwt = false
