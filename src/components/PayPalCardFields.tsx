@@ -48,30 +48,62 @@ export function PayPalCardFields({ amount, orderId, onSuccess, onError, onCancel
   }, [onError]);
 
   useEffect(() => {
-    if (!clientId || !cardNumberRef.current) return;
-
+    if (!clientId) return;
+    
     let script: HTMLScriptElement | null = null;
     let mounted = true;
 
     const loadPayPalSDK = async () => {
       try {
-        // Check if script already exists
+        console.log('Loading PayPal SDK with client ID:', clientId);
+        
+        // Remove any existing PayPal scripts
         const existingScript = document.querySelector(`script[src*="paypal.com/sdk/js"]`);
         if (existingScript) {
+          console.log('Removing existing PayPal script');
           existingScript.remove();
         }
 
+        // Wait a bit to ensure refs are ready
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        if (!mounted || !cardNumberRef.current || !cardExpiryRef.current || !cardCvvRef.current || !cardNameRef.current) {
+          console.error('Card field refs not ready');
+          return;
+        }
+
         script = document.createElement('script');
-        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=GBP&components=card-fields`;
+        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=GBP&components=card-fields&debug=true`;
         script.async = true;
 
         script.onload = () => {
-          if (!mounted || !window.paypal) return;
+          console.log('PayPal SDK loaded');
+          if (!mounted) return;
 
+          if (!window.paypal) {
+            console.error('PayPal object not found after script load');
+            setIsLoading(false);
+            onError('Failed to load PayPal. Please refresh and try again.');
+            return;
+          }
+
+          // Give PayPal SDK time to initialize
           setTimeout(() => {
-            if (!mounted || !cardNumberRef.current || !cardExpiryRef.current || !cardCvvRef.current || !cardNameRef.current) return;
+            if (!mounted || !cardNumberRef.current || !cardExpiryRef.current || !cardCvvRef.current || !cardNameRef.current) {
+              console.error('Refs lost during initialization');
+              return;
+            }
 
             try {
+              console.log('Initializing PayPal Card Fields');
+              
+              if (!window.paypal.CardFields) {
+                console.error('CardFields not available on PayPal object');
+                setIsLoading(false);
+                onError('Card payments not available. Please use PayPal button or try another payment method.');
+                return;
+              }
+
               const cardFields = window.paypal.CardFields({
                 createOrder: async () => {
                   try {
@@ -136,23 +168,44 @@ export function PayPalCardFields({ amount, orderId, onSuccess, onError, onCancel
                 }
               });
 
+              console.log('Checking CardFields eligibility');
+              
               if (cardFields.isEligible()) {
+                console.log('CardFields are eligible, rendering fields');
+                
                 const numberField = cardFields.NumberField();
                 const expiryField = cardFields.ExpiryField();
                 const cvvField = cardFields.CVVField();
                 const nameField = cardFields.NameField();
 
-                numberField.render(cardNumberRef.current!);
-                expiryField.render(cardExpiryRef.current!);
-                cvvField.render(cardCvvRef.current!);
-                nameField.render(cardNameRef.current!);
+                console.log('Rendering card number field');
+                numberField.render(cardNumberRef.current!).catch((err: any) => {
+                  console.error('Error rendering number field:', err);
+                });
+                
+                console.log('Rendering expiry field');
+                expiryField.render(cardExpiryRef.current!).catch((err: any) => {
+                  console.error('Error rendering expiry field:', err);
+                });
+                
+                console.log('Rendering CVV field');
+                cvvField.render(cardCvvRef.current!).catch((err: any) => {
+                  console.error('Error rendering CVV field:', err);
+                });
+                
+                console.log('Rendering name field');
+                nameField.render(cardNameRef.current!).catch((err: any) => {
+                  console.error('Error rendering name field:', err);
+                });
 
                 cardFieldRef.current = cardFields;
                 setIsLoading(false);
+                console.log('Card fields successfully initialized');
               } else {
+                console.error('CardFields not eligible');
                 if (mounted) {
                   setIsLoading(false);
-                  onError('Card payment is not available in your region. Please try another payment method.');
+                  onError('Card payment is not available. This may be due to regional restrictions or account configuration. Please contact support or try Cash on Delivery.');
                 }
               }
             } catch (err) {
@@ -162,7 +215,7 @@ export function PayPalCardFields({ amount, orderId, onSuccess, onError, onCancel
                 onError('Failed to initialize payment form. Please refresh and try again.');
               }
             }
-          }, 100);
+          }, 500);
         };
 
         script.onerror = () => {
