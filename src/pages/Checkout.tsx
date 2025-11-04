@@ -15,7 +15,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CreditCard, Shield, Truck, Star } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { PayPalCardFields } from '@/components/PayPalCardFields';
+import { PayPalButton } from '@/components/PayPalButton';
+
 
 const COUNTRIES = [
   'United Kingdom',
@@ -372,7 +373,7 @@ export default function Checkout() {
                             <RadioGroupItem value="paypal" id="paypal" />
                             <Label htmlFor="paypal" className="flex items-center gap-2 flex-1 cursor-pointer">
                               <CreditCard className="h-4 w-4" />
-                              Pay with Card (via PayPal)
+                              PayPal or Card
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
@@ -384,7 +385,7 @@ export default function Checkout() {
                         {formData.paymentMethod === 'paypal' && (
                           <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
                             <p className="text-sm text-blue-900 dark:text-blue-100">
-                              Your card payment will be securely processed through PayPal.
+                              Pay securely with PayPal, debit or credit card. You don't need a PayPal account to pay by card.
                             </p>
                           </div>
                         )}
@@ -485,7 +486,7 @@ export default function Checkout() {
                         </div>
 
                         {showPayPal ? (
-                          <PayPalCardFields
+                          <PayPalButton
                             amount={cart.subtotal}
                             orderId={currentOrderId}
                             onSuccess={handlePayPalSuccess}
