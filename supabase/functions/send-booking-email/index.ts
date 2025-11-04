@@ -48,7 +48,7 @@ const handler = async (req: Request): Promise<Response> => {
     if (bookingData.customerEmail) {
       emailPromises.push(
         resend.emails.send({
-          from: "Sahiya Slays <onboarding@resend.dev>",
+          from: "Sahiya Slays <sahiyaslays@gmail.com>",
           to: [bookingData.customerEmail],
           subject: `Booking Confirmed - ${bookingData.bookingReference}`,
           html: `
@@ -117,8 +117,8 @@ const handler = async (req: Request): Promise<Response> => {
     // Always send notification email to salon
     emailPromises.push(
       resend.emails.send({
-        from: "Sahiya Slays Bookings <onboarding@resend.dev>",
-        to: ["contact@sahiyaslays.com"],
+        from: "Sahiya Slays Bookings <sahiyaslays@gmail.com>",
+        to: ["sahiyaslays@gmail.com"],
         subject: `New Booking - ${bookingData.bookingReference}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
