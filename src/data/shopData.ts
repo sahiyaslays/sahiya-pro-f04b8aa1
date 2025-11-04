@@ -238,7 +238,7 @@ export const PRODUCTS: Product[] = [
     price_max: 45
   },
   {
-    id: "p13",
+    id: "p13b",
     slug: "ss-white-head-band-ss-edition",
     title: "SS White Head Band – SS Edition",
     category: "Accessories",

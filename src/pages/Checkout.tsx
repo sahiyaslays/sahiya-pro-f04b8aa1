@@ -43,7 +43,7 @@ export default function Checkout() {
     city: '',
     postcode: '',
     country: '',
-    paymentMethod: 'paypal',
+    paymentMethod: 'salon',
     agreeToTerms: false,
   });
 
@@ -91,22 +91,41 @@ export default function Checkout() {
 
       // Handle PayPal payment
       if (formData.paymentMethod === 'paypal') {
-        const { data: paymentData, error: paymentError } = await supabase.functions.invoke('process-paypal-payment', {
-          body: {
-            amount: cart.subtotal,
-            currency: 'GBP',
-            orderId,
-            type: 'order',
-          },
-        });
+        try {
+          const { data: paymentData, error: paymentError } = await supabase.functions.invoke('process-paypal-payment', {
+            body: {
+              amount: cart.subtotal,
+              currency: 'GBP',
+              orderId,
+              type: 'order',
+            },
+          });
 
-        if (paymentError || !paymentData?.success) {
-          throw new Error('Payment processing failed');
-        }
+          if (paymentError) {
+            console.error('PayPal payment error:', paymentError);
+            throw new Error('Payment processing failed. Please try again or choose "Pay in Salon".');
+          }
 
-        // Open PayPal approval URL in new window
-        if (paymentData.approvalUrl) {
-          window.open(paymentData.approvalUrl, '_blank');
+          if (!paymentData?.success) {
+            throw new Error('Payment processing failed. Please try again or choose "Pay in Salon".');
+          }
+
+          // Open PayPal approval URL in new window
+          if (paymentData.approvalUrl) {
+            const paypalWindow = window.open(paymentData.approvalUrl, '_blank');
+            if (!paypalWindow) {
+              throw new Error('Please allow pop-ups to complete PayPal payment');
+            }
+          }
+        } catch (paypalError) {
+          console.error('PayPal error:', paypalError);
+          setIsProcessing(false);
+          toast({
+            title: "PayPal Payment Error",
+            description: paypalError instanceof Error ? paypalError.message : "Please try again or choose 'Pay in Salon'",
+            variant: "destructive",
+          });
+          return;
         }
       }
       
@@ -322,24 +341,33 @@ export default function Checkout() {
                           value={formData.paymentMethod}
                           onValueChange={(value: 'paypal' | 'salon') => updateFormData('paymentMethod', value)}
                         >
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                            <RadioGroupItem value="salon" id="salon" />
+                            <Label htmlFor="salon" className="flex-1 cursor-pointer">Pay in Salon (Recommended)</Label>
+                          </div>
+                          <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
                             <RadioGroupItem value="paypal" id="paypal" />
-                            <Label htmlFor="paypal" className="flex items-center gap-2">
+                            <Label htmlFor="paypal" className="flex items-center gap-2 flex-1 cursor-pointer">
                               <CreditCard className="h-4 w-4" />
                               PayPal
                             </Label>
                           </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="salon" id="salon" />
-                            <Label htmlFor="salon">Pay in Salon</Label>
-                          </div>
                         </RadioGroup>
                         
-                        <div className="mt-4 p-4 bg-muted rounded-lg">
-                          <p className="text-sm text-muted-foreground">
-                            Your PayPal Business account is connected. Customers will be redirected to PayPal to complete payment.
-                          </p>
-                        </div>
+                        {formData.paymentMethod === 'paypal' && (
+                          <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
+                            <p className="text-sm text-blue-900 dark:text-blue-100">
+                              You'll be redirected to PayPal to complete your payment securely.
+                            </p>
+                          </div>
+                        )}
+                        {formData.paymentMethod === 'salon' && (
+                          <div className="mt-4 p-4 bg-muted rounded-lg">
+                            <p className="text-sm text-muted-foreground">
+                              Complete your payment when you pick up your order at our salon.
+                            </p>
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
 
