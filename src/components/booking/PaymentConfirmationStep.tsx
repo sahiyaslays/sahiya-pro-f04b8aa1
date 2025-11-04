@@ -22,7 +22,7 @@ export function PaymentConfirmationStep({
   onConfirm,
   onBack,
 }: PaymentConfirmationStepProps) {
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'deposit-20' | 'pay-in-salon'>('pay-in-salon');
+  const [paymentMethod, setPaymentMethod] = useState<'pay-in-salon'>('pay-in-salon');
   const [isConfirming, setIsConfirming] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
@@ -48,29 +48,6 @@ export function PaymentConfirmationStep({
     try {
       const bookingReference = `SS${Date.now().toString().slice(-6)}`;
       const { supabase } = await import('@/integrations/supabase/client');
-
-      // Handle PayPal payment
-      if (paymentMethod === 'card' || paymentMethod === 'deposit-20') {
-        const amount = paymentMethod === 'deposit-20' ? 20 : (bookingData.selectedOption?.price || 0);
-        
-        const { data: paymentData, error: paymentError } = await supabase.functions.invoke('process-paypal-payment', {
-          body: {
-            amount,
-            currency: 'GBP',
-            orderId: bookingReference,
-            type: 'booking',
-          },
-        });
-
-        if (paymentError || !paymentData?.success) {
-          throw new Error('Payment processing failed');
-        }
-
-        // Open PayPal approval URL in new window
-        if (paymentData.approvalUrl) {
-          window.open(paymentData.approvalUrl, '_blank');
-        }
-      }
       
       // Send booking confirmation emails
       try {
@@ -288,7 +265,7 @@ export function PaymentConfirmationStep({
           <CardTitle className="text-sm md:text-lg">Payment Method</CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
-          <RadioGroup value={paymentMethod} onValueChange={(value: 'card' | 'deposit-20' | 'pay-in-salon') => setPaymentMethod(value)}>
+          <RadioGroup value={paymentMethod} onValueChange={(value: 'pay-in-salon') => setPaymentMethod(value)}>
             <div className="space-y-2 md:space-y-3">
               <div className="flex items-center space-x-2 md:space-x-3 p-2 md:p-3 border rounded-lg">
                 <RadioGroupItem value="pay-in-salon" id="pay-in-salon" className="w-3 h-3 md:w-4 md:h-4" />
@@ -299,36 +276,6 @@ export function PaymentConfirmationStep({
                       <h6 className="font-medium text-xs md:text-sm">Pay at Salon</h6>
                       <p className="text-xs text-muted-foreground">
                         Pay when you arrive for your appointment
-                      </p>
-                    </div>
-                  </div>
-                </Label>
-              </div>
-
-              <div className="flex items-center space-x-2 md:space-x-3 p-2 md:p-3 border rounded-lg">
-                <RadioGroupItem value="card" id="card" className="w-3 h-3 md:w-4 md:h-4" />
-                <Label htmlFor="card" className="flex-1 cursor-pointer">
-                  <div className="flex items-center gap-2 md:gap-3">
-                    <CreditCard className="w-3 h-3 md:w-5 md:h-5 text-primary" />
-                    <div>
-                      <h6 className="font-medium text-xs md:text-sm">Pay Now with PayPal - Full Amount</h6>
-                      <p className="text-xs text-muted-foreground">
-                        Secure online payment with PayPal - {formatPrice(bookingData.selectedOption?.price || 0)}
-                      </p>
-                    </div>
-                  </div>
-                </Label>
-              </div>
-
-              <div className="flex items-center space-x-2 md:space-x-3 p-2 md:p-3 border rounded-lg">
-                <RadioGroupItem value="deposit-20" id="deposit-20" className="w-3 h-3 md:w-4 md:h-4" />
-                <Label htmlFor="deposit-20" className="flex-1 cursor-pointer">
-                  <div className="flex items-center gap-2 md:gap-3">
-                    <Banknote className="w-3 h-3 md:w-5 md:h-5 text-primary" />
-                    <div>
-                      <h6 className="font-medium text-xs md:text-sm">Pay £20 Deposit with PayPal</h6>
-                      <p className="text-xs text-muted-foreground">
-                        Secure your booking with £20 deposit via PayPal, pay remaining amount at salon
                       </p>
                     </div>
                   </div>

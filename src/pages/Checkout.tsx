@@ -370,25 +370,11 @@ export default function Checkout() {
                           onValueChange={(value: 'paypal' | 'cash-on-delivery') => updateFormData('paymentMethod', value)}
                         >
                           <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
-                            <RadioGroupItem value="paypal" id="paypal" />
-                            <Label htmlFor="paypal" className="flex items-center gap-2 flex-1 cursor-pointer">
-                              <CreditCard className="h-4 w-4" />
-                              PayPal or Card
-                            </Label>
-                          </div>
-                          <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
                             <RadioGroupItem value="cash-on-delivery" id="cash-on-delivery" />
                             <Label htmlFor="cash-on-delivery" className="flex-1 cursor-pointer">Cash on Delivery</Label>
                           </div>
                         </RadioGroup>
                         
-                        {formData.paymentMethod === 'paypal' && (
-                          <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
-                            <p className="text-sm text-blue-900 dark:text-blue-100">
-                              Pay securely with PayPal, debit or credit card. You don't need a PayPal account to pay by card.
-                            </p>
-                          </div>
-                        )}
                         {formData.paymentMethod === 'cash-on-delivery' && (
                           <div className="mt-4 p-4 bg-muted rounded-lg">
                             <p className="text-sm text-muted-foreground">
