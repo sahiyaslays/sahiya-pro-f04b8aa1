@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
 
 interface PayPalButtonProps {
   amount: number;
@@ -16,26 +15,31 @@ declare global {
 }
 
 export function PayPalButton({ amount, orderId, onSuccess, onError, onCancel }: PayPalButtonProps) {
-  const paypalRef = useRef<HTMLDivElement>(null);
-  const { toast } = useToast();
+  const paypalContainerRef = useRef<HTMLDivElement>(null);
   const [clientId, setClientId] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string>('');
+  const initialized = useRef(false);
 
   useEffect(() => {
     const getClientId = async () => {
       try {
+        console.log('Fetching PayPal client ID...');
         const { supabase } = await import('@/integrations/supabase/client');
         const { data, error } = await supabase.functions.invoke('get-paypal-client-id');
         
         if (error || !data?.clientId) {
+          console.error('Failed to get client ID:', error);
           throw new Error('Failed to get PayPal configuration');
         }
         
+        console.log('Client ID received');
         setClientId(data.clientId);
       } catch (err) {
         console.error('Error getting PayPal client ID:', err);
-        onError('Failed to initialize payment. Please refresh and try again.');
+        setError('Failed to initialize payment');
         setIsLoading(false);
+        onError('Failed to initialize payment. Please refresh and try again.');
       }
     };
     
@@ -43,28 +47,48 @@ export function PayPalButton({ amount, orderId, onSuccess, onError, onCancel }: 
   }, [onError]);
 
   useEffect(() => {
-    if (!clientId) return;
+    if (!clientId || !paypalContainerRef.current || initialized.current) return;
+    
+    initialized.current = true;
+    console.log('Loading PayPal SDK with client ID:', clientId);
+    
+    // Remove any existing PayPal scripts
+    const existingScripts = document.querySelectorAll('script[src*="paypal.com/sdk/js"]');
+    existingScripts.forEach(script => script.remove());
     
     const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=GBP&components=buttons,funding-eligibility&enable-funding=card`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=GBP&components=buttons&disable-funding=credit,paylater`;
     script.async = true;
+    script.setAttribute('data-sdk-integration-source', 'button-factory');
     
     script.onload = () => {
-      console.log('PayPal SDK loaded');
-      setIsLoading(false);
+      console.log('PayPal SDK loaded successfully');
       
-      if (window.paypal && paypalRef.current) {
-        // Render PayPal button
+      if (!window.paypal) {
+        console.error('PayPal object not found');
+        setError('Payment system failed to load');
+        setIsLoading(false);
+        onError('Payment system failed to load. Please refresh and try again.');
+        return;
+      }
+
+      if (!paypalContainerRef.current) {
+        console.error('Container ref not available');
+        return;
+      }
+
+      try {
+        console.log('Initializing PayPal buttons...');
+        
         window.paypal.Buttons({
-          fundingSource: window.paypal.FUNDING.PAYPAL,
           style: {
             layout: 'vertical',
-            color: 'gold',
             shape: 'rect',
             label: 'paypal',
-            height: 48
+            height: 50
           },
           createOrder: async () => {
+            console.log('Creating PayPal order...');
             try {
               const { supabase } = await import('@/integrations/supabase/client');
               const { data, error } = await supabase.functions.invoke('create-paypal-order', {
@@ -76,9 +100,11 @@ export function PayPalButton({ amount, orderId, onSuccess, onError, onCancel }: 
               });
 
               if (error || !data?.id) {
+                console.error('Order creation failed:', error);
                 throw new Error('Failed to create order');
               }
 
+              console.log('Order created:', data.id);
               return data.id;
             } catch (err) {
               console.error('Error creating order:', err);
@@ -86,7 +112,7 @@ export function PayPalButton({ amount, orderId, onSuccess, onError, onCancel }: 
             }
           },
           onApprove: async (data: any) => {
-            console.log('Payment approved:', data);
+            console.log('Payment approved, capturing...', data);
             try {
               const { supabase } = await import('@/integrations/supabase/client');
               const { data: captureData, error } = await supabase.functions.invoke('capture-paypal-order', {
@@ -96,130 +122,87 @@ export function PayPalButton({ amount, orderId, onSuccess, onError, onCancel }: 
               });
 
               if (error || !captureData) {
+                console.error('Payment capture failed:', error);
                 throw new Error('Failed to process payment');
               }
 
-              console.log('Payment successful:', captureData);
+              console.log('Payment captured successfully:', captureData);
               onSuccess();
             } catch (err) {
               console.error('Error capturing payment:', err);
-              onError('Payment processing failed. Please try again.');
+              onError('Payment processing failed. Please contact support.');
             }
           },
           onError: (err: any) => {
-            console.error('PayPal error:', err);
-            onError('Payment failed. Please try again.');
+            console.error('PayPal button error:', err);
+            onError('Payment failed. Please try again or use another payment method.');
           },
           onCancel: () => {
-            console.log('Payment cancelled');
+            console.log('Payment cancelled by user');
             onCancel();
           }
-        }).render(paypalRef.current).catch((err: any) => {
-          console.error('Error rendering PayPal button:', err);
-          onError('Failed to load payment options. Please refresh and try again.');
+        }).render(paypalContainerRef.current).then(() => {
+          console.log('PayPal buttons rendered successfully');
+          setIsLoading(false);
+        }).catch((err: any) => {
+          console.error('Error rendering PayPal buttons:', err);
+          setError('Failed to load payment buttons');
+          setIsLoading(false);
+          onError('Failed to load payment buttons. Please refresh and try again.');
         });
-        
-        // Render card button if available
-        if (window.paypal.FUNDING && window.paypal.isFundingEligible(window.paypal.FUNDING.CARD)) {
-          console.log('Card payments eligible, rendering card button');
-          const cardContainer = document.createElement('div');
-          cardContainer.style.marginTop = '10px';
-          paypalRef.current!.appendChild(cardContainer);
-          
-          window.paypal.Buttons({
-            fundingSource: window.paypal.FUNDING.CARD,
-            style: {
-              layout: 'vertical',
-              color: 'black',
-              shape: 'rect',
-              label: 'pay',
-              height: 48
-            },
-            createOrder: async () => {
-              try {
-                const { supabase } = await import('@/integrations/supabase/client');
-                const { data, error } = await supabase.functions.invoke('create-paypal-order', {
-                  body: {
-                    amount: amount,
-                    currency: 'GBP',
-                    orderId: orderId,
-                  },
-                });
-
-                if (error || !data?.id) {
-                  throw new Error('Failed to create order');
-                }
-
-                return data.id;
-              } catch (err) {
-                console.error('Error creating order:', err);
-                throw err;
-              }
-            },
-            onApprove: async (data: any) => {
-              console.log('Card payment approved:', data);
-              try {
-                const { supabase } = await import('@/integrations/supabase/client');
-                const { data: captureData, error } = await supabase.functions.invoke('capture-paypal-order', {
-                  body: {
-                    orderID: data.orderID,
-                  },
-                });
-
-                if (error || !captureData) {
-                  throw new Error('Failed to process payment');
-                }
-
-                console.log('Card payment successful:', captureData);
-                onSuccess();
-              } catch (err) {
-                console.error('Error capturing payment:', err);
-                onError('Payment processing failed. Please try again.');
-              }
-            },
-            onError: (err: any) => {
-              console.error('Card payment error:', err);
-              onError('Card payment failed. Please try again.');
-            },
-            onCancel: () => {
-              console.log('Card payment cancelled');
-              onCancel();
-            }
-          }).render(cardContainer).catch((err: any) => {
-            console.error('Error rendering card button:', err);
-          });
-        }
+      } catch (err) {
+        console.error('Error initializing PayPal buttons:', err);
+        setError('Failed to initialize payment');
+        setIsLoading(false);
+        onError('Failed to initialize payment. Please refresh and try again.');
       }
     };
 
-    script.onerror = () => {
+    script.onerror = (err) => {
+      console.error('Failed to load PayPal SDK script:', err);
+      setError('Failed to load payment system');
       setIsLoading(false);
-      onError('Failed to load payment system. Please refresh and try again.');
+      onError('Failed to load payment system. Please check your internet connection and try again.');
     };
 
-    document.body.appendChild(script);
+    document.head.appendChild(script);
 
     return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
       }
     };
-  }, [amount, orderId, onSuccess, onError, onCancel, toast, clientId]);
+  }, [clientId, amount, orderId, onSuccess, onError, onCancel]);
 
   return (
     <div className="space-y-4">
-      {isLoading && (
-        <div className="text-center p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
-          <p className="text-sm text-blue-900 dark:text-blue-100">Loading payment options...</p>
+      {isLoading && !error && (
+        <div className="text-center p-6 bg-blue-50 dark:bg-blue-950 rounded-lg">
+          <div className="animate-pulse">
+            <p className="text-sm text-blue-900 dark:text-blue-100 mb-2">Loading secure payment...</p>
+            <div className="flex justify-center gap-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+            </div>
+          </div>
         </div>
       )}
-      <div ref={paypalRef} />
+      
+      {error && (
+        <div className="text-center p-4 bg-red-50 dark:bg-red-950 rounded-lg border border-red-200 dark:border-red-800">
+          <p className="text-sm text-red-900 dark:text-red-100">{error}</p>
+        </div>
+      )}
+      
+      <div ref={paypalContainerRef} id="paypal-button-container"></div>
+      
       <button
         type="button"
         onClick={onCancel}
-        className="w-full px-4 py-3 border border-input rounded-md hover:bg-accent transition-colors text-sm"
+        className="w-full px-4 py-3 border border-input rounded-md hover:bg-accent transition-colors text-sm font-medium"
       >
-        Cancel
+        Cancel and Return
       </button>
     </div>
   );
