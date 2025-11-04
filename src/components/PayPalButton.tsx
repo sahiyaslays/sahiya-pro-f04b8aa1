@@ -57,105 +57,115 @@ export function PayPalButton({ amount, orderId, onSuccess, onError, onCancel }: 
     existingScripts.forEach(script => script.remove());
     
     const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=GBP&components=buttons&disable-funding=credit,paylater`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=GBP&intent=capture&disable-funding=credit`;
     script.async = true;
-    script.setAttribute('data-sdk-integration-source', 'button-factory');
     
     script.onload = () => {
       console.log('PayPal SDK loaded successfully');
       
-      if (!window.paypal) {
-        console.error('PayPal object not found');
-        setError('Payment system failed to load');
-        setIsLoading(false);
-        onError('Payment system failed to load. Please refresh and try again.');
-        return;
-      }
-
-      if (!paypalContainerRef.current) {
-        console.error('Container ref not available');
-        return;
-      }
-
-      try {
-        console.log('Initializing PayPal buttons...');
-        
-        window.paypal.Buttons({
-          style: {
-            layout: 'vertical',
-            shape: 'rect',
-            label: 'paypal',
-            height: 50
-          },
-          createOrder: async () => {
-            console.log('Creating PayPal order...');
-            try {
-              const { supabase } = await import('@/integrations/supabase/client');
-              const { data, error } = await supabase.functions.invoke('create-paypal-order', {
-                body: {
-                  amount: amount,
-                  currency: 'GBP',
-                  orderId: orderId,
-                },
-              });
-
-              if (error || !data?.id) {
-                console.error('Order creation failed:', error);
-                throw new Error('Failed to create order');
-              }
-
-              console.log('Order created:', data.id);
-              return data.id;
-            } catch (err) {
-              console.error('Error creating order:', err);
-              throw err;
-            }
-          },
-          onApprove: async (data: any) => {
-            console.log('Payment approved, capturing...', data);
-            try {
-              const { supabase } = await import('@/integrations/supabase/client');
-              const { data: captureData, error } = await supabase.functions.invoke('capture-paypal-order', {
-                body: {
-                  orderID: data.orderID,
-                },
-              });
-
-              if (error || !captureData) {
-                console.error('Payment capture failed:', error);
-                throw new Error('Failed to process payment');
-              }
-
-              console.log('Payment captured successfully:', captureData);
-              onSuccess();
-            } catch (err) {
-              console.error('Error capturing payment:', err);
-              onError('Payment processing failed. Please contact support.');
-            }
-          },
-          onError: (err: any) => {
-            console.error('PayPal button error:', err);
-            onError('Payment failed. Please try again or use another payment method.');
-          },
-          onCancel: () => {
-            console.log('Payment cancelled by user');
-            onCancel();
-          }
-        }).render(paypalContainerRef.current).then(() => {
-          console.log('PayPal buttons rendered successfully');
+      // Wait for PayPal SDK to fully initialize
+      setTimeout(() => {
+        if (!window.paypal) {
+          console.error('PayPal object not found');
+          setError('Payment system failed to load');
           setIsLoading(false);
-        }).catch((err: any) => {
-          console.error('Error rendering PayPal buttons:', err);
-          setError('Failed to load payment buttons');
+          onError('Payment system failed to load. Please refresh and try again.');
+          return;
+        }
+
+        if (!window.paypal.Buttons) {
+          console.error('PayPal Buttons not available');
+          setError('Payment buttons not available');
           setIsLoading(false);
-          onError('Failed to load payment buttons. Please refresh and try again.');
-        });
-      } catch (err) {
-        console.error('Error initializing PayPal buttons:', err);
-        setError('Failed to initialize payment');
-        setIsLoading(false);
-        onError('Failed to initialize payment. Please refresh and try again.');
-      }
+          onError('Payment buttons not available. Please refresh and try again.');
+          return;
+        }
+
+        if (!paypalContainerRef.current) {
+          console.error('Container ref not available');
+          return;
+        }
+
+        try {
+          console.log('Initializing PayPal buttons...');
+          
+          window.paypal.Buttons({
+            style: {
+              layout: 'vertical',
+              shape: 'rect',
+              label: 'paypal',
+              height: 50
+            },
+            createOrder: async () => {
+              console.log('Creating PayPal order...');
+              try {
+                const { supabase } = await import('@/integrations/supabase/client');
+                const { data, error } = await supabase.functions.invoke('create-paypal-order', {
+                  body: {
+                    amount: amount,
+                    currency: 'GBP',
+                    orderId: orderId,
+                  },
+                });
+
+                if (error || !data?.id) {
+                  console.error('Order creation failed:', error);
+                  throw new Error('Failed to create order');
+                }
+
+                console.log('Order created:', data.id);
+                return data.id;
+              } catch (err) {
+                console.error('Error creating order:', err);
+                throw err;
+              }
+            },
+            onApprove: async (data: any) => {
+              console.log('Payment approved, capturing...', data);
+              try {
+                const { supabase } = await import('@/integrations/supabase/client');
+                const { data: captureData, error } = await supabase.functions.invoke('capture-paypal-order', {
+                  body: {
+                    orderID: data.orderID,
+                  },
+                });
+
+                if (error || !captureData) {
+                  console.error('Payment capture failed:', error);
+                  throw new Error('Failed to process payment');
+                }
+
+                console.log('Payment captured successfully:', captureData);
+                onSuccess();
+              } catch (err) {
+                console.error('Error capturing payment:', err);
+                onError('Payment processing failed. Please contact support.');
+              }
+            },
+            onError: (err: any) => {
+              console.error('PayPal button error:', err);
+              onError('Payment failed. Please try again or use another payment method.');
+            },
+            onCancel: () => {
+              console.log('Payment cancelled by user');
+              onCancel();
+            }
+          }).render(paypalContainerRef.current).then(() => {
+            console.log('PayPal buttons rendered successfully');
+            setIsLoading(false);
+          }).catch((err: any) => {
+            console.error('Error rendering PayPal buttons:', err);
+            setError('Failed to load payment buttons');
+            setIsLoading(false);
+            onError('Failed to load payment buttons. Please refresh and try again.');
+          });
+        } catch (err) {
+          console.error('Error initializing PayPal buttons:', err);
+          setError('Failed to initialize payment');
+          setIsLoading(false);
+          onError('Failed to initialize payment. Please refresh and try again.');
+        }
+      }, 500); // Wait 500ms for SDK to fully initialize
     };
 
     script.onerror = (err) => {
