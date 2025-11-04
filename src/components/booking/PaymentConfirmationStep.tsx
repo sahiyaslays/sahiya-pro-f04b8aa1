@@ -47,11 +47,33 @@ export function PaymentConfirmationStep({
     
     try {
       const bookingReference = `SS${Date.now().toString().slice(-6)}`;
+      const { supabase } = await import('@/integrations/supabase/client');
+
+      // Handle PayPal payment
+      if (paymentMethod === 'card' || paymentMethod === 'deposit-20') {
+        const amount = paymentMethod === 'deposit-20' ? 20 : (bookingData.selectedOption?.price || 0);
+        
+        const { data: paymentData, error: paymentError } = await supabase.functions.invoke('process-paypal-payment', {
+          body: {
+            amount,
+            currency: 'GBP',
+            orderId: bookingReference,
+            type: 'booking',
+          },
+        });
+
+        if (paymentError || !paymentData?.success) {
+          throw new Error('Payment processing failed');
+        }
+
+        // Open PayPal approval URL in new window
+        if (paymentData.approvalUrl) {
+          window.open(paymentData.approvalUrl, '_blank');
+        }
+      }
       
       // Send booking confirmation emails
       try {
-        const { supabase } = await import('@/integrations/supabase/client');
-        
         const emailData = {
           bookingReference,
           serviceName: service.name,
@@ -289,9 +311,9 @@ export function PaymentConfirmationStep({
                   <div className="flex items-center gap-2 md:gap-3">
                     <CreditCard className="w-3 h-3 md:w-5 md:h-5 text-primary" />
                     <div>
-                      <h6 className="font-medium text-xs md:text-sm">Pay Now - Full Amount</h6>
+                      <h6 className="font-medium text-xs md:text-sm">Pay Now with PayPal - Full Amount</h6>
                       <p className="text-xs text-muted-foreground">
-                        Secure online payment with card - {formatPrice(bookingData.selectedOption?.price || 0)}
+                        Secure online payment with PayPal - {formatPrice(bookingData.selectedOption?.price || 0)}
                       </p>
                     </div>
                   </div>
@@ -304,9 +326,9 @@ export function PaymentConfirmationStep({
                   <div className="flex items-center gap-2 md:gap-3">
                     <Banknote className="w-3 h-3 md:w-5 md:h-5 text-primary" />
                     <div>
-                      <h6 className="font-medium text-xs md:text-sm">Pay £20 Deposit</h6>
+                      <h6 className="font-medium text-xs md:text-sm">Pay £20 Deposit with PayPal</h6>
                       <p className="text-xs text-muted-foreground">
-                        Secure your booking with £20 deposit, pay remaining amount at salon
+                        Secure your booking with £20 deposit via PayPal, pay remaining amount at salon
                       </p>
                     </div>
                   </div>

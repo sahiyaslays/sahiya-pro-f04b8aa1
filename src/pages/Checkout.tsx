@@ -43,7 +43,7 @@ export default function Checkout() {
     city: '',
     postcode: '',
     country: '',
-    paymentMethod: 'stripe',
+    paymentMethod: 'paypal',
     agreeToTerms: false,
   });
 
@@ -86,10 +86,30 @@ export default function Checkout() {
     setIsProcessing(true);
 
     try {
-      // Simulate payment processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
       const orderId = `SS${Date.now()}`;
+      const { supabase } = await import('@/integrations/supabase/client');
+
+      // Handle PayPal payment
+      if (formData.paymentMethod === 'paypal') {
+        const { data: paymentData, error: paymentError } = await supabase.functions.invoke('process-paypal-payment', {
+          body: {
+            amount: cart.subtotal,
+            currency: 'GBP',
+            orderId,
+            type: 'order',
+          },
+        });
+
+        if (paymentError || !paymentData?.success) {
+          throw new Error('Payment processing failed');
+        }
+
+        // Open PayPal approval URL in new window
+        if (paymentData.approvalUrl) {
+          window.open(paymentData.approvalUrl, '_blank');
+        }
+      }
+      
       const orderData = { 
         ...formData, 
         items: cart.items, 
@@ -103,7 +123,6 @@ export default function Checkout() {
       
       // Send order confirmation emails
       try {
-        const { supabase } = await import('@/integrations/supabase/client');
         await supabase.functions.invoke('send-order-email', {
           body: {
             orderId,
@@ -301,18 +320,14 @@ export default function Checkout() {
                       <CardContent>
                         <RadioGroup
                           value={formData.paymentMethod}
-                          onValueChange={(value: 'stripe' | 'paypal' | 'salon') => updateFormData('paymentMethod', value)}
+                          onValueChange={(value: 'paypal' | 'salon') => updateFormData('paymentMethod', value)}
                         >
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="stripe" id="stripe" />
-                            <Label htmlFor="stripe" className="flex items-center gap-2">
-                              <CreditCard className="h-4 w-4" />
-                              Credit / Debit Card (Stripe)
-                            </Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
                             <RadioGroupItem value="paypal" id="paypal" />
-                            <Label htmlFor="paypal">PayPal</Label>
+                            <Label htmlFor="paypal" className="flex items-center gap-2">
+                              <CreditCard className="h-4 w-4" />
+                              PayPal
+                            </Label>
                           </div>
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="salon" id="salon" />
@@ -322,8 +337,7 @@ export default function Checkout() {
                         
                         <div className="mt-4 p-4 bg-muted rounded-lg">
                           <p className="text-sm text-muted-foreground">
-                            Payment integration is configured in development. In production, 
-                            you can connect your Stripe and PayPal accounts in settings.
+                            Your PayPal Business account is connected. Customers will be redirected to PayPal to complete payment.
                           </p>
                         </div>
                       </CardContent>

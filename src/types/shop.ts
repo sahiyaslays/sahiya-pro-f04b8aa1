@@ -45,6 +45,6 @@ export interface CheckoutFormData {
   city: string;
   postcode: string;
   country: string;
-  paymentMethod: 'stripe' | 'paypal' | 'salon';
+  paymentMethod: 'paypal' | 'salon';
   agreeToTerms: boolean;
 }
