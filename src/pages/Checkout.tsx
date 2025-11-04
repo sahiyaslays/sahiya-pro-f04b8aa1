@@ -101,6 +101,30 @@ export default function Checkout() {
       // Store order in localStorage for order confirmation
       localStorage.setItem(`order_${orderId}`, JSON.stringify(orderData));
       
+      // Send order confirmation emails
+      try {
+        const { supabase } = await import('@/integrations/supabase/client');
+        await supabase.functions.invoke('send-order-email', {
+          body: {
+            orderId,
+            customerEmail: formData.email,
+            customerName: `${formData.firstName} ${formData.lastName}`,
+            items: cart.items,
+            total: cart.subtotal,
+            shippingAddress: {
+              address: formData.address,
+              city: formData.city,
+              postcode: formData.postcode,
+              country: formData.country,
+            },
+            paymentMethod: formData.paymentMethod,
+          },
+        });
+      } catch (emailError) {
+        console.error('Error sending order emails:', emailError);
+        // Don't block order completion if email fails
+      }
+      
       // Clear cart and redirect to confirmation
       clearCart();
       navigate(`/order-confirmation/${orderId}`, { 
