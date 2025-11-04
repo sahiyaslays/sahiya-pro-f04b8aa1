@@ -49,7 +49,7 @@ const handler = async (req: Request): Promise<Response> => {
       emailPromises.push(
         resend.emails.send({
           from: "Sahiya Slays <onboarding@resend.dev>",
-          to: ["sahiyaslays@gmail.com"],
+          to: ["sahiyaslays@gmail.com", "contact@sahiyaslays.com"],
           replyTo: bookingData.customerEmail,
           subject: `Booking Confirmed - ${bookingData.bookingReference} (Customer: ${bookingData.customerEmail})`,
           html: `
@@ -119,7 +119,7 @@ const handler = async (req: Request): Promise<Response> => {
     emailPromises.push(
       resend.emails.send({
         from: "Sahiya Slays Bookings <onboarding@resend.dev>",
-        to: ["sahiyaslays@gmail.com"],
+        to: ["sahiyaslays@gmail.com", "contact@sahiyaslays.com"],
         subject: `New Booking - ${bookingData.bookingReference}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

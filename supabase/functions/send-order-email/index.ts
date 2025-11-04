@@ -76,7 +76,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send confirmation email to customer
     const customerEmailResponse = await resend.emails.send({
       from: "Sahiya Slays <onboarding@resend.dev>",
-      to: ["sahiyaslays@gmail.com"],
+      to: ["sahiyaslays@gmail.com", "contact@sahiyaslays.com"],
       replyTo: orderData.customerEmail,
       subject: `Order Confirmation - #${orderData.orderId} (Customer: ${orderData.customerEmail})`,
       html: `
@@ -136,7 +136,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send notification email to salon
     const salonEmailResponse = await resend.emails.send({
       from: "Sahiya Slays Orders <onboarding@resend.dev>",
-      to: ["sahiyaslays@gmail.com"],
+      to: ["sahiyaslays@gmail.com", "contact@sahiyaslays.com"],
       subject: `New Order - #${orderData.orderId}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
