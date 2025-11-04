@@ -56,8 +56,8 @@ serve(async (req) => {
         },
       ],
       application_context: {
-        return_url: `${Deno.env.get('VITE_SUPABASE_URL')}/functions/v1/paypal-return`,
-        cancel_url: `${Deno.env.get('VITE_SUPABASE_URL')}/functions/v1/paypal-cancel`,
+        return_url: `${Deno.env.get('SUPABASE_URL')}/functions/v1/paypal-return`,
+        cancel_url: `${Deno.env.get('SUPABASE_URL')}/functions/v1/paypal-cancel`,
       },
     };
 
