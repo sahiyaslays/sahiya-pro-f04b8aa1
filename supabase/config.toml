@@ -1,1 +1,7 @@
 project_id = "cfovatohfdfryweosyux"
+
+[functions.send-order-email]
+verify_jwt = false
+
+[functions.send-booking-email]
+verify_jwt = false

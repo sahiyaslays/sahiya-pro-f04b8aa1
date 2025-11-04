@@ -46,32 +46,40 @@ export function PaymentConfirmationStep({
     setIsConfirming(true);
     
     try {
-      // Simulate booking process
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
       const bookingReference = `SS${Date.now().toString().slice(-6)}`;
       
       // Send booking confirmation emails
       try {
         const { supabase } = await import('@/integrations/supabase/client');
-        await supabase.functions.invoke('send-booking-email', {
-          body: {
-            bookingReference,
-            serviceName: service.name,
-            serviceOption: bookingData.selectedOption?.label || '',
-            serviceDuration: formatDuration(bookingData.selectedOption?.duration || 0),
-            servicePrice: formatPrice(bookingData.selectedOption?.price || 0),
-            date: bookingData.date && format(new Date(bookingData.date), 'EEEE, MMMM do, yyyy'),
-            time: bookingData.time || '',
-            stylistName: bookingData.selectedStylist?.name,
-            customerName: bookingData.customerDetails.fullName,
-            customerEmail: bookingData.customerDetails.email,
-            customerMobile: bookingData.customerDetails.mobile,
-            customerNotes: bookingData.customerDetails.notes,
-            paymentMethod,
-          },
+        
+        const emailData = {
+          bookingReference,
+          serviceName: service.name,
+          serviceOption: bookingData.selectedOption?.label || '',
+          serviceDuration: formatDuration(bookingData.selectedOption?.duration || 0),
+          servicePrice: formatPrice(bookingData.selectedOption?.price || 0),
+          date: bookingData.date ? format(new Date(bookingData.date), 'EEEE, MMMM do, yyyy') : '',
+          time: bookingData.time || '',
+          stylistName: bookingData.selectedStylist?.name,
+          customerName: bookingData.customerDetails.fullName,
+          customerEmail: bookingData.customerDetails.email,
+          customerMobile: bookingData.customerDetails.mobile,
+          customerNotes: bookingData.customerDetails.notes,
+          paymentMethod,
+        };
+        
+        console.log('Sending booking email with data:', emailData);
+        
+        const { data, error } = await supabase.functions.invoke('send-booking-email', {
+          body: emailData,
         });
-        console.log('Booking confirmation emails sent successfully');
+        
+        if (error) {
+          console.error('Error invoking send-booking-email:', error);
+          throw error;
+        }
+        
+        console.log('Booking confirmation emails sent successfully:', data);
       } catch (emailError) {
         console.error('Error sending booking emails:', emailError);
         // Don't block booking completion if email fails
