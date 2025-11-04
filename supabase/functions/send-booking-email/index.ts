@@ -48,9 +48,10 @@ const handler = async (req: Request): Promise<Response> => {
     if (bookingData.customerEmail) {
       emailPromises.push(
         resend.emails.send({
-          from: "Sahiya Slays <sahiyaslays@gmail.com>",
-          to: [bookingData.customerEmail],
-          subject: `Booking Confirmed - ${bookingData.bookingReference}`,
+          from: "Sahiya Slays <onboarding@resend.dev>",
+          to: ["sahiyaslays@gmail.com"],
+          replyTo: bookingData.customerEmail,
+          subject: `Booking Confirmed - ${bookingData.bookingReference} (Customer: ${bookingData.customerEmail})`,
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
               <div style="background-color: #000; color: #D4AF37; padding: 20px; text-align: center;">
@@ -117,7 +118,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Always send notification email to salon
     emailPromises.push(
       resend.emails.send({
-        from: "Sahiya Slays Bookings <sahiyaslays@gmail.com>",
+        from: "Sahiya Slays Bookings <onboarding@resend.dev>",
         to: ["sahiyaslays@gmail.com"],
         subject: `New Booking - ${bookingData.bookingReference}`,
         html: `

@@ -75,9 +75,10 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email to customer
     const customerEmailResponse = await resend.emails.send({
-      from: "Sahiya Slays <sahiyaslays@gmail.com>",
-      to: [orderData.customerEmail],
-      subject: `Order Confirmation - #${orderData.orderId}`,
+      from: "Sahiya Slays <onboarding@resend.dev>",
+      to: ["sahiyaslays@gmail.com"],
+      replyTo: orderData.customerEmail,
+      subject: `Order Confirmation - #${orderData.orderId} (Customer: ${orderData.customerEmail})`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #000; color: #D4AF37; padding: 20px; text-align: center;">
@@ -134,7 +135,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification email to salon
     const salonEmailResponse = await resend.emails.send({
-      from: "Sahiya Slays Orders <sahiyaslays@gmail.com>",
+      from: "Sahiya Slays Orders <onboarding@resend.dev>",
       to: ["sahiyaslays@gmail.com"],
       subject: `New Order - #${orderData.orderId}`,
       html: `
