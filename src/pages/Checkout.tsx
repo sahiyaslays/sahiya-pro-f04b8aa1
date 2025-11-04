@@ -15,7 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CreditCard, Shield, Truck, Star } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { PayPalButton } from '@/components/PayPalButton';
+import { PayPalCardFields } from '@/components/PayPalCardFields';
 
 const COUNTRIES = [
   'United Kingdom',
@@ -44,7 +44,7 @@ export default function Checkout() {
     city: '',
     postcode: '',
     country: '',
-    paymentMethod: 'salon',
+    paymentMethod: 'cash-on-delivery',
     agreeToTerms: false,
   });
 
@@ -366,32 +366,32 @@ export default function Checkout() {
                       <CardContent>
                         <RadioGroup
                           value={formData.paymentMethod}
-                          onValueChange={(value: 'paypal' | 'salon') => updateFormData('paymentMethod', value)}
+                          onValueChange={(value: 'paypal' | 'cash-on-delivery') => updateFormData('paymentMethod', value)}
                         >
-                          <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
-                            <RadioGroupItem value="salon" id="salon" />
-                            <Label htmlFor="salon" className="flex-1 cursor-pointer">Pay in Salon (Recommended)</Label>
-                          </div>
                           <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
                             <RadioGroupItem value="paypal" id="paypal" />
                             <Label htmlFor="paypal" className="flex items-center gap-2 flex-1 cursor-pointer">
                               <CreditCard className="h-4 w-4" />
-                              PayPal
+                              Pay with Card (via PayPal)
                             </Label>
+                          </div>
+                          <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                            <RadioGroupItem value="cash-on-delivery" id="cash-on-delivery" />
+                            <Label htmlFor="cash-on-delivery" className="flex-1 cursor-pointer">Cash on Delivery</Label>
                           </div>
                         </RadioGroup>
                         
                         {formData.paymentMethod === 'paypal' && (
                           <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
                             <p className="text-sm text-blue-900 dark:text-blue-100">
-                              You'll be redirected to PayPal to complete your payment securely.
+                              Your card payment will be securely processed through PayPal.
                             </p>
                           </div>
                         )}
-                        {formData.paymentMethod === 'salon' && (
+                        {formData.paymentMethod === 'cash-on-delivery' && (
                           <div className="mt-4 p-4 bg-muted rounded-lg">
                             <p className="text-sm text-muted-foreground">
-                              Complete your payment when you pick up your order at our salon.
+                              Pay with cash when you receive your order.
                             </p>
                           </div>
                         )}
@@ -485,33 +485,20 @@ export default function Checkout() {
                         </div>
 
                         {showPayPal ? (
-                          <div className="space-y-4">
-                            <div className="text-center p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
-                              <p className="text-sm text-blue-900 dark:text-blue-100 mb-2">
-                                Complete your payment with PayPal
-                              </p>
-                            </div>
-                            <PayPalButton
-                              amount={cart.subtotal}
-                              orderId={currentOrderId}
-                              onSuccess={handlePayPalSuccess}
-                              onError={(error) => {
-                                setShowPayPal(false);
-                                toast({
-                                  title: "Payment Error",
-                                  description: error,
-                                  variant: "destructive",
-                                });
-                              }}
-                            />
-                            <Button
-                              variant="outline"
-                              className="w-full"
-                              onClick={() => setShowPayPal(false)}
-                            >
-                              Cancel
-                            </Button>
-                          </div>
+                          <PayPalCardFields
+                            amount={cart.subtotal}
+                            orderId={currentOrderId}
+                            onSuccess={handlePayPalSuccess}
+                            onError={(error) => {
+                              setShowPayPal(false);
+                              toast({
+                                title: "Payment Error",
+                                description: error,
+                                variant: "destructive",
+                              });
+                            }}
+                            onCancel={() => setShowPayPal(false)}
+                          />
                         ) : (
                           <Button
                             type="submit"

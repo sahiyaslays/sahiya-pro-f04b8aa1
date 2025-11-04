@@ -45,6 +45,6 @@ export interface CheckoutFormData {
   city: string;
   postcode: string;
   country: string;
-  paymentMethod: 'paypal' | 'salon';
+  paymentMethod: 'cash-on-delivery' | 'paypal';
   agreeToTerms: boolean;
 }
