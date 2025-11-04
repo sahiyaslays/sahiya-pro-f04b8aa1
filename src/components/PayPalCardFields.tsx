@@ -23,6 +23,8 @@ export function PayPalCardFields({ amount, orderId, onSuccess, onError, onCancel
   const { toast } = useToast();
   const [clientId, setClientId] = useState<string>('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const cardFieldRef = useRef<any>(null);
 
   useEffect(() => {
     const getClientId = async () => {
@@ -38,6 +40,7 @@ export function PayPalCardFields({ amount, orderId, onSuccess, onError, onCancel
       } catch (err) {
         console.error('Error getting PayPal client ID:', err);
         onError('Failed to initialize payment. Please refresh and try again.');
+        setIsLoading(false);
       }
     };
     
@@ -47,157 +50,237 @@ export function PayPalCardFields({ amount, orderId, onSuccess, onError, onCancel
   useEffect(() => {
     if (!clientId || !cardNumberRef.current) return;
 
-    const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=GBP&components=card-fields`;
-    script.async = true;
+    let script: HTMLScriptElement | null = null;
+    let mounted = true;
 
-    script.onload = () => {
-      if (window.paypal && cardNumberRef.current && cardExpiryRef.current && cardCvvRef.current && cardNameRef.current) {
-        const cardField = window.paypal.CardFields({
-          createOrder: async () => {
+    const loadPayPalSDK = async () => {
+      try {
+        // Check if script already exists
+        const existingScript = document.querySelector(`script[src*="paypal.com/sdk/js"]`);
+        if (existingScript) {
+          existingScript.remove();
+        }
+
+        script = document.createElement('script');
+        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=GBP&components=card-fields`;
+        script.async = true;
+
+        script.onload = () => {
+          if (!mounted || !window.paypal) return;
+
+          setTimeout(() => {
+            if (!mounted || !cardNumberRef.current || !cardExpiryRef.current || !cardCvvRef.current || !cardNameRef.current) return;
+
             try {
-              const { supabase } = await import('@/integrations/supabase/client');
-              const { data, error } = await supabase.functions.invoke('create-paypal-order', {
-                body: {
-                  amount: amount,
-                  currency: 'GBP',
-                  orderId: orderId,
+              const cardFields = window.paypal.CardFields({
+                createOrder: async () => {
+                  try {
+                    const { supabase } = await import('@/integrations/supabase/client');
+                    const { data, error } = await supabase.functions.invoke('create-paypal-order', {
+                      body: {
+                        amount: amount,
+                        currency: 'GBP',
+                        orderId: orderId,
+                      },
+                    });
+
+                    if (error || !data?.id) {
+                      throw new Error('Failed to create order');
+                    }
+
+                    return data.id;
+                  } catch (err) {
+                    console.error('Error creating order:', err);
+                    throw err;
+                  }
                 },
+                onApprove: async (data: any) => {
+                  if (!mounted) return;
+                  try {
+                    setIsProcessing(true);
+                    const { supabase } = await import('@/integrations/supabase/client');
+                    const { data: captureData, error } = await supabase.functions.invoke('capture-paypal-order', {
+                      body: {
+                        orderID: data.orderID,
+                      },
+                    });
+
+                    if (error || !captureData) {
+                      throw new Error('Failed to process payment');
+                    }
+
+                    if (mounted) {
+                      onSuccess();
+                    }
+                  } catch (err) {
+                    console.error('Error capturing payment:', err);
+                    if (mounted) {
+                      setIsProcessing(false);
+                      onError('Payment processing failed. Please try again.');
+                    }
+                  }
+                },
+                onError: (err: any) => {
+                  console.error('PayPal card error:', err);
+                  if (mounted) {
+                    setIsProcessing(false);
+                    onError('Payment failed. Please check your card details and try again.');
+                  }
+                },
+                style: {
+                  'input': {
+                    'font-size': '16px',
+                    'font-family': 'inherit',
+                    'color': 'inherit'
+                  }
+                }
               });
 
-              if (error || !data?.id) {
-                throw new Error('Failed to create order');
-              }
+              if (cardFields.isEligible()) {
+                const numberField = cardFields.NumberField();
+                const expiryField = cardFields.ExpiryField();
+                const cvvField = cardFields.CVVField();
+                const nameField = cardFields.NameField();
 
-              return data.id;
+                numberField.render(cardNumberRef.current!);
+                expiryField.render(cardExpiryRef.current!);
+                cvvField.render(cardCvvRef.current!);
+                nameField.render(cardNameRef.current!);
+
+                cardFieldRef.current = cardFields;
+                setIsLoading(false);
+              } else {
+                if (mounted) {
+                  setIsLoading(false);
+                  onError('Card payment is not available in your region. Please try another payment method.');
+                }
+              }
             } catch (err) {
-              console.error('Error creating order:', err);
-              throw err;
-            }
-          },
-          onApprove: async (data: any) => {
-            try {
-              setIsProcessing(true);
-              const { supabase } = await import('@/integrations/supabase/client');
-              const { data: captureData, error } = await supabase.functions.invoke('capture-paypal-order', {
-                body: {
-                  orderID: data.orderID,
-                },
-              });
-
-              if (error || !captureData) {
-                throw new Error('Failed to process payment');
+              console.error('Error initializing card fields:', err);
+              if (mounted) {
+                setIsLoading(false);
+                onError('Failed to initialize payment form. Please refresh and try again.');
               }
-
-              console.log('Payment successful:', captureData);
-              onSuccess();
-            } catch (err) {
-              console.error('Error capturing payment:', err);
-              setIsProcessing(false);
-              onError('Payment processing failed. Please try again.');
             }
-          },
-          onError: (err: any) => {
-            console.error('PayPal card error:', err);
-            setIsProcessing(false);
-            onError('Payment failed. Please check your card details and try again.');
-          },
-        });
+          }, 100);
+        };
 
-        if (cardField.isEligible()) {
-          cardField.NumberField({
-            inputEvents: {
-              onChange: () => {},
-            },
-          }).render(cardNumberRef.current);
-
-          cardField.ExpiryField().render(cardExpiryRef.current);
-          cardField.CVVField().render(cardCvvRef.current);
-          cardField.NameField().render(cardNameRef.current);
-
-          const submitButton = document.getElementById('paypal-card-submit');
-          if (submitButton) {
-            submitButton.addEventListener('click', async () => {
-              if (isProcessing) return;
-              
-              setIsProcessing(true);
-              try {
-                await cardField.submit();
-              } catch (err) {
-                console.error('Submit error:', err);
-                setIsProcessing(false);
-                toast({
-                  title: "Payment Error",
-                  description: "Please check your card details and try again.",
-                  variant: "destructive",
-                });
-              }
-            });
+        script.onerror = () => {
+          if (mounted) {
+            setIsLoading(false);
+            onError('Failed to load payment system. Please refresh and try again.');
           }
-        } else {
-          onError('Card payment is not available. Please try another payment method.');
+        };
+
+        document.body.appendChild(script);
+      } catch (err) {
+        console.error('Error loading PayPal SDK:', err);
+        if (mounted) {
+          setIsLoading(false);
+          onError('Failed to initialize payment. Please refresh and try again.');
         }
       }
     };
 
-    script.onerror = () => {
-      onError('Failed to load payment system. Please refresh and try again.');
-    };
-
-    document.body.appendChild(script);
+    loadPayPalSDK();
 
     return () => {
-      if (document.body.contains(script)) {
+      mounted = false;
+      if (script && document.body.contains(script)) {
         document.body.removeChild(script);
       }
     };
-  }, [clientId, amount, orderId, onSuccess, onError, toast, isProcessing]);
+  }, [clientId, amount, orderId, onSuccess, onError]);
+
+  const handleSubmit = async () => {
+    if (isProcessing || !cardFieldRef.current) return;
+    
+    setIsProcessing(true);
+    try {
+      await cardFieldRef.current.submit();
+    } catch (err) {
+      console.error('Submit error:', err);
+      setIsProcessing(false);
+      toast({
+        title: "Payment Error",
+        description: "Please check your card details and try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div className="space-y-4">
       <div className="text-center p-4 bg-blue-50 dark:bg-blue-950 rounded-lg mb-4">
         <p className="text-sm text-blue-900 dark:text-blue-100">
-          Complete your payment with PayPal
+          {isLoading ? 'Loading payment form...' : 'Complete your payment with PayPal'}
         </p>
       </div>
 
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-2">Card Number</label>
-          <div ref={cardNumberRef} className="border rounded-md p-3 bg-background"></div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-2">Cardholder Name</label>
-          <div ref={cardNameRef} className="border rounded-md p-3 bg-background"></div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">Expiry Date</label>
-            <div ref={cardExpiryRef} className="border rounded-md p-3 bg-background"></div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">CVV</label>
-            <div ref={cardCvvRef} className="border rounded-md p-3 bg-background"></div>
+      {isLoading ? (
+        <div className="space-y-4 animate-pulse">
+          <div className="h-12 bg-muted rounded-md"></div>
+          <div className="h-12 bg-muted rounded-md"></div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="h-12 bg-muted rounded-md"></div>
+            <div className="h-12 bg-muted rounded-md"></div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2 text-foreground">Card Number</label>
+            <div 
+              ref={cardNumberRef} 
+              className="min-h-[44px] border border-input rounded-md bg-background"
+              style={{ isolation: 'isolate' }}
+            ></div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2 text-foreground">Cardholder Name</label>
+            <div 
+              ref={cardNameRef} 
+              className="min-h-[44px] border border-input rounded-md bg-background"
+              style={{ isolation: 'isolate' }}
+            ></div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-2 text-foreground">Expiry Date</label>
+              <div 
+                ref={cardExpiryRef} 
+                className="min-h-[44px] border border-input rounded-md bg-background"
+                style={{ isolation: 'isolate' }}
+              ></div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2 text-foreground">CVV</label>
+              <div 
+                ref={cardCvvRef} 
+                className="min-h-[44px] border border-input rounded-md bg-background"
+                style={{ isolation: 'isolate' }}
+              ></div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="flex gap-3 pt-4">
         <button
           type="button"
           onClick={onCancel}
-          disabled={isProcessing}
-          className="flex-1 px-4 py-3 border rounded-md hover:bg-muted transition-colors disabled:opacity-50"
+          disabled={isProcessing || isLoading}
+          className="flex-1 px-4 py-3 border border-input rounded-md hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Cancel
         </button>
         <button
-          id="paypal-card-submit"
           type="button"
-          disabled={isProcessing}
-          className="flex-1 px-4 py-3 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50"
+          onClick={handleSubmit}
+          disabled={isProcessing || isLoading}
+          className="flex-1 px-4 py-3 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isProcessing ? 'Processing...' : `Pay £${amount.toFixed(2)}`}
         </button>
