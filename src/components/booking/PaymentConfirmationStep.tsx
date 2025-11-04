@@ -45,16 +45,49 @@ export function PaymentConfirmationStep({
   const handleConfirm = async () => {
     setIsConfirming(true);
     
-    // Simulate booking process
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsConfirming(false);
-    setIsConfirmed(true);
-    
-    // Auto-close after showing confirmation
-    setTimeout(() => {
-      onConfirm();
-    }, 3000);
+    try {
+      // Simulate booking process
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const bookingReference = `SS${Date.now().toString().slice(-6)}`;
+      
+      // Send booking confirmation emails
+      try {
+        const { supabase } = await import('@/integrations/supabase/client');
+        await supabase.functions.invoke('send-booking-email', {
+          body: {
+            bookingReference,
+            serviceName: service.name,
+            serviceOption: bookingData.selectedOption?.label || '',
+            serviceDuration: formatDuration(bookingData.selectedOption?.duration || 0),
+            servicePrice: formatPrice(bookingData.selectedOption?.price || 0),
+            date: bookingData.date && format(new Date(bookingData.date), 'EEEE, MMMM do, yyyy'),
+            time: bookingData.time || '',
+            stylistName: bookingData.selectedStylist?.name,
+            customerName: bookingData.customerDetails.fullName,
+            customerEmail: bookingData.customerDetails.email,
+            customerMobile: bookingData.customerDetails.mobile,
+            customerNotes: bookingData.customerDetails.notes,
+            paymentMethod,
+          },
+        });
+        console.log('Booking confirmation emails sent successfully');
+      } catch (emailError) {
+        console.error('Error sending booking emails:', emailError);
+        // Don't block booking completion if email fails
+      }
+      
+      setIsConfirming(false);
+      setIsConfirmed(true);
+      
+      // Auto-close after showing confirmation
+      setTimeout(() => {
+        onConfirm();
+      }, 3000);
+    } catch (error) {
+      console.error('Booking error:', error);
+      setIsConfirming(false);
+    }
   };
 
   if (isConfirmed) {
