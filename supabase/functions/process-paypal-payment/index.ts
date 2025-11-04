@@ -17,12 +17,19 @@ serve(async (req) => {
     const PAYPAL_CLIENT_ID = Deno.env.get('PAYPAL_CLIENT_ID');
     const PAYPAL_SECRET = Deno.env.get('PAYPAL_SECRET');
     const PAYPAL_API_BASE = 'https://api-m.paypal.com'; // Use 'https://api-m.sandbox.paypal.com' for sandbox
+    const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
+
+    console.log(`Processing PayPal payment for ${type}: ${orderId}, amount: ${amount} ${currency}`);
+    console.log('SUPABASE_URL value:', SUPABASE_URL);
+    console.log('All env vars:', Object.keys(Deno.env.toObject()).join(', '));
 
     if (!PAYPAL_CLIENT_ID || !PAYPAL_SECRET) {
       throw new Error('PayPal credentials not configured');
     }
 
-    console.log(`Processing PayPal payment for ${type}: ${orderId}, amount: ${amount} ${currency}`);
+    if (!SUPABASE_URL) {
+      throw new Error('SUPABASE_URL not configured');
+    }
 
     // Get PayPal access token
     const auth = btoa(`${PAYPAL_CLIENT_ID}:${PAYPAL_SECRET}`);
@@ -56,8 +63,8 @@ serve(async (req) => {
         },
       ],
       application_context: {
-        return_url: `${Deno.env.get('SUPABASE_URL')}/functions/v1/paypal-return`,
-        cancel_url: `${Deno.env.get('SUPABASE_URL')}/functions/v1/paypal-cancel`,
+        return_url: `${SUPABASE_URL}/functions/v1/paypal-return`,
+        cancel_url: `${SUPABASE_URL}/functions/v1/paypal-cancel`,
       },
     };
 
