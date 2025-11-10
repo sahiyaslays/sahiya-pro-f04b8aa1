@@ -24,203 +24,47 @@ export interface ServiceSubcategory {
 
 export const servicesData: ServiceCategory[] = [
   {
-    id: 'face',
-    title: 'FACE',
+    id: 'consultation-patch-test',
+    title: 'CONSULTATION/PATCH TEST',
     subcategories: [
       {
-        id: 'facials',
-        title: 'Facials',
+        id: 'consultation-services',
+        title: 'Consultation Services',
         services: [
           {
-            id: 'facial-micro-needling',
-            name: 'Facial - Micro-needling',
-            options: [{ label: '45 min', duration: 45, price: 100 }]
+            id: 'consultation',
+            name: 'Consultation',
+            options: [{ label: '15 min', duration: 15, price: 0 }]
           },
           {
-            id: 'facial-hydrafacial-luxury',
-            name: 'Facial - HydraFacial (Luxury)',
-            options: [{ label: '1h 15min', duration: 75, price: 125 }]
+            id: 'patch-test',
+            name: 'Patch Test',
+            options: [{ label: '15 min', duration: 15, price: 0 }]
           },
           {
-            id: 'facial-million-dollar',
-            name: 'Facial - Million Dollar Facial',
-            options: [{ label: '1h 15min', duration: 75, price: 125 }]
+            id: 'colour-patch-test',
+            name: 'Colour Patch Test',
+            options: [{ label: '15 min', duration: 15, price: 0 }]
           },
           {
-            id: 'facial-anti-ageing',
-            name: 'Facial - Anti-Ageing',
-            options: [{ label: '2 hours', duration: 120, price: 220 }]
+            id: 'hair-extensions-consultation',
+            name: 'Hair Extensions Consultation',
+            options: [{ label: 'Standard', duration: 15, price: 0 }]
           },
           {
-            id: 'facial-dermalux-led',
-            name: 'Facial - Dermalux LED Light Therapy',
-            options: [{ label: '20 min', duration: 20, price: 25 }]
+            id: 'colour-correction-consultation',
+            name: 'Colour Correction Consultation',
+            options: [{ label: 'Standard', duration: 30, price: 0 }]
           },
           {
-            id: 'facial-express-cleanse',
-            name: 'Facial - Express Cleanse',
-            options: [{ label: '30 min', duration: 30, price: 35 }]
+            id: 'keratin-smoothing-consultation',
+            name: 'Keratin Smoothing Consultation',
+            options: [{ label: 'Standard', duration: 30, price: 0 }]
           },
           {
-            id: 'facial-caci-jowl-lift',
-            name: 'Facial - CACI Jowl Lift',
-            options: [{ label: '45 min', duration: 45, price: 40 }]
-          },
-          {
-            id: 'facial-express-dermaplane',
-            name: 'Facial - Express Dermaplane',
-            options: [{ label: '30 min', duration: 30, price: 45 }]
-          },
-          {
-            id: 'facial-mini-eco',
-            name: 'Facial - Mini ECO',
-            options: [{ label: '30 min', duration: 30, price: 45 }]
-          },
-          {
-            id: 'facial-mini-hydrating',
-            name: 'Facial - Mini Hydrating',
-            options: [{ label: '30 min', duration: 30, price: 45 }]
-          },
-          {
-            id: 'facial-full-eco',
-            name: 'Facial - Full ECO',
-            options: [{ label: '1 hour', duration: 60, price: 75 }]
-          },
-          {
-            id: 'facial-full-hydrating',
-            name: 'Facial - Full Hydrating',
-            options: [{ label: '1 hour', duration: 60, price: 75 }]
-          },
-          {
-            id: 'dermaplaning-express',
-            name: 'Dermaplaning - Express',
-            options: [{ label: '30 min', duration: 30, price: 45 }]
-          },
-          {
-            id: 'dermaplaning-full',
-            name: 'Dermaplaning - Full',
-            options: [{ label: '1 hour', duration: 60, price: 75 }]
-          }
-        ]
-      },
-      {
-        id: 'makeup',
-        title: 'Makeup',
-        services: [
-          {
-            id: 'makeup-soft-glam',
-            name: 'Makeup - Soft Glam',
-            options: [{ label: '1 hour', duration: 60, price: 45 }]
-          },
-          {
-            id: 'makeup-full-glam',
-            name: 'Makeup - Full Glam',
-            options: [{ label: '1h 15min', duration: 75, price: 60 }]
-          },
-          {
-            id: 'makeup-bridal-trial',
-            name: 'Makeup - Bridal Trial',
-            options: [{ label: '1h 30min', duration: 90, price: 70 }]
-          },
-          {
-            id: 'makeup-bridal-event-day',
-            name: 'Makeup - Bridal (Event Day)',
-            options: [{ label: '2 hours', duration: 120, price: 120 }]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'brows-lashes',
-    title: 'BROWS & LASHES',
-    subcategories: [
-      {
-        id: 'brows',
-        title: 'Brows',
-        services: [
-          {
-            id: 'brows-lamination',
-            name: 'Brows - Lamination',
-            options: [{ label: '45 min', duration: 45, price: 35 }]
-          },
-          {
-            id: 'brows-tint',
-            name: 'Brows - Tint',
-            options: [{ label: '15 min', duration: 15, price: 10 }]
-          },
-          {
-            id: 'brows-shape-wax-thread',
-            name: 'Brows - Shape (Wax/Thread)',
-            options: [{ label: '15 min', duration: 15, price: 10 }]
-          },
-          {
-            id: 'brows-shape-tint',
-            name: 'Brows - Shape & Tint',
-            options: [{ label: '25 min', duration: 25, price: 18 }]
-          }
-        ]
-      },
-      {
-        id: 'lashes',
-        title: 'Lashes',
-        services: [
-          {
-            id: 'lashes-classic',
-            name: 'Lashes - Classic',
-            options: [{ label: '1h 30min', duration: 90, price: 45 }]
-          },
-          {
-            id: 'lashes-hybrid',
-            name: 'Lashes - Hybrid',
-            options: [{ label: '1h 45min', duration: 105, price: 55 }]
-          },
-          {
-            id: 'lashes-volume',
-            name: 'Lashes - Volume',
-            options: [{ label: '2 hours', duration: 120, price: 65 }]
-          },
-          {
-            id: 'lashes-mega-volume',
-            name: 'Lashes - Mega Volume',
-            options: [{ label: '2h 15min', duration: 135, price: 75 }]
-          },
-          {
-            id: 'lashes-removal',
-            name: 'Lashes - Removal',
-            options: [{ label: '20 min', duration: 20, price: 15 }]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'makeup-category',
-    title: 'MAKEUP',
-    subcategories: [
-      {
-        id: 'makeup-services',
-        title: 'Makeup Services',
-        services: [
-          {
-            id: 'makeup-soft-glam',
-            name: 'Makeup - Soft Glam',
-            options: [{ label: '1 hour', duration: 60, price: 45 }]
-          },
-          {
-            id: 'makeup-full-glam',
-            name: 'Makeup - Full Glam',
-            options: [{ label: '1h 15min', duration: 75, price: 60 }]
-          },
-          {
-            id: 'makeup-bridal-trial',
-            name: 'Makeup - Bridal Trial',
-            options: [{ label: '1h 30min', duration: 90, price: 70 }]
-          },
-          {
-            id: 'makeup-bridal-event-day',
-            name: 'Makeup - Bridal (Event Day)',
-            options: [{ label: '2 hours', duration: 120, price: 120 }]
+            id: 'men-consultation',
+            name: 'Men - Consultation',
+            options: [{ label: 'Standard', duration: 15, price: 0 }]
           }
         ]
       }
@@ -310,17 +154,6 @@ export const servicesData: ServiceCategory[] = [
               { label: 'Medium', duration: 35, price: 25 },
               { label: 'Long', duration: 40, price: 30 }
             ]
-          }
-        ]
-      },
-      {
-        id: 'hair-extensions',
-        title: 'Hair Extensions',
-        services: [
-          {
-            id: 'hair-extensions-consultation',
-            name: 'Hair Extensions Consultation',
-            options: [{ label: 'Standard', duration: 15, price: 0 }]
           }
         ]
       },
@@ -456,16 +289,6 @@ export const servicesData: ServiceCategory[] = [
             ]
           },
           {
-            id: 'colour-correction-consultation',
-            name: 'Colour Correction (Consultation)',
-            options: [{ label: 'Standard', duration: 30, price: 0 }]
-          },
-          {
-            id: 'colour-patch-test',
-            name: 'Colour Patch Test',
-            options: [{ label: 'Standard', duration: 15, price: 0 }]
-          },
-          {
             id: 'bleach-bath',
             name: 'Bleach Bath',
             options: [{ label: 'Standard', duration: 60, price: 60 }]
@@ -493,11 +316,6 @@ export const servicesData: ServiceCategory[] = [
               { label: 'Medium', duration: 45, price: 30 },
               { label: 'Long', duration: 60, price: 35 }
             ]
-          },
-          {
-            id: 'keratin-smoothing-consultation',
-            name: 'Keratin Smoothing (Consultation)',
-            options: [{ label: 'Standard', duration: 30, price: 0 }]
           },
           {
             id: 'scalp-treatment',
@@ -717,22 +535,151 @@ export const servicesData: ServiceCategory[] = [
               { label: 'Medium Hair', duration: 75, price: 75 },
               { label: 'Short Hair', duration: 60, price: 65 }
             ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'nails',
+    title: 'NAILS',
+    subcategories: [
+      {
+        id: 'manicures-pedicures',
+        title: 'Hands & Feet',
+        services: [
+          {
+            id: 'hands-manicure-classic',
+            name: 'Hands - Manicure (Classic)',
+            options: [{ label: '45 min', duration: 45, price: 20 }]
           },
           {
-            id: 'men-consultation',
-            name: 'Men - Consultation',
-            options: [{ label: 'Standard', duration: 15, price: 0 }]
+            id: 'hands-gel-manicure',
+            name: 'Hands - Gel Manicure',
+            options: [{ label: '1 hour', duration: 60, price: 30 }]
+          },
+          {
+            id: 'feet-pedicure-classic',
+            name: 'Feet - Pedicure (Classic)',
+            options: [{ label: '1 hour', duration: 60, price: 30 }]
+          },
+          {
+            id: 'feet-gel-pedicure',
+            name: 'Feet - Gel Pedicure',
+            options: [{ label: '1 hour', duration: 60, price: 35 }]
           }
         ]
       },
       {
-        id: 'patch-test',
-        title: 'Patch Test',
+        id: 'nail-extensions-enhancements',
+        title: 'Extensions & Enhancements',
         services: [
           {
-            id: 'patch-test',
-            name: 'Patch Test',
-            options: [{ label: 'Standard', duration: 15, price: 0 }]
+            id: 'nails-biab-infill',
+            name: 'Nails - BIAB Infill',
+            options: [{ label: '1 hour', duration: 60, price: 35 }]
+          },
+          {
+            id: 'nails-biab-overlay',
+            name: 'Nails - BIAB Overlay',
+            options: [{ label: '1 hour', duration: 60, price: 35 }]
+          },
+          {
+            id: 'nails-acrylic-full-set',
+            name: 'Nails - Acrylic Full Set',
+            options: [{ label: '1h 15min', duration: 75, price: 45 }]
+          },
+          {
+            id: 'nails-acrylic-infill',
+            name: 'Nails - Acrylic Infill',
+            options: [{ label: '1 hour', duration: 60, price: 35 }]
+          },
+          {
+            id: 'nails-removal',
+            name: 'Nails - Removal',
+            options: [{ label: '20 min', duration: 20, price: 10 }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'facials',
+    title: 'FACIALS',
+    subcategories: [
+      {
+        id: 'facial-treatments',
+        title: 'Facial Treatments',
+        services: [
+          {
+            id: 'facial-micro-needling',
+            name: 'Facial - Micro-needling',
+            options: [{ label: '45 min', duration: 45, price: 100 }]
+          },
+          {
+            id: 'facial-hydrafacial-luxury',
+            name: 'Facial - HydraFacial (Luxury)',
+            options: [{ label: '1h 15min', duration: 75, price: 125 }]
+          },
+          {
+            id: 'facial-million-dollar',
+            name: 'Facial - Million Dollar Facial',
+            options: [{ label: '1h 15min', duration: 75, price: 125 }]
+          },
+          {
+            id: 'facial-anti-ageing',
+            name: 'Facial - Anti-Ageing',
+            options: [{ label: '2 hours', duration: 120, price: 220 }]
+          },
+          {
+            id: 'facial-dermalux-led',
+            name: 'Facial - Dermalux LED Light Therapy',
+            options: [{ label: '20 min', duration: 20, price: 25 }]
+          },
+          {
+            id: 'facial-express-cleanse',
+            name: 'Facial - Express Cleanse',
+            options: [{ label: '30 min', duration: 30, price: 35 }]
+          },
+          {
+            id: 'facial-caci-jowl-lift',
+            name: 'Facial - CACI Jowl Lift',
+            options: [{ label: '45 min', duration: 45, price: 40 }]
+          },
+          {
+            id: 'facial-express-dermaplane',
+            name: 'Facial - Express Dermaplane',
+            options: [{ label: '30 min', duration: 30, price: 45 }]
+          },
+          {
+            id: 'facial-mini-eco',
+            name: 'Facial - Mini ECO',
+            options: [{ label: '30 min', duration: 30, price: 45 }]
+          },
+          {
+            id: 'facial-mini-hydrating',
+            name: 'Facial - Mini Hydrating',
+            options: [{ label: '30 min', duration: 30, price: 45 }]
+          },
+          {
+            id: 'facial-full-eco',
+            name: 'Facial - Full ECO',
+            options: [{ label: '1 hour', duration: 60, price: 75 }]
+          },
+          {
+            id: 'facial-full-hydrating',
+            name: 'Facial - Full Hydrating',
+            options: [{ label: '1 hour', duration: 60, price: 75 }]
+          },
+          {
+            id: 'dermaplaning-express',
+            name: 'Dermaplaning - Express',
+            options: [{ label: '30 min', duration: 30, price: 45 }]
+          },
+          {
+            id: 'dermaplaning-full',
+            name: 'Dermaplaning - Full',
+            options: [{ label: '1 hour', duration: 60, price: 75 }]
           }
         ]
       }
@@ -740,7 +687,7 @@ export const servicesData: ServiceCategory[] = [
   },
   {
     id: 'waxing-threading',
-    title: 'WAXING & THREADING',
+    title: 'WAXING AND THREADING',
     subcategories: [
       {
         id: 'facial-waxing',
@@ -823,106 +770,95 @@ export const servicesData: ServiceCategory[] = [
     ]
   },
   {
-    id: 'body',
-    title: 'BODY',
+    id: 'brows-lashes',
+    title: 'BROWS AND LASHES',
     subcategories: [
       {
-        id: 'massage',
-        title: 'Massage',
+        id: 'brows',
+        title: 'Brows',
         services: [
           {
-            id: 'massage-back-neck-shoulders',
-            name: 'Massage - Back, Neck & Shoulders',
-            options: [{ label: '30 min', duration: 30, price: 35 }]
+            id: 'brows-lamination',
+            name: 'Brows - Lamination',
+            options: [{ label: '45 min', duration: 45, price: 35 }]
           },
           {
-            id: 'massage-full-body',
-            name: 'Massage - Full Body',
-            options: [{ label: '1 hour', duration: 60, price: 55 }]
+            id: 'brows-tint',
+            name: 'Brows - Tint',
+            options: [{ label: '15 min', duration: 15, price: 10 }]
           },
           {
-            id: 'massage-full-body-90-min',
-            name: 'Massage - Full Body (90 min)',
-            options: [{ label: '1h 30min', duration: 90, price: 75 }]
+            id: 'brows-shape-wax-thread',
+            name: 'Brows - Shape (Wax/Thread)',
+            options: [{ label: '15 min', duration: 15, price: 10 }]
+          },
+          {
+            id: 'brows-shape-tint',
+            name: 'Brows - Shape & Tint',
+            options: [{ label: '25 min', duration: 25, price: 18 }]
           }
         ]
       },
       {
-        id: 'body-treatments',
-        title: 'Treatments',
+        id: 'lashes',
+        title: 'Lashes',
         services: [
           {
-            id: 'body-scrub-and-polish',
-            name: 'Body - Scrub & Polish',
-            options: [{ label: '45 min', duration: 45, price: 40 }]
+            id: 'lashes-classic',
+            name: 'Lashes - Classic',
+            options: [{ label: '1h 30min', duration: 90, price: 45 }]
           },
           {
-            id: 'body-slimming-wrap',
-            name: 'Body - Slimming Wrap',
-            options: [{ label: '1 hour', duration: 60, price: 60 }]
+            id: 'lashes-hybrid',
+            name: 'Lashes - Hybrid',
+            options: [{ label: '1h 45min', duration: 105, price: 55 }]
+          },
+          {
+            id: 'lashes-volume',
+            name: 'Lashes - Volume',
+            options: [{ label: '2 hours', duration: 120, price: 65 }]
+          },
+          {
+            id: 'lashes-mega-volume',
+            name: 'Lashes - Mega Volume',
+            options: [{ label: '2h 15min', duration: 135, price: 75 }]
+          },
+          {
+            id: 'lashes-removal',
+            name: 'Lashes - Removal',
+            options: [{ label: '20 min', duration: 20, price: 15 }]
           }
         ]
       }
     ]
   },
   {
-    id: 'nails',
-    title: 'NAILS',
+    id: 'makeup',
+    title: 'MAKE UP',
     subcategories: [
       {
-        id: 'manicures-pedicures',
-        title: 'Hands & Feet',
+        id: 'makeup-services',
+        title: 'Makeup Services',
         services: [
           {
-            id: 'hands-manicure-classic',
-            name: 'Hands - Manicure (Classic)',
-            options: [{ label: '45 min', duration: 45, price: 20 }]
+            id: 'makeup-soft-glam',
+            name: 'Makeup - Soft Glam',
+            options: [{ label: '1 hour', duration: 60, price: 45 }]
           },
           {
-            id: 'hands-gel-manicure',
-            name: 'Hands - Gel Manicure',
-            options: [{ label: '1 hour', duration: 60, price: 30 }]
+            id: 'makeup-full-glam',
+            name: 'Makeup - Full Glam',
+            options: [{ label: '1h 15min', duration: 75, price: 60 }]
           },
           {
-            id: 'feet-pedicure-classic',
-            name: 'Feet - Pedicure (Classic)',
-            options: [{ label: '1 hour', duration: 60, price: 30 }]
+            id: 'makeup-bridal-trial',
+            name: 'Makeup - Bridal Trial',
+            options: [{ label: '1h 30min', duration: 90, price: 70 }]
           },
           {
-            id: 'feet-gel-pedicure',
-            name: 'Feet - Gel Pedicure',
-            options: [{ label: '1 hour', duration: 60, price: 35 }]
-          }
-        ]
-      },
-      {
-        id: 'nail-extensions-enhancements',
-        title: 'Extensions & Enhancements',
-        services: [
-          {
-            id: 'nails-biab-infill',
-            name: 'Nails - BIAB Infill',
-            options: [{ label: '1 hour', duration: 60, price: 35 }]
-          },
-          {
-            id: 'nails-biab-overlay',
-            name: 'Nails - BIAB Overlay',
-            options: [{ label: '1 hour', duration: 60, price: 35 }]
-          },
-          {
-            id: 'nails-acrylic-full-set',
-            name: 'Nails - Acrylic Full Set',
-            options: [{ label: '1h 15min', duration: 75, price: 45 }]
-          },
-          {
-            id: 'nails-acrylic-infill',
-            name: 'Nails - Acrylic Infill',
-            options: [{ label: '1 hour', duration: 60, price: 35 }]
-          },
-          {
-            id: 'nails-removal',
-            name: 'Nails - Removal',
-            options: [{ label: '20 min', duration: 20, price: 10 }]
+            id: 'makeup-bridal-event-day',
+            name: 'Makeup - Bridal (Event Day)',
+            options: [{ label: '2 hours', duration: 120, price: 120 }]
           }
         ]
       }
@@ -968,17 +904,43 @@ export const servicesData: ServiceCategory[] = [
     ]
   },
   {
-    id: 'consultation',
-    title: 'CONSULTATION',
+    id: 'body',
+    title: 'BODY',
     subcategories: [
       {
-        id: 'consultation-service',
-        title: 'Consultation',
+        id: 'massage',
+        title: 'Massage',
         services: [
           {
-            id: 'consultation',
-            name: 'Consultation',
-            options: [{ label: '15 min', duration: 15, price: 0 }]
+            id: 'massage-back-neck-shoulders',
+            name: 'Massage - Back, Neck & Shoulders',
+            options: [{ label: '30 min', duration: 30, price: 35 }]
+          },
+          {
+            id: 'massage-full-body',
+            name: 'Massage - Full Body',
+            options: [{ label: '1 hour', duration: 60, price: 55 }]
+          },
+          {
+            id: 'massage-full-body-90-min',
+            name: 'Massage - Full Body (90 min)',
+            options: [{ label: '1h 30min', duration: 90, price: 75 }]
+          }
+        ]
+      },
+      {
+        id: 'body-treatments',
+        title: 'Treatments',
+        services: [
+          {
+            id: 'body-scrub-and-polish',
+            name: 'Body - Scrub & Polish',
+            options: [{ label: '45 min', duration: 45, price: 40 }]
+          },
+          {
+            id: 'body-slimming-wrap',
+            name: 'Body - Slimming Wrap',
+            options: [{ label: '1 hour', duration: 60, price: 60 }]
           }
         ]
       }
