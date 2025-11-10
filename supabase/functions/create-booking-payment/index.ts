@@ -76,7 +76,15 @@ serve(async (req) => {
       throw new Error("Email is required for booking");
     }
 
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
+    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
+    if (!stripeKey) {
+      console.error("STRIPE_SECRET_KEY not found");
+      throw new Error("Stripe configuration error");
+    }
+    
+    console.log("Stripe key exists:", stripeKey.substring(0, 7) + "...");
+    
+    const stripe = new Stripe(stripeKey, {
       apiVersion: "2025-08-27.basil",
     });
 
@@ -163,7 +171,9 @@ serve(async (req) => {
     });
   } catch (error: any) {
     console.error("Booking payment error:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    const errorMessage = error.message || "Payment processing failed";
+    console.error("Error details:", JSON.stringify(error));
+    return new Response(JSON.stringify({ error: errorMessage }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 500,
     });
