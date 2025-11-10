@@ -10,7 +10,7 @@ export interface Product {
   id: string;
   slug: string;
   title: string;
-  category: "Bundles" | "Closures" | "Frontals" | "Accessories" | "Extensions" | "Weft Installation";
+  category: "Bundles" | "Closures" | "Frontals" | "Accessories" | "Extensions" | "Weft Installation" | "Colour Theory";
   short_description: string;
   images: string[];
   variants: Variant[];
