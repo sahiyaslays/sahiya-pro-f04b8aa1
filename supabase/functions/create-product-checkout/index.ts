@@ -1,30 +1,37 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-interface CheckoutRequest {
-  items: Array<{
-    id: string;
-    name: string;
-    price: number;
-    quantity: number;
-    image?: string;
-  }>;
-  shippingAddress: {
-    fullName: string;
-    addressLine1: string;
-    addressLine2?: string;
-    city: string;
-    postcode: string;
-    phone: string;
-  };
-  guestEmail?: string;
-}
+const ItemSchema = z.object({
+  id: z.string().max(50),
+  name: z.string().min(1).max(200),
+  price: z.number().positive().max(100000),
+  quantity: z.number().int().positive().max(100),
+  image: z.string().url().max(500).optional(),
+});
+
+const ShippingAddressSchema = z.object({
+  fullName: z.string().min(1).max(100),
+  addressLine1: z.string().min(1).max(200),
+  addressLine2: z.string().max(200).optional(),
+  city: z.string().min(1).max(100),
+  postcode: z.string().min(1).max(20),
+  phone: z.string().min(1).max(20),
+});
+
+const CheckoutRequestSchema = z.object({
+  items: z.array(ItemSchema).min(1).max(50),
+  shippingAddress: ShippingAddressSchema,
+  guestEmail: z.string().email().max(255).optional(),
+});
+
+type CheckoutRequest = z.infer<typeof CheckoutRequestSchema>;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -49,7 +56,18 @@ serve(async (req) => {
       customerEmail = user?.email || "";
     }
 
-    const { items, shippingAddress, guestEmail }: CheckoutRequest = await req.json();
+    const rawData = await req.json();
+    
+    // Validate input data
+    const validationResult = CheckoutRequestSchema.safeParse(rawData);
+    if (!validationResult.success) {
+      return new Response(
+        JSON.stringify({ error: "Invalid input data", details: validationResult.error.issues }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
+      );
+    }
+    
+    const { items, shippingAddress, guestEmail } = validationResult.data;
 
     // Use guest email if not authenticated
     if (!customerEmail && guestEmail) {

@@ -1,30 +1,35 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-interface BookingRequest {
-  services: Array<{
-    id: string;
-    name: string;
-    price: number;
-    duration: number;
-  }>;
-  stylistId?: string;
-  bookingDate: string;
-  bookingTime: string;
-  totalDuration: number;
-  totalAmount: number;
-  paymentType: "deposit" | "full";
-  guestName?: string;
-  guestEmail?: string;
-  guestPhone?: string;
-  specialRequests?: string;
-}
+const ServiceSchema = z.object({
+  id: z.string().max(50),
+  name: z.string().min(1).max(200),
+  price: z.number().positive().max(10000),
+  duration: z.number().positive().max(600),
+});
+
+const BookingRequestSchema = z.object({
+  services: z.array(ServiceSchema).min(1).max(10),
+  stylistId: z.string().max(50).optional(),
+  bookingDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  bookingTime: z.string().regex(/^\d{2}:\d{2}$/),
+  totalDuration: z.number().positive().max(600),
+  totalAmount: z.number().positive().max(50000),
+  paymentType: z.enum(["deposit", "full"]),
+  guestName: z.string().min(1).max(100).optional(),
+  guestEmail: z.string().email().max(255).optional(),
+  guestPhone: z.string().min(1).max(20).optional(),
+  specialRequests: z.string().max(1000).optional(),
+});
+
+type BookingRequest = z.infer<typeof BookingRequestSchema>;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -49,7 +54,18 @@ serve(async (req) => {
       customerEmail = user?.email || "";
     }
 
-    const bookingData: BookingRequest = await req.json();
+    const rawData = await req.json();
+    
+    // Validate input data
+    const validationResult = BookingRequestSchema.safeParse(rawData);
+    if (!validationResult.success) {
+      return new Response(
+        JSON.stringify({ error: "Invalid input data", details: validationResult.error.issues }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
+      );
+    }
+    
+    const bookingData = validationResult.data;
 
     // Use guest email if not authenticated
     if (!customerEmail && bookingData.guestEmail) {
@@ -71,6 +87,12 @@ serve(async (req) => {
       customerId = customers.data[0].id;
     }
 
+    // Recalculate total amount server-side (never trust client)
+    const calculatedTotal = bookingData.services.reduce((sum, service) => sum + service.price, 0);
+    if (Math.abs(calculatedTotal - bookingData.totalAmount) > 0.01) {
+      throw new Error("Total amount mismatch");
+    }
+    
     // Calculate payment amount
     const paymentAmount = bookingData.paymentType === "deposit" ? 20 : bookingData.totalAmount;
 
