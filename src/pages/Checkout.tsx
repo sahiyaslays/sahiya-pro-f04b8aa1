@@ -45,7 +45,7 @@ export default function Checkout() {
     city: '',
     postcode: '',
     country: '',
-    paymentMethod: 'cash-on-delivery',
+    paymentMethod: 'card',
     agreeToTerms: false,
   });
 
@@ -143,20 +143,55 @@ export default function Checkout() {
       return;
     }
 
-    // For PayPal, show the payment buttons
-    if (formData.paymentMethod === 'paypal') {
-      const orderId = `SS${Date.now()}`;
-      setCurrentOrderId(orderId);
-      setShowPayPal(true);
-      return;
-    }
-
-    // For salon payment, process immediately
     setIsProcessing(true);
 
     try {
-      const orderId = `SS${Date.now()}`;
       const { supabase } = await import('@/integrations/supabase/client');
+
+      // For card payment, use Stripe Checkout
+      if (formData.paymentMethod === 'card') {
+        const { data, error } = await supabase.functions.invoke('create-product-checkout', {
+          body: {
+            items: cart.items.map(item => ({
+              id: item.product.id,
+              name: item.product.title,
+              price: item.variant.sale_price || item.variant.price,
+              quantity: item.quantity,
+              image: item.product.images[0],
+            })),
+            shippingAddress: {
+              fullName: `${formData.firstName} ${formData.lastName}`,
+              addressLine1: formData.address,
+              city: formData.city,
+              postcode: formData.postcode,
+              phone: formData.phone,
+            },
+            guestEmail: formData.email,
+          },
+        });
+
+        if (error) throw error;
+        
+        if (data?.url) {
+          // Redirect to Stripe Checkout
+          window.location.href = data.url;
+        } else {
+          throw new Error('No checkout URL received');
+        }
+        return;
+      }
+
+      // For PayPal, show the payment buttons
+      if (formData.paymentMethod === 'paypal') {
+        const orderId = `SS${Date.now()}`;
+        setCurrentOrderId(orderId);
+        setShowPayPal(true);
+        setIsProcessing(false);
+        return;
+      }
+
+      // For cash on delivery, process immediately
+      const orderId = `SS${Date.now()}`;
       
       const orderData = { 
         ...formData, 
@@ -202,8 +237,9 @@ export default function Checkout() {
         description: `Your order #${orderId} has been confirmed.`,
       });
     } catch (error) {
+      console.error('Checkout error:', error);
       toast({
-        title: "Order failed",
+        title: "Payment failed",
         description: "Please try again or contact support.",
         variant: "destructive",
       });
@@ -367,13 +403,35 @@ export default function Checkout() {
                       <CardContent>
                         <RadioGroup
                           value={formData.paymentMethod}
-                          onValueChange={(value: 'paypal' | 'cash-on-delivery') => updateFormData('paymentMethod', value)}
+                          onValueChange={(value: 'card' | 'paypal' | 'cash-on-delivery') => updateFormData('paymentMethod', value)}
                         >
+                          <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                            <RadioGroupItem value="card" id="card" />
+                            <Label htmlFor="card" className="flex-1 cursor-pointer flex items-center gap-2">
+                              <CreditCard className="w-4 h-4" />
+                              Credit / Debit Card
+                            </Label>
+                          </div>
+                          
                           <div className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
                             <RadioGroupItem value="cash-on-delivery" id="cash-on-delivery" />
                             <Label htmlFor="cash-on-delivery" className="flex-1 cursor-pointer">Cash on Delivery</Label>
                           </div>
                         </RadioGroup>
+                        
+                        {formData.paymentMethod === 'card' && (
+                          <div className="mt-4 p-4 bg-muted rounded-lg">
+                            <div className="flex items-start gap-2">
+                              <Shield className="w-4 h-4 mt-0.5 text-primary" />
+                              <div>
+                                <p className="text-sm font-medium mb-1">Secure Payment with Stripe</p>
+                                <p className="text-sm text-muted-foreground">
+                                  You'll be redirected to our secure payment page to complete your purchase.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                         
                         {formData.paymentMethod === 'cash-on-delivery' && (
                           <div className="mt-4 p-4 bg-muted rounded-lg">
@@ -492,7 +550,11 @@ export default function Checkout() {
                             className="w-full py-3 text-lg"
                             disabled={!isFormValid() || isProcessing}
                           >
-                            {isProcessing ? 'Processing...' : formData.paymentMethod === 'paypal' ? 'Continue to Payment' : 'Place Order'}
+                            {isProcessing 
+                              ? 'Processing...' 
+                              : formData.paymentMethod === 'card' || formData.paymentMethod === 'paypal'
+                                ? 'Continue to Payment' 
+                                : 'Place Order'}
                           </Button>
                         )}
 
