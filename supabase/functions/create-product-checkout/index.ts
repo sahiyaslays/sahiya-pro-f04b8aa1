@@ -127,18 +127,33 @@ serve(async (req) => {
       throw new Error("Failed to create order");
     }
 
+    // Get origin for constructing absolute URLs
+    const origin = req.headers.get("origin") || "";
+
     // Create line items for Stripe
-    const lineItems = items.map((item) => ({
-      price_data: {
-        currency: "gbp",
-        product_data: {
-          name: item.name,
-          images: item.image ? [item.image] : [],
+    const lineItems = items.map((item) => {
+      // Convert relative image paths to absolute URLs
+      let imageUrl: string | undefined;
+      if (item.image) {
+        if (item.image.startsWith("http://") || item.image.startsWith("https://")) {
+          imageUrl = item.image;
+        } else if (origin && item.image.startsWith("/")) {
+          imageUrl = `${origin}${item.image}`;
+        }
+      }
+
+      return {
+        price_data: {
+          currency: "gbp",
+          product_data: {
+            name: item.name,
+            images: imageUrl ? [imageUrl] : [],
+          },
+          unit_amount: Math.round(item.price * 100), // Convert to pence
         },
-        unit_amount: Math.round(item.price * 100), // Convert to pence
-      },
-      quantity: item.quantity,
-    }));
+        quantity: item.quantity,
+      };
+    });
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
