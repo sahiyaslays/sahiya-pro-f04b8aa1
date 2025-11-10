@@ -37,9 +37,16 @@ serve(async (req) => {
   }
 
   try {
-    const supabaseClient = createClient(
+    // Use anon key for auth checks
+    const supabaseAuthClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_ANON_KEY") ?? ""
+    );
+
+    // Use service role key for database operations (bypasses RLS)
+    const supabaseClient = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
     // Get user if authenticated
@@ -49,7 +56,7 @@ serve(async (req) => {
 
     if (authHeader) {
       const token = authHeader.replace("Bearer ", "");
-      const { data } = await supabaseClient.auth.getUser(token);
+      const { data } = await supabaseAuthClient.auth.getUser(token);
       user = data.user;
       customerEmail = user?.email || "";
     }
