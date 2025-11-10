@@ -78,13 +78,14 @@ serve(async (req) => {
       throw new Error("Email is required for checkout");
     }
 
-    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
+    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY")?.trim();
     if (!stripeKey) {
       console.error("STRIPE_SECRET_KEY not found");
       throw new Error("Stripe configuration error");
     }
     
     console.log("Stripe key exists:", stripeKey.substring(0, 7) + "...");
+    console.log("Stripe key length:", stripeKey.length);
     
     const stripe = new Stripe(stripeKey, {
       apiVersion: "2025-08-27.basil",
