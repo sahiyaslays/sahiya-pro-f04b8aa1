@@ -35,7 +35,7 @@ export interface BookingData {
     agreesToPolicy: boolean;
     wantsReminders?: boolean;
   };
-  paymentMethod?: 'stripe-full' | 'stripe-deposit' | 'salon';
+  paymentMethod?: 'deposit' | 'full';
 }
 
 export type BookingStep = 1 | 2 | 3 | 4 | 5 | 6;

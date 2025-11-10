@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Service } from '@/data/servicesData';
 import { BookingFormData } from './ServiceBookingModal';
 import { format } from 'date-fns';
-import { CheckCircle, Calendar, Clock, User, Phone, Mail, MessageSquare, Users, CreditCard, Banknote, Building } from 'lucide-react';
+import { CheckCircle, Calendar, Clock, User, Phone, Mail, MessageSquare, Users, CreditCard } from 'lucide-react';
 
 interface PaymentConfirmationStepProps {
   service: Service;
@@ -22,8 +22,8 @@ export function PaymentConfirmationStep({
   onConfirm,
   onBack,
 }: PaymentConfirmationStepProps) {
-  const [paymentMethod, setPaymentMethod] = useState<'pay-in-salon'>('pay-in-salon');
-  const [isConfirming, setIsConfirming] = useState(false);
+  const [paymentType, setPaymentType] = useState<'deposit' | 'full'>('deposit');
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
   const formatPrice = (price: number) => {
@@ -43,57 +43,47 @@ export function PaymentConfirmationStep({
   };
 
   const handleConfirm = async () => {
-    setIsConfirming(true);
+    setIsProcessing(true);
     
     try {
-      const bookingReference = `SS${Date.now().toString().slice(-6)}`;
       const { supabase } = await import('@/integrations/supabase/client');
       
-      // Send booking confirmation emails
-      try {
-        const emailData = {
-          bookingReference,
-          serviceName: service.name,
-          serviceOption: bookingData.selectedOption?.label || '',
-          serviceDuration: formatDuration(bookingData.selectedOption?.duration || 0),
-          servicePrice: formatPrice(bookingData.selectedOption?.price || 0),
-          date: bookingData.date ? format(new Date(bookingData.date), 'EEEE, MMMM do, yyyy') : '',
-          time: bookingData.time || '',
-          stylistName: bookingData.selectedStylist?.name,
-          customerName: bookingData.customerDetails.fullName,
-          customerEmail: bookingData.customerDetails.email,
-          customerMobile: bookingData.customerDetails.mobile,
-          customerNotes: bookingData.customerDetails.notes,
-          paymentMethod,
-        };
-        
-        console.log('Sending booking email with data:', emailData);
-        
-        const { data, error } = await supabase.functions.invoke('send-booking-email', {
-          body: emailData,
-        });
-        
-        if (error) {
-          console.error('Error invoking send-booking-email:', error);
-          throw error;
-        }
-        
-        console.log('Booking confirmation emails sent successfully:', data);
-      } catch (emailError) {
-        console.error('Error sending booking emails:', emailError);
-        // Don't block booking completion if email fails
+      // Create payment with Stripe
+      const { data, error } = await supabase.functions.invoke('create-booking-payment', {
+        body: {
+          services: [{
+            id: service.id,
+            name: service.name,
+            price: bookingData.selectedOption?.price || 0,
+            duration: bookingData.selectedOption?.duration || 0,
+          }],
+          stylistId: bookingData.selectedStylist?.id,
+          bookingDate: bookingData.date ? format(new Date(bookingData.date), 'yyyy-MM-dd') : '',
+          bookingTime: bookingData.time || '',
+          totalDuration: bookingData.selectedOption?.duration || 0,
+          totalAmount: bookingData.selectedOption?.price || 0,
+          paymentType: paymentType,
+          guestName: bookingData.customerDetails.fullName,
+          guestEmail: bookingData.customerDetails.email,
+          guestPhone: bookingData.customerDetails.mobile,
+          specialRequests: bookingData.customerDetails.notes,
+        },
+      });
+      
+      if (error) {
+        console.error('Booking payment error:', error);
+        throw error;
       }
       
-      setIsConfirming(false);
-      setIsConfirmed(true);
-      
-      // Auto-close after showing confirmation
-      setTimeout(() => {
-        onConfirm();
-      }, 3000);
+      if (data?.url) {
+        // Redirect to Stripe Checkout
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL received');
+      }
     } catch (error) {
       console.error('Booking error:', error);
-      setIsConfirming(false);
+      setIsProcessing(false);
     }
   };
 
@@ -265,17 +255,32 @@ export function PaymentConfirmationStep({
           <CardTitle className="text-sm md:text-lg">Payment Method</CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
-          <RadioGroup value={paymentMethod} onValueChange={(value: 'pay-in-salon') => setPaymentMethod(value)}>
+          <RadioGroup value={paymentType} onValueChange={(value: 'deposit' | 'full') => setPaymentType(value)}>
             <div className="space-y-2 md:space-y-3">
-              <div className="flex items-center space-x-2 md:space-x-3 p-2 md:p-3 border rounded-lg">
-                <RadioGroupItem value="pay-in-salon" id="pay-in-salon" className="w-3 h-3 md:w-4 md:h-4" />
-                <Label htmlFor="pay-in-salon" className="flex-1 cursor-pointer">
+              <div className="flex items-center space-x-2 md:space-x-3 p-2 md:p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                <RadioGroupItem value="deposit" id="deposit" className="w-3 h-3 md:w-4 md:h-4" />
+                <Label htmlFor="deposit" className="flex-1 cursor-pointer">
                   <div className="flex items-center gap-2 md:gap-3">
-                    <Building className="w-3 h-3 md:w-5 md:h-5 text-primary" />
+                    <CreditCard className="w-3 h-3 md:w-5 md:h-5 text-primary" />
                     <div>
-                      <h6 className="font-medium text-xs md:text-sm">Pay at Salon</h6>
+                      <h6 className="font-medium text-xs md:text-sm">Pay £20 Deposit</h6>
                       <p className="text-xs text-muted-foreground">
-                        Pay when you arrive for your appointment
+                        Secure your booking with a deposit, pay remaining at salon
+                      </p>
+                    </div>
+                  </div>
+                </Label>
+              </div>
+              
+              <div className="flex items-center space-x-2 md:space-x-3 p-2 md:p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                <RadioGroupItem value="full" id="full" className="w-3 h-3 md:w-4 md:h-4" />
+                <Label htmlFor="full" className="flex-1 cursor-pointer">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <CreditCard className="w-3 h-3 md:w-5 md:h-5 text-primary" />
+                    <div>
+                      <h6 className="font-medium text-xs md:text-sm">Pay Full Amount</h6>
+                      <p className="text-xs text-muted-foreground">
+                        Pay {formatPrice(bookingData.selectedOption?.price || 0)} now
                       </p>
                     </div>
                   </div>
@@ -283,15 +288,22 @@ export function PaymentConfirmationStep({
               </div>
             </div>
           </RadioGroup>
+          
+          <div className="mt-3 md:mt-4 p-2 md:p-3 bg-muted/50 rounded-lg">
+            <p className="text-xs text-muted-foreground flex items-start gap-2">
+              <span className="text-primary">🔒</span>
+              <span>Secure payment powered by Stripe. You'll be redirected to complete your payment.</span>
+            </p>
+          </div>
         </CardContent>
       </Card>
 
       <div className="flex justify-between">
-        <Button variant="outline" onClick={onBack} size="sm" disabled={isConfirming} className="text-xs md:text-sm">
+        <Button variant="outline" onClick={onBack} size="sm" disabled={isProcessing} className="text-xs md:text-sm">
           Back
         </Button>
-        <Button onClick={handleConfirm} size="sm" className="px-4 md:px-8 text-xs md:text-sm" disabled={isConfirming}>
-          {isConfirming ? 'Confirming...' : 'Confirm Booking'}
+        <Button onClick={handleConfirm} size="sm" className="px-4 md:px-8 text-xs md:text-sm" disabled={isProcessing}>
+          {isProcessing ? 'Processing...' : 'Continue to Payment'}
         </Button>
       </div>
     </div>
