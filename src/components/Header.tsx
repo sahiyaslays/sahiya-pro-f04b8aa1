@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Info, Users, Heart, Scissors, Palette, Newspaper, Briefcase, Phone, Calendar, ShoppingBag, ShoppingCart } from "lucide-react";
+import { Menu, X, Info, Users, Heart, Scissors, Palette, Newspaper, Briefcase, Phone, Calendar, ShoppingBag, ShoppingCart, User, LogOut } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/hooks/useCart";
+import { useAuth } from "@/contexts/AuthContext";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const { getItemCount, openDrawer } = useCart();
+  const { user, signOut } = useAuth();
   
   // Check if current route is home page
   const isHomePage = location.pathname === "/";
@@ -137,6 +140,44 @@ const Header = () => {
                 </Badge>
               )}
             </Button>
+
+            {/* Account/Login Button */}
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className={`hover:text-primary transition-colors duration-300 ${
+                      isHomePage ? 'text-white hover:bg-white/10' : 'text-foreground hover:bg-muted'
+                    }`}
+                    aria-label="Account menu"
+                  >
+                    <User size={20} />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={signOut}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button
+                variant="ghost"
+                size="sm"
+                asChild
+                className={`hover:text-primary transition-colors duration-300 ${
+                  isHomePage ? 'text-white hover:bg-white/10' : 'text-foreground hover:bg-muted'
+                }`}
+              >
+                <Link to="/auth">
+                  <User className="mr-2 h-4 w-4" />
+                  Login
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
 

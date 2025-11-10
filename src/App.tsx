@@ -9,7 +9,9 @@ import { CartProvider } from "@/hooks/useCart";
 import { CartDrawer } from "@/components/shop/CartDrawer";
 import { EditModeProvider } from "@/contexts/EditModeContext";
 import { EditModeButton } from "@/components/EditModeButton";
+import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
+import Auth from "./pages/Auth";
 import About from "./pages/About";
 import Team from "./pages/Team";
 import Services from "./pages/Services";
@@ -45,39 +47,44 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <CartProvider>
-          <EditModeProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <ScrollToTop />
+        <BrowserRouter>
+          <AuthProvider>
+            <CartProvider>
+              <EditModeProvider>
+                <Toaster />
+                <Sonner />
+                <ScrollToTop />
               <CartDrawer />
               <EditModeButton />
               <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/team" element={<Team />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/beauty-nails" element={<BeautyNails />} />
-              <Route path="/news" element={<News />} />
-              <Route path="/career" element={<Career />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/our-customers" element={<OurCustomers />} />
-              <Route path="/booking" element={<Booking />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/product/:slug" element={<ProductDetail />} />
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
-              <Route path="/terms-and-conditions" element={<TermsConditions />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-          </EditModeProvider>
-        </CartProvider>
-      </TooltipProvider>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/team" element={<Team />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/beauty-nails" element={<BeautyNails />} />
+                <Route path="/news" element={<News />} />
+                <Route path="/career" element={<Career />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/our-customers" element={<OurCustomers />} />
+                <Route path="/booking" element={<Booking />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/product/:slug" element={<ProductDetail />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
+                <Route path="/terms-and-conditions" element={<TermsConditions />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <CartDrawer />
+              <EditModeButton />
+            </EditModeProvider>
+          </CartProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </TooltipProvider>
     </QueryClientProvider>
   );
 };
