@@ -15,29 +15,8 @@ import hdLaceClosure5x51 from '@/assets/hd-lace-closure-5x5-1.jpg';
 import laceFrontal13x41 from '@/assets/lace-frontal-13x4-1.jpg';
 import laceFrontal13x61 from '@/assets/lace-frontal-13x6-1.jpg';
 import edgeControlAccessory1 from '@/assets/edge-control-accessory-1.jpg';
-import colourTheory1 from '@/assets/colour-theory-1.png';
 
 export const PRODUCTS: Product[] = [
-  {
-    id: "p_colour_theory_01",
-    slug: "colour-theory-transformations",
-    title: "COLOUR THEORY — Professional Hair Colour Transformations",
-    category: "Colour Theory",
-    short_description: "Expert colour theory application for stunning transformations from blonde to pink, natural tones to vibrant highlights.",
-    images: [colourTheory1],
-    variants: [
-      {"length":"Consultation","price":0,"in_stock":true},
-      {"length":"Single Process","price":85,"in_stock":true},
-      {"length":"Double Process","price":150,"in_stock":true},
-      {"length":"Balayage","price":180,"in_stock":true},
-      {"length":"Full Highlights","price":165,"in_stock":true},
-      {"length":"Creative Colour","price":200,"in_stock":true}
-    ],
-    processing_time_note: "BOOKING REQUIRED: Schedule your colour consultation to discuss your desired transformation",
-    description_long: "<p>Professional colour theory services at The Slays Room. Our expert colourists create stunning transformations using advanced colour theory techniques. From natural blonde balayage to vibrant fashion colours, we deliver results that enhance your natural beauty. All services include a complimentary consultation to determine the perfect colour for your hair type and lifestyle.</p>",
-    price_min: 0,
-    price_max: 200
-  },
   {
     id: "p01",
     slug: "bone-straight-raw-cambodian",
