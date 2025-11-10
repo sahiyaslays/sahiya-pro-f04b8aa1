@@ -59,7 +59,7 @@ const Hero = () => {
               <Instagram size={18} />
             </a>
             <a
-              href="https://wa.me/447809441074"
+              href="https://wa.me/447943115966"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full border border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center"
@@ -80,10 +80,10 @@ const Hero = () => {
           {/* Contact */}
           <div className="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-8 text-base md:text-lg">
             <a 
-              href="tel:07809441074"
+              href="tel:07943115966"
               className="text-primary hover:text-white transition-colors duration-300 tracking-wide"
             >
-              <EditableText id="phone-number">07809441074</EditableText>
+              <EditableText id="phone-number">07943 115966</EditableText>
             </a>
             <a 
               href="mailto:contact@sahiyaslays.com"

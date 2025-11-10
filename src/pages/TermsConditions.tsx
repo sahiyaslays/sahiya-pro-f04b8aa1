@@ -107,10 +107,10 @@ export default function TermsConditions() {
               <div className="text-white">
                 <h3 className="text-sm font-normal tracking-wide uppercase mb-3 text-primary">Contact</h3>
                 <a 
-                  href="tel:07809441074"
+                  href="tel:07943115966"
                   className="text-sm hover:text-primary transition-colors duration-300 block mb-1"
                 >
-                  07809441074
+                  07943 115966
                 </a>
               </div>
               

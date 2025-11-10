@@ -47,7 +47,7 @@ export function BookingSuccess({ bookingData, bookingReference = 'SS123456' }: B
     const details = encodeURIComponent(
       `Services: ${bookingData.services.map(s => s.name).join(', ')}\n` +
       `Location: Sahiya Slays, 415 Wick Lane, Tradestars Block G, Bow, London E3 2JG\n` +
-      `Phone: 07809441074\n` +
+      `Phone: 07943 115966\n` +
       `Reference: ${bookingReference}`
     );
     const location = encodeURIComponent('415 Wick Lane, Tradestars Block G, Bow, London E3 2JG');
@@ -154,10 +154,10 @@ export function BookingSuccess({ bookingData, bookingReference = 'SS123456' }: B
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-muted-foreground" />
                 <a 
-                  href="tel:07809441074"
+                  href="tel:07943115966"
                   className="text-sm hover:text-primary transition-colors"
                 >
-                  07809441074
+                  07943 115966
                 </a>
               </div>
               <div className="flex items-center gap-2">
