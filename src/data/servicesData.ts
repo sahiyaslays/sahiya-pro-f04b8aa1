@@ -594,6 +594,129 @@ export const servicesData: ServiceCategory[] = [
         ]
       },
       {
+        id: 'hair-extensions-removal-fitting',
+        title: 'Hair Extensions Removal & Fitting Services',
+        services: [
+          {
+            id: 'tape-in-extensions-fitting',
+            name: 'Tape-In Extensions Fitting',
+            options: [
+              { label: 'Long Hair', duration: 120, price: 150 },
+              { label: 'Medium Hair', duration: 105, price: 130 },
+              { label: 'Short Hair', duration: 90, price: 110 }
+            ]
+          },
+          {
+            id: 'tape-in-extensions-removal',
+            name: 'Tape-In Extensions Removal',
+            options: [
+              { label: 'Long Hair', duration: 60, price: 50 },
+              { label: 'Medium Hair', duration: 50, price: 42 },
+              { label: 'Short Hair', duration: 40, price: 35 }
+            ]
+          },
+          {
+            id: 'clip-in-extensions-fitting',
+            name: 'Clip-In Extensions Fitting',
+            options: [
+              { label: 'Long Hair', duration: 45, price: 45 },
+              { label: 'Medium Hair', duration: 35, price: 38 },
+              { label: 'Short Hair', duration: 25, price: 30 }
+            ]
+          },
+          {
+            id: 'micro-ring-extensions-fitting',
+            name: 'Micro Ring Extensions Fitting',
+            options: [
+              { label: 'Long Hair', duration: 180, price: 200 },
+              { label: 'Medium Hair', duration: 150, price: 170 },
+              { label: 'Short Hair', duration: 120, price: 140 }
+            ]
+          },
+          {
+            id: 'micro-ring-extensions-removal',
+            name: 'Micro Ring Extensions Removal',
+            options: [
+              { label: 'Long Hair', duration: 90, price: 70 },
+              { label: 'Medium Hair', duration: 75, price: 60 },
+              { label: 'Short Hair', duration: 60, price: 50 }
+            ]
+          },
+          {
+            id: 'nano-ring-extensions-fitting',
+            name: 'Nano Ring Extensions Fitting',
+            options: [
+              { label: 'Long Hair', duration: 210, price: 220 },
+              { label: 'Medium Hair', duration: 180, price: 190 },
+              { label: 'Short Hair', duration: 150, price: 160 }
+            ]
+          },
+          {
+            id: 'nano-ring-extensions-removal',
+            name: 'Nano Ring Extensions Removal',
+            options: [
+              { label: 'Long Hair', duration: 90, price: 75 },
+              { label: 'Medium Hair', duration: 75, price: 65 },
+              { label: 'Short Hair', duration: 60, price: 55 }
+            ]
+          },
+          {
+            id: 'sew-in-extensions-fitting',
+            name: 'Sew-In Extensions Fitting',
+            options: [
+              { label: 'Long Hair', duration: 240, price: 180 },
+              { label: 'Medium Hair', duration: 210, price: 160 },
+              { label: 'Short Hair', duration: 180, price: 140 }
+            ]
+          },
+          {
+            id: 'sew-in-extensions-removal',
+            name: 'Sew-In Extensions Removal',
+            options: [
+              { label: 'Long Hair', duration: 75, price: 60 },
+              { label: 'Medium Hair', duration: 60, price: 50 },
+              { label: 'Short Hair', duration: 45, price: 40 }
+            ]
+          },
+          {
+            id: 'pre-bonded-extensions-fitting',
+            name: 'Pre-Bonded Extensions Fitting',
+            options: [
+              { label: 'Long Hair', duration: 180, price: 190 },
+              { label: 'Medium Hair', duration: 150, price: 165 },
+              { label: 'Short Hair', duration: 120, price: 140 }
+            ]
+          },
+          {
+            id: 'pre-bonded-extensions-removal',
+            name: 'Pre-Bonded Extensions Removal',
+            options: [
+              { label: 'Long Hair', duration: 90, price: 75 },
+              { label: 'Medium Hair', duration: 75, price: 65 },
+              { label: 'Short Hair', duration: 60, price: 55 }
+            ]
+          },
+          {
+            id: 'extensions-maintenance',
+            name: 'Extensions Maintenance',
+            options: [
+              { label: 'Long Hair', duration: 90, price: 80 },
+              { label: 'Medium Hair', duration: 75, price: 70 },
+              { label: 'Short Hair', duration: 60, price: 60 }
+            ]
+          },
+          {
+            id: 'extensions-color-match',
+            name: 'Extensions Color Match Consultation',
+            options: [
+              { label: 'Long Hair', duration: 30, price: 25 },
+              { label: 'Medium Hair', duration: 30, price: 25 },
+              { label: 'Short Hair', duration: 30, price: 25 }
+            ]
+          }
+        ]
+      },
+      {
         id: 'men-braids-cornrows-twists',
         title: 'Men - Braids, Cornrows & Twists',
         services: [
