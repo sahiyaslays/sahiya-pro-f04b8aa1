@@ -81,22 +81,110 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'hair-wash-and-blow-dry',
             name: 'Hair - Wash & Blow-dry',
-            options: [{ label: '45 min', duration: 45, price: 30 }]
+            options: [
+              { label: 'Long Hair', duration: 60, price: 40 },
+              { label: 'Medium Hair', duration: 50, price: 35 },
+              { label: 'Short Hair', duration: 40, price: 30 }
+            ]
           },
           {
             id: 'hair-updo-occasion',
             name: 'Hair - Updo / Occasion',
-            options: [{ label: '1 hour', duration: 60, price: 45 }]
+            options: [
+              { label: 'Long Hair', duration: 90, price: 60 },
+              { label: 'Medium Hair', duration: 75, price: 52 },
+              { label: 'Short Hair', duration: 60, price: 45 }
+            ]
           },
           {
             id: 'hair-curl-styling',
             name: 'Hair - Curl Styling',
-            options: [{ label: '45 min', duration: 45, price: 30 }]
+            options: [
+              { label: 'Long Hair', duration: 60, price: 40 },
+              { label: 'Medium Hair', duration: 50, price: 35 },
+              { label: 'Short Hair', duration: 40, price: 30 }
+            ]
           },
           {
             id: 'hair-straightening',
             name: 'Hair - Straightening',
-            options: [{ label: '45 min', duration: 45, price: 30 }]
+            options: [
+              { label: 'Long Hair', duration: 60, price: 40 },
+              { label: 'Medium Hair', duration: 50, price: 35 },
+              { label: 'Short Hair', duration: 40, price: 30 }
+            ]
+          },
+          {
+            id: 'hair-deep-wave-styling',
+            name: 'Hair - Deep Wave Styling',
+            options: [
+              { label: 'Long Hair', duration: 75, price: 50 },
+              { label: 'Medium Hair', duration: 60, price: 42 },
+              { label: 'Short Hair', duration: 45, price: 35 }
+            ]
+          },
+          {
+            id: 'hair-silk-press',
+            name: 'Hair - Silk Press',
+            options: [
+              { label: 'Long Hair', duration: 120, price: 80 },
+              { label: 'Medium Hair', duration: 105, price: 70 },
+              { label: 'Short Hair', duration: 90, price: 60 }
+            ]
+          },
+          {
+            id: 'hair-beach-waves',
+            name: 'Hair - Beach Waves',
+            options: [
+              { label: 'Long Hair', duration: 60, price: 42 },
+              { label: 'Medium Hair', duration: 50, price: 36 },
+              { label: 'Short Hair', duration: 40, price: 30 }
+            ]
+          },
+          {
+            id: 'hair-vintage-waves',
+            name: 'Hair - Vintage Waves',
+            options: [
+              { label: 'Long Hair', duration: 75, price: 48 },
+              { label: 'Medium Hair', duration: 60, price: 40 },
+              { label: 'Short Hair', duration: 45, price: 35 }
+            ]
+          },
+          {
+            id: 'hair-ponytail-styling',
+            name: 'Hair - Ponytail Styling',
+            options: [
+              { label: 'Long Hair', duration: 45, price: 35 },
+              { label: 'Medium Hair', duration: 35, price: 30 },
+              { label: 'Short Hair', duration: 25, price: 25 }
+            ]
+          },
+          {
+            id: 'hair-half-up-half-down',
+            name: 'Hair - Half-Up Half-Down',
+            options: [
+              { label: 'Long Hair', duration: 60, price: 45 },
+              { label: 'Medium Hair', duration: 50, price: 38 },
+              { label: 'Short Hair', duration: 40, price: 32 }
+            ]
+          },
+          {
+            id: 'hair-braided-updo',
+            name: 'Hair - Braided Updo',
+            options: [
+              { label: 'Long Hair', duration: 90, price: 65 },
+              { label: 'Medium Hair', duration: 75, price: 55 },
+              { label: 'Short Hair', duration: 60, price: 48 }
+            ]
+          },
+          {
+            id: 'hair-sleek-bun',
+            name: 'Hair - Sleek Bun',
+            options: [
+              { label: 'Long Hair', duration: 45, price: 38 },
+              { label: 'Medium Hair', duration: 35, price: 32 },
+              { label: 'Short Hair', duration: 25, price: 28 }
+            ]
           }
         ]
       },
