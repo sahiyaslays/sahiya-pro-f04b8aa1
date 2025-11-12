@@ -717,6 +717,129 @@ export const servicesData: ServiceCategory[] = [
         ]
       },
       {
+        id: 'hair-extensions-application-only',
+        title: 'Hair Extensions Application Only Services',
+        services: [
+          {
+            id: 'fusion-extensions-application',
+            name: 'Fusion Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 240, price: 250 },
+              { label: 'Medium Hair', duration: 210, price: 220 },
+              { label: 'Short Hair', duration: 180, price: 190 }
+            ]
+          },
+          {
+            id: 'keratin-bond-extensions-application',
+            name: 'Keratin Bond Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 210, price: 230 },
+              { label: 'Medium Hair', duration: 180, price: 200 },
+              { label: 'Short Hair', duration: 150, price: 170 }
+            ]
+          },
+          {
+            id: 'i-tip-extensions-application',
+            name: 'I-Tip Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 180, price: 190 },
+              { label: 'Medium Hair', duration: 150, price: 165 },
+              { label: 'Short Hair', duration: 120, price: 140 }
+            ]
+          },
+          {
+            id: 'u-tip-extensions-application',
+            name: 'U-Tip Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 180, price: 195 },
+              { label: 'Medium Hair', duration: 150, price: 170 },
+              { label: 'Short Hair', duration: 120, price: 145 }
+            ]
+          },
+          {
+            id: 'flat-tip-extensions-application',
+            name: 'Flat Tip Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 150, price: 175 },
+              { label: 'Medium Hair', duration: 120, price: 150 },
+              { label: 'Short Hair', duration: 90, price: 125 }
+            ]
+          },
+          {
+            id: 'halo-extensions-application',
+            name: 'Halo Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 30, price: 40 },
+              { label: 'Medium Hair', duration: 25, price: 35 },
+              { label: 'Short Hair', duration: 20, price: 30 }
+            ]
+          },
+          {
+            id: 'weft-extensions-application',
+            name: 'Weft Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 150, price: 160 },
+              { label: 'Medium Hair', duration: 120, price: 140 },
+              { label: 'Short Hair', duration: 90, price: 120 }
+            ]
+          },
+          {
+            id: 'ponytail-extensions-application',
+            name: 'Ponytail Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 45, price: 55 },
+              { label: 'Medium Hair', duration: 35, price: 45 },
+              { label: 'Short Hair', duration: 25, price: 35 }
+            ]
+          },
+          {
+            id: 'volume-extensions-application',
+            name: 'Volume Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 120, price: 140 },
+              { label: 'Medium Hair', duration: 105, price: 125 },
+              { label: 'Short Hair', duration: 90, price: 110 }
+            ]
+          },
+          {
+            id: 'length-extensions-application',
+            name: 'Length Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 150, price: 165 },
+              { label: 'Medium Hair', duration: 120, price: 145 },
+              { label: 'Short Hair', duration: 90, price: 125 }
+            ]
+          },
+          {
+            id: 'root-boost-extensions-application',
+            name: 'Root Boost Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 90, price: 110 },
+              { label: 'Medium Hair', duration: 75, price: 95 },
+              { label: 'Short Hair', duration: 60, price: 80 }
+            ]
+          },
+          {
+            id: 'invisible-tape-extensions-application',
+            name: 'Invisible Tape Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 135, price: 155 },
+              { label: 'Medium Hair', duration: 120, price: 140 },
+              { label: 'Short Hair', duration: 105, price: 125 }
+            ]
+          },
+          {
+            id: 'double-drawn-extensions-application',
+            name: 'Double Drawn Extensions Application',
+            options: [
+              { label: 'Long Hair', duration: 180, price: 200 },
+              { label: 'Medium Hair', duration: 150, price: 175 },
+              { label: 'Short Hair', duration: 120, price: 150 }
+            ]
+          }
+        ]
+      },
+      {
         id: 'men-braids-cornrows-twists',
         title: 'Men - Braids, Cornrows & Twists',
         services: [
