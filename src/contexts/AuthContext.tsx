@@ -53,7 +53,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signUp = async (email: string, password: string, firstName: string, lastName: string, phone: string) => {
     try {
-      const redirectUrl = email === 'sahiyaslays@gmail.com' 
+      const isAdmin = email.toLowerCase() === 'sahiyaslays@gmail.com';
+      const redirectUrl = isAdmin
         ? `${window.location.origin}/admin`
         : `${window.location.origin}/user-dashboard`;
       
@@ -75,7 +76,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       toast.success('Account created successfully!');
       
       // Navigate to appropriate dashboard
-      if (email === 'sahiyaslays@gmail.com') {
+      if (isAdmin) {
         navigate('/admin');
       } else {
         navigate('/user-dashboard');
@@ -100,8 +101,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       toast.success('Signed in successfully!');
       
-      // Redirect based on email
-      if (email === 'sahiyaslays@gmail.com') {
+      // Redirect based on email (case-insensitive)
+      const isAdmin = email.toLowerCase() === 'sahiyaslays@gmail.com';
+      if (isAdmin) {
         navigate('/admin');
       } else {
         navigate('/user-dashboard');
