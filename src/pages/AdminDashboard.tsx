@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, Calendar, ShoppingBag, TrendingUp, Users } from 'lucide-react';
+import { Loader2, Calendar, ShoppingBag, TrendingUp, Users, Scissors, Package } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 
@@ -47,11 +47,33 @@ interface Order {
   guest_email: string | null;
 }
 
+interface Service {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  duration: number;
+  active: boolean;
+  created_at: string;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  stock_quantity: number;
+  active: boolean;
+  created_at: string;
+}
+
 export default function AdminDashboard() {
   const { user, signOut, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -93,6 +115,24 @@ export default function AdminDashboard() {
 
       if (ordersError) throw ordersError;
       setOrders(ordersData || []);
+
+      // Fetch all services
+      const { data: servicesData, error: servicesError } = await supabase
+        .from('services')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (servicesError) throw servicesError;
+      setServices(servicesData || []);
+
+      // Fetch all products
+      const { data: productsData, error: productsError } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (productsError) throw productsError;
+      setProducts(productsData || []);
     } catch (error: any) {
       console.error('Error fetching admin data:', error);
       toast.error('Failed to load admin data');
@@ -109,6 +149,8 @@ export default function AdminDashboard() {
   const totalRevenue =
     bookings.reduce((sum, b) => sum + Number(b.total_amount), 0) +
     orders.reduce((sum, o) => sum + Number(o.total_amount), 0);
+  const activeServices = services.filter((s) => s.active).length;
+  const activeProducts = products.filter((p) => p.active).length;
 
   // Filter bookings
   const filteredBookings = bookings.filter((booking) => {
@@ -134,7 +176,7 @@ export default function AdminDashboard() {
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Dashboard Overview</h1>
         
         {/* Stats Cards */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
           <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">Total Bookings</CardTitle>
@@ -142,16 +184,7 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-gray-900">{totalBookings}</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white border-gray-200 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Confirmed Bookings</CardTitle>
-              <Users className="h-4 w-4 text-primary" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900">{confirmedBookings}</div>
+              <p className="text-xs text-gray-500 mt-1">{confirmedBookings} confirmed</p>
             </CardContent>
           </Card>
 
@@ -162,6 +195,7 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-gray-900">{totalOrders}</div>
+              <p className="text-xs text-gray-500 mt-1">Product orders</p>
             </CardContent>
           </Card>
 
@@ -174,6 +208,42 @@ export default function AdminDashboard() {
               <div className="text-2xl font-bold text-primary">
                 £{totalRevenue.toFixed(2)}
               </div>
+              <p className="text-xs text-gray-500 mt-1">All time</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-gray-200 shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">Active Services</CardTitle>
+              <Scissors className="h-4 w-4 text-primary" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-gray-900">{activeServices}</div>
+              <p className="text-xs text-gray-500 mt-1">of {services.length} total</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-gray-200 shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">Active Products</CardTitle>
+              <Package className="h-4 w-4 text-primary" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-gray-900">{activeProducts}</div>
+              <p className="text-xs text-gray-500 mt-1">of {products.length} total</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-gray-200 shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">Total Stock</CardTitle>
+              <Package className="h-4 w-4 text-primary" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-gray-900">
+                {products.reduce((sum, p) => sum + p.stock_quantity, 0)}
+              </div>
+              <p className="text-xs text-gray-500 mt-1">All products</p>
             </CardContent>
           </Card>
         </div>

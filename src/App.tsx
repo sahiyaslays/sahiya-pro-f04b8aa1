@@ -15,6 +15,7 @@ import Auth from "./pages/Auth";
 import About from "./pages/About";
 import Team from "./pages/Team";
 import Services from "./pages/Services";
+import ServicesSimple from "./pages/ServicesSimple";
 import BeautyNails from "./pages/BeautyNails";
 import News from "./pages/News";
 import Career from "./pages/Career";
@@ -66,6 +67,7 @@ const App = () => {
                 <Route path="/about" element={<About />} />
                 <Route path="/team" element={<Team />} />
                 <Route path="/services" element={<Services />} />
+                <Route path="/services-db" element={<ServicesSimple />} />
                 <Route path="/beauty-nails" element={<BeautyNails />} />
                 <Route path="/news" element={<News />} />
                 <Route path="/career" element={<Career />} />
