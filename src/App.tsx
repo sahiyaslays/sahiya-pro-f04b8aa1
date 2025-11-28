@@ -34,6 +34,8 @@ import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminServicesManagement from "./pages/AdminServicesManagement";
 import AdminProductsManagement from "./pages/AdminProductsManagement";
+import AdminBookings from "./pages/AdminBookings";
+import AdminOrders from "./pages/AdminOrders";
 
 const queryClient = new QueryClient();
 
@@ -85,8 +87,8 @@ const App = () => {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/services" element={<AdminServicesManagement />} />
             <Route path="/admin/products" element={<AdminProductsManagement />} />
-            <Route path="/admin/bookings" element={<AdminDashboard />} />
-            <Route path="/admin/orders" element={<AdminDashboard />} />
+            <Route path="/admin/bookings" element={<AdminBookings />} />
+            <Route path="/admin/orders" element={<AdminOrders />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
