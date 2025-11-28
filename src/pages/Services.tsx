@@ -361,26 +361,6 @@ const Services = () => {
         </div>
       </section>
 
-      {/* CTA Section - Hidden */}
-      {/* 
-      <section className="py-16 px-4">
-        <div className="max-w-[1040px] mx-auto text-center">
-          <p className="text-lg md:text-xl text-foreground mb-8 tracking-wide">
-            Ready to book?
-          </p>
-          
-          <Button 
-            asChild 
-            variant="outline"
-            size="lg"
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 text-base tracking-wider uppercase transition-all duration-300"
-          >
-            <Link to="/booking">BOOK NOW</Link>
-          </Button>
-        </div>
-      </section>
-      */}
-
       <Footer />
 
       {/* Booking Modal */}
