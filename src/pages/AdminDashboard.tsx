@@ -177,7 +177,10 @@ export default function AdminDashboard() {
         
         {/* Stats Cards */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
-          <Card className="bg-white border-gray-200 shadow-sm">
+          <Card 
+            className="bg-white border-gray-200 shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => navigate('/admin/bookings')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">Total Bookings</CardTitle>
               <Calendar className="h-4 w-4 text-primary" />
@@ -188,7 +191,10 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-gray-200 shadow-sm">
+          <Card 
+            className="bg-white border-gray-200 shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => navigate('/admin/orders')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">Total Orders</CardTitle>
               <ShoppingBag className="h-4 w-4 text-primary" />
@@ -212,7 +218,10 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-gray-200 shadow-sm">
+          <Card 
+            className="bg-white border-gray-200 shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => navigate('/admin/services')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">Active Services</CardTitle>
               <Scissors className="h-4 w-4 text-primary" />
@@ -223,7 +232,10 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-gray-200 shadow-sm">
+          <Card 
+            className="bg-white border-gray-200 shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => navigate('/admin/products')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">Active Products</CardTitle>
               <Package className="h-4 w-4 text-primary" />
