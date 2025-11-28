@@ -157,7 +157,16 @@ const Header = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={signOut}>
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to={user.email === 'sahiyaslays@gmail.com' ? '/admin' : '/user-dashboard'}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <User className="mr-2 h-4 w-4" />
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={signOut} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign Out
                   </DropdownMenuItem>
@@ -265,6 +274,54 @@ const Header = () => {
                 {/* Navigation Links */}
                 <nav className="flex-1 p-6 overflow-y-auto">
                   <div className="space-y-1">
+                    {/* Account Section */}
+                    {user ? (
+                      <>
+                        <Link
+                          to={user.email === 'sahiyaslays@gmail.com' ? '/admin' : '/user-dashboard'}
+                          className={`flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 group ${
+                            (location.pathname === '/user-dashboard' || location.pathname === '/admin')
+                              ? 'bg-primary/10 text-primary' 
+                              : 'text-foreground hover:bg-muted hover:text-primary'
+                          }`}
+                        >
+                          <User className={`h-5 w-5 transition-colors ${
+                            (location.pathname === '/user-dashboard' || location.pathname === '/admin')
+                              ? 'text-primary' 
+                              : 'text-muted-foreground group-hover:text-primary'
+                          }`} />
+                          <span className="font-medium">Dashboard</span>
+                        </Link>
+                        <button
+                          onClick={signOut}
+                          className="w-full flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 group text-foreground hover:bg-muted hover:text-primary"
+                        >
+                          <LogOut className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                          <span className="font-medium">Sign Out</span>
+                        </button>
+                        <div className="my-4 border-t border-border" />
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          to="/auth"
+                          className={`flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 group ${
+                            location.pathname === '/auth'
+                              ? 'bg-primary/10 text-primary' 
+                              : 'text-foreground hover:bg-muted hover:text-primary'
+                          }`}
+                        >
+                          <User className={`h-5 w-5 transition-colors ${
+                            location.pathname === '/auth'
+                              ? 'text-primary' 
+                              : 'text-muted-foreground group-hover:text-primary'
+                          }`} />
+                          <span className="font-medium">Login / Sign Up</span>
+                        </Link>
+                        <div className="my-4 border-t border-border" />
+                      </>
+                    )}
+                    
                     {navLinks.map((link) => {
                       const IconComponent = link.icon;
                       return (
