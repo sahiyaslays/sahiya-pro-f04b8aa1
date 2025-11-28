@@ -138,6 +138,27 @@ serve(async (req) => {
         throw new Error("Failed to create booking");
       }
 
+      // Send booking confirmation emails
+      try {
+        await supabaseClient.functions.invoke('send-booking-email', {
+          body: {
+            type: 'booking_request',
+            bookingId: booking.id,
+            customerEmail: bookingData.guestEmail || user?.email,
+            customerName: bookingData.guestName || user?.email,
+            services: bookingData.services,
+            bookingDate: bookingData.bookingDate,
+            bookingTime: bookingData.bookingTime,
+            totalAmount: bookingData.totalAmount,
+            paymentType: bookingData.paymentType,
+            specialRequests: bookingData.specialRequests,
+            stylistId: bookingData.stylistId,
+          }
+        });
+      } catch (emailError) {
+        console.error("Email sending error:", emailError);
+      }
+
       return new Response(JSON.stringify({ 
         url: `${req.headers.get("origin")}/booking?success=true&bookingId=${booking.id}`,
         bookingId: booking.id 

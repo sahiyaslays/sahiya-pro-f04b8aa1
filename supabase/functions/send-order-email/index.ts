@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@4.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -24,17 +25,17 @@ interface OrderItem {
 
 interface OrderEmailRequest {
   orderId: string;
-  customerEmail: string;
-  customerName: string;
-  items: OrderItem[];
-  total: number;
-  shippingAddress: {
+  customerEmail?: string;
+  customerName?: string;
+  items?: OrderItem[];
+  total?: number;
+  shippingAddress?: {
     address: string;
     city: string;
     postcode: string;
     country: string;
   };
-  paymentMethod: string;
+  paymentMethod?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -44,11 +45,47 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const orderData: OrderEmailRequest = await req.json();
-    console.log("Processing order email for:", orderData.orderId);
+    const requestData: OrderEmailRequest = await req.json();
+    console.log("Processing order email for:", requestData.orderId);
+
+    // Initialize Supabase client
+    const supabaseClient = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+    );
+
+    // If full order data not provided, fetch from database
+    let orderData = requestData;
+    if (!orderData.customerEmail || !orderData.items) {
+      const { data: order, error } = await supabaseClient
+        .from('orders')
+        .select('*')
+        .eq('id', requestData.orderId)
+        .single();
+
+      if (error || !order) {
+        throw new Error('Order not found');
+      }
+
+      const shippingAddress = order.shipping_address as any;
+      orderData = {
+        orderId: order.id,
+        customerEmail: order.guest_email || '',
+        customerName: shippingAddress.fullName || 'Customer',
+        items: order.items as OrderItem[],
+        total: order.total_amount,
+        shippingAddress: {
+          address: shippingAddress.addressLine1 || '',
+          city: shippingAddress.city || '',
+          postcode: shippingAddress.postcode || '',
+          country: 'United Kingdom',
+        },
+        paymentMethod: 'stripe',
+      };
+    }
 
     // Format order items for email
-    const itemsHtml = orderData.items
+    const itemsHtml = (orderData.items || [])
       .map(
         (item) => `
         <tr>
@@ -76,9 +113,8 @@ const handler = async (req: Request): Promise<Response> => {
     // Send confirmation email to customer
     const customerEmailResponse = await resend.emails.send({
       from: "Sahiya Slays <onboarding@resend.dev>",
-      to: ["sahiyaslays@gmail.com", "contact@sahiyaslays.com"],
-      replyTo: orderData.customerEmail,
-      subject: `Order Confirmation - #${orderData.orderId} (Customer: ${orderData.customerEmail})`,
+      to: [orderData.customerEmail || ''],
+      subject: `Order Confirmation - #${orderData.orderId.substring(0, 8)}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #000; color: #D4AF37; padding: 20px; text-align: center;">
@@ -92,7 +128,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p>Your order has been confirmed and will be processed within 7-10 business days.</p>
             
             <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0; border-radius: 5px;">
-              <p style="margin: 5px 0;"><strong>Order Number:</strong> #${orderData.orderId}</p>
+              <p style="margin: 5px 0;"><strong>Order Number:</strong> #${orderData.orderId.substring(0, 8)}</p>
               <p style="margin: 5px 0;"><strong>Payment Method:</strong> ${paymentMethodText}</p>
             </div>
             
@@ -109,15 +145,15 @@ const handler = async (req: Request): Promise<Response> => {
                 ${itemsHtml}
                 <tr>
                   <td colspan="2" style="padding: 10px; text-align: right; font-weight: bold;">Total:</td>
-                  <td style="padding: 10px; text-align: right; font-weight: bold;">£${orderData.total.toFixed(2)}</td>
+                  <td style="padding: 10px; text-align: right; font-weight: bold;">£${(orderData.total || 0).toFixed(2)}</td>
                 </tr>
               </tbody>
             </table>
             
             <h3 style="color: #000;">Shipping Address</h3>
-            <p style="margin: 5px 0;">${orderData.shippingAddress.address}</p>
-            <p style="margin: 5px 0;">${orderData.shippingAddress.city}, ${orderData.shippingAddress.postcode}</p>
-            <p style="margin: 5px 0;">${orderData.shippingAddress.country}</p>
+            <p style="margin: 5px 0;">${orderData.shippingAddress?.address || ''}</p>
+            <p style="margin: 5px 0;">${orderData.shippingAddress?.city || ''}, ${orderData.shippingAddress?.postcode || ''}</p>
+            <p style="margin: 5px 0;">${orderData.shippingAddress?.country || ''}</p>
             
             <p style="margin-top: 30px;">We'll send you another email when your order ships.</p>
             <p>If you have any questions, please contact us at contact@sahiyaslays.com</p>
@@ -137,7 +173,7 @@ const handler = async (req: Request): Promise<Response> => {
     const salonEmailResponse = await resend.emails.send({
       from: "Sahiya Slays Orders <onboarding@resend.dev>",
       to: ["sahiyaslays@gmail.com", "contact@sahiyaslays.com"],
-      subject: `New Order - #${orderData.orderId}`,
+      subject: `New Order - #${orderData.orderId.substring(0, 8)}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background-color: #000; color: #D4AF37; padding: 20px;">
@@ -148,7 +184,7 @@ const handler = async (req: Request): Promise<Response> => {
             <h2 style="color: #000; margin-top: 0;">Order Details</h2>
             
             <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0; border-radius: 5px;">
-              <p style="margin: 5px 0;"><strong>Order Number:</strong> #${orderData.orderId}</p>
+              <p style="margin: 5px 0;"><strong>Order Number:</strong> #${orderData.orderId.substring(0, 8)}</p>
               <p style="margin: 5px 0;"><strong>Customer:</strong> ${orderData.customerName}</p>
               <p style="margin: 5px 0;"><strong>Email:</strong> ${orderData.customerEmail}</p>
               <p style="margin: 5px 0;"><strong>Payment Method:</strong> ${paymentMethodText}</p>
@@ -167,16 +203,16 @@ const handler = async (req: Request): Promise<Response> => {
                 ${itemsHtml}
                 <tr>
                   <td colspan="2" style="padding: 10px; text-align: right; font-weight: bold;">Total:</td>
-                  <td style="padding: 10px; text-align: right; font-weight: bold;">£${orderData.total.toFixed(2)}</td>
+                  <td style="padding: 10px; text-align: right; font-weight: bold;">£${(orderData.total || 0).toFixed(2)}</td>
                 </tr>
               </tbody>
             </table>
             
             <h3 style="color: #000;">Shipping Address</h3>
             <p style="margin: 5px 0;">${orderData.customerName}</p>
-            <p style="margin: 5px 0;">${orderData.shippingAddress.address}</p>
-            <p style="margin: 5px 0;">${orderData.shippingAddress.city}, ${orderData.shippingAddress.postcode}</p>
-            <p style="margin: 5px 0;">${orderData.shippingAddress.country}</p>
+            <p style="margin: 5px 0;">${orderData.shippingAddress?.address || ''}</p>
+            <p style="margin: 5px 0;">${orderData.shippingAddress?.city || ''}, ${orderData.shippingAddress?.postcode || ''}</p>
+            <p style="margin: 5px 0;">${orderData.shippingAddress?.country || ''}</p>
           </div>
         </div>
       `,
