@@ -25,6 +25,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Loader2, Plus, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import AdminSidebar from '@/components/AdminSidebar';
 
 interface Product {
   id: string;
@@ -187,17 +188,18 @@ export default function AdminProductsManagement() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black p-8">
-      <div className="container mx-auto">
+    <div className="min-h-screen bg-gray-50 flex">
+      <AdminSidebar />
+      <div className="flex-1 p-8 overflow-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-white">Manage Products</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Manage Products</h1>
           <Dialog open={dialogOpen} onOpenChange={(open) => {
             setDialogOpen(open);
             if (!open) resetForm();
@@ -208,31 +210,31 @@ export default function AdminProductsManagement() {
                 Add Product
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-zinc-900 border-primary/30 text-white max-w-2xl">
+            <DialogContent className="bg-white border-gray-200 text-gray-900 max-w-2xl">
               <DialogHeader>
-                <DialogTitle className="text-white">
+                <DialogTitle className="text-gray-900">
                   {editingProduct ? 'Edit Product' : 'Add New Product'}
                 </DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="text-gray-300">Product Name *</Label>
+                    <Label htmlFor="name" className="text-gray-700">Product Name *</Label>
                     <Input
                       id="name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="bg-black border-primary/20 text-white"
+                      className="bg-white border-gray-300 text-gray-900"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="category" className="text-gray-300">Category *</Label>
+                    <Label htmlFor="category" className="text-gray-700">Category *</Label>
                     <Input
                       id="category"
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="bg-black border-primary/20 text-white"
+                      className="bg-white border-gray-300 text-gray-900"
                       required
                     />
                   </div>
@@ -240,48 +242,48 @@ export default function AdminProductsManagement() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="price" className="text-gray-300">Price (£) *</Label>
+                    <Label htmlFor="price" className="text-gray-700">Price (£) *</Label>
                     <Input
                       id="price"
                       type="number"
                       step="0.01"
                       value={formData.price}
                       onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                      className="bg-black border-primary/20 text-white"
+                      className="bg-white border-gray-300 text-gray-900"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="stock_quantity" className="text-gray-300">Stock Quantity *</Label>
+                    <Label htmlFor="stock_quantity" className="text-gray-700">Stock Quantity *</Label>
                     <Input
                       id="stock_quantity"
                       type="number"
                       value={formData.stock_quantity}
                       onChange={(e) => setFormData({ ...formData, stock_quantity: e.target.value })}
-                      className="bg-black border-primary/20 text-white"
+                      className="bg-white border-gray-300 text-gray-900"
                       required
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="description" className="text-gray-300">Description</Label>
+                  <Label htmlFor="description" className="text-gray-700">Description</Label>
                   <Textarea
                     id="description"
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="bg-black border-primary/20 text-white"
+                    className="bg-white border-gray-300 text-gray-900"
                     rows={3}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="image_url" className="text-gray-300">Image URL</Label>
+                  <Label htmlFor="image_url" className="text-gray-700">Image URL</Label>
                   <Input
                     id="image_url"
                     value={formData.image_url}
                     onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                    className="bg-black border-primary/20 text-white"
+                    className="bg-white border-gray-300 text-gray-900"
                   />
                 </div>
 
@@ -291,7 +293,7 @@ export default function AdminProductsManagement() {
                     checked={formData.active}
                     onCheckedChange={(checked) => setFormData({ ...formData, active: checked })}
                   />
-                  <Label htmlFor="active" className="text-gray-300">Active</Label>
+                  <Label htmlFor="active" className="text-gray-700">Active</Label>
                 </div>
 
                 <div className="flex justify-end gap-2 pt-4">
@@ -299,13 +301,13 @@ export default function AdminProductsManagement() {
                     type="button"
                     variant="outline"
                     onClick={() => setDialogOpen(false)}
-                    className="border-primary/20 text-white hover:bg-zinc-800"
+                    className="border-gray-300 text-gray-700 hover:bg-gray-100"
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
-                    className="bg-primary hover:bg-primary/90 text-black font-semibold"
+                    className="bg-primary hover:bg-primary/90 text-white font-semibold"
                   >
                     {editingProduct ? 'Update' : 'Create'} Product
                   </Button>
@@ -315,43 +317,43 @@ export default function AdminProductsManagement() {
           </Dialog>
         </div>
 
-        <Card className="bg-zinc-900 border-primary/30">
+        <Card className="bg-white border-gray-200 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-white">All Products ({products.length})</CardTitle>
+            <CardTitle className="text-gray-900">All Products ({products.length})</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="rounded-md border border-primary/20">
+            <div className="rounded-md border border-gray-200">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-primary/20 hover:bg-black/30">
-                    <TableHead className="text-gray-300">Name</TableHead>
-                    <TableHead className="text-gray-300">Category</TableHead>
-                    <TableHead className="text-gray-300">Price</TableHead>
-                    <TableHead className="text-gray-300">Stock</TableHead>
-                    <TableHead className="text-gray-300">Status</TableHead>
-                    <TableHead className="text-right text-gray-300">Actions</TableHead>
+                  <TableRow className="border-gray-200 hover:bg-gray-50">
+                    <TableHead className="text-gray-700">Name</TableHead>
+                    <TableHead className="text-gray-700">Category</TableHead>
+                    <TableHead className="text-gray-700">Price</TableHead>
+                    <TableHead className="text-gray-700">Stock</TableHead>
+                    <TableHead className="text-gray-700">Status</TableHead>
+                    <TableHead className="text-right text-gray-700">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {products.length === 0 ? (
-                    <TableRow className="border-primary/20">
-                      <TableCell colSpan={6} className="text-center py-8 text-gray-400">
+                    <TableRow className="border-gray-200">
+                      <TableCell colSpan={6} className="text-center py-8 text-gray-500">
                         No products found. Add your first product!
                       </TableCell>
                     </TableRow>
                   ) : (
                     products.map((product) => (
-                      <TableRow key={product.id} className="border-primary/20 hover:bg-black/30">
-                        <TableCell className="font-medium text-white">{product.name}</TableCell>
-                        <TableCell className="text-gray-300">{product.category}</TableCell>
+                      <TableRow key={product.id} className="border-gray-200 hover:bg-gray-50">
+                        <TableCell className="font-medium text-gray-900">{product.name}</TableCell>
+                        <TableCell className="text-gray-700">{product.category}</TableCell>
                         <TableCell className="text-primary">£{Number(product.price).toFixed(2)}</TableCell>
-                        <TableCell className="text-gray-300">{product.stock_quantity}</TableCell>
+                        <TableCell className="text-gray-700">{product.stock_quantity}</TableCell>
                         <TableCell>
                           <span
                             className={`px-2 py-1 rounded-full text-xs font-medium ${
                               product.active
                                 ? 'bg-primary/20 text-primary'
-                                : 'bg-zinc-800 text-gray-400'
+                                : 'bg-gray-100 text-gray-600'
                             }`}
                           >
                             {product.active ? 'Active' : 'Inactive'}
@@ -363,7 +365,7 @@ export default function AdminProductsManagement() {
                               variant="outline"
                               size="sm"
                               onClick={() => toggleActive(product)}
-                              className="border-primary/20 text-white hover:bg-zinc-800"
+                              className="border-gray-300 text-gray-700 hover:bg-gray-100"
                             >
                               {product.active ? 'Deactivate' : 'Activate'}
                             </Button>
@@ -371,7 +373,7 @@ export default function AdminProductsManagement() {
                               variant="outline"
                               size="sm"
                               onClick={() => handleEdit(product)}
-                              className="border-primary/20 text-white hover:bg-zinc-800"
+                              className="border-gray-300 text-gray-700 hover:bg-gray-100"
                             >
                               <Pencil className="h-4 w-4" />
                             </Button>
@@ -379,7 +381,7 @@ export default function AdminProductsManagement() {
                               variant="outline"
                               size="sm"
                               onClick={() => handleDelete(product.id)}
-                              className="border-red-500/20 text-red-500 hover:bg-red-500/10"
+                              className="border-red-200 text-red-600 hover:bg-red-50"
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
