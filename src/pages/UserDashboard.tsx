@@ -140,12 +140,20 @@ export default function UserDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="bg-card border-b border-border">
+      <div className="bg-black border-b border-primary/20">
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-foreground">My Dashboard</h1>
-          <Button onClick={handleLogout} variant="outline" className="gap-2">
+          <div>
+            <h1 className="text-3xl font-bold text-white">My Dashboard</h1>
+            {profile.first_name && (
+              <p className="text-primary mt-1">Welcome back, {profile.first_name}!</p>
+            )}
+          </div>
+          <Button 
+            onClick={handleLogout} 
+            className="gap-2 bg-primary hover:bg-primary/90 text-black font-semibold"
+          >
             <LogOut className="h-4 w-4" />
             Log Out
           </Button>
@@ -155,48 +163,60 @@ export default function UserDashboard() {
       <div className="container mx-auto px-4 py-8">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {/* Profile Card */}
-          <Card className="lg:col-span-1">
+          <Card className="lg:col-span-1 bg-zinc-900 border-primary/30">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-white">
                 <User className="h-5 w-5 text-primary" />
                 My Profile
               </CardTitle>
-              <CardDescription>Update your personal information</CardDescription>
+              <CardDescription className="text-gray-400">Update your personal information</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleUpdateProfile} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
+                  <Label htmlFor="firstName" className="text-gray-300">First Name</Label>
                   <Input
                     id="firstName"
                     value={profile.first_name}
                     onChange={(e) => setProfile({ ...profile, first_name: e.target.value })}
                     required
+                    className="bg-black border-primary/20 text-white"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
+                  <Label htmlFor="lastName" className="text-gray-300">Last Name</Label>
                   <Input
                     id="lastName"
                     value={profile.last_name}
                     onChange={(e) => setProfile({ ...profile, last_name: e.target.value })}
                     required
+                    className="bg-black border-primary/20 text-white"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
+                  <Label htmlFor="phone" className="text-gray-300">Phone</Label>
                   <Input
                     id="phone"
                     value={profile.phone}
                     onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
                     required
+                    className="bg-black border-primary/20 text-white"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" value={user?.email || ''} disabled />
+                  <Label htmlFor="email" className="text-gray-300">Email</Label>
+                  <Input 
+                    id="email" 
+                    value={user?.email || ''} 
+                    disabled 
+                    className="bg-black/50 border-primary/20 text-gray-400"
+                  />
                 </div>
-                <Button type="submit" disabled={updating} className="w-full">
+                <Button 
+                  type="submit" 
+                  disabled={updating} 
+                  className="w-full bg-primary hover:bg-primary/90 text-black font-semibold"
+                >
                   {updating ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -211,23 +231,22 @@ export default function UserDashboard() {
           </Card>
 
           {/* Bookings Section */}
-          <Card className="lg:col-span-2">
+          <Card className="lg:col-span-2 bg-zinc-900 border-primary/30">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-white">
                 <Calendar className="h-5 w-5 text-primary" />
                 My Bookings
               </CardTitle>
-              <CardDescription>View your upcoming and past appointments</CardDescription>
+              <CardDescription className="text-gray-400">View your upcoming and past appointments</CardDescription>
             </CardHeader>
             <CardContent>
               {bookings.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
+                <div className="text-center py-8 text-gray-400">
                   <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p>No bookings yet</p>
                   <Button
-                    variant="link"
                     onClick={() => navigate('/booking')}
-                    className="mt-2"
+                    className="mt-2 bg-primary hover:bg-primary/90 text-black font-semibold"
                   >
                     Book your first appointment
                   </Button>
@@ -237,15 +256,15 @@ export default function UserDashboard() {
                   {bookings.map((booking) => (
                     <div
                       key={booking.id}
-                      className="p-4 border border-border rounded-lg hover:border-primary transition-colors"
+                      className="p-4 border border-primary/20 rounded-lg hover:border-primary transition-colors bg-black/30"
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <p className="font-semibold text-foreground">
+                          <p className="font-semibold text-white">
                             {format(new Date(booking.booking_date), 'MMMM dd, yyyy')} at{' '}
                             {booking.booking_time}
                           </p>
-                          <p className="text-sm text-muted-foreground mt-1">
+                          <p className="text-sm text-gray-400 mt-1">
                             Services:{' '}
                             {Array.isArray(booking.services)
                               ? booking.services.map((s: any) => s.name).join(', ')
@@ -258,17 +277,17 @@ export default function UserDashboard() {
                               ? 'bg-primary/20 text-primary'
                               : booking.status === 'pending'
                               ? 'bg-yellow-500/20 text-yellow-600'
-                              : 'bg-muted text-muted-foreground'
+                              : 'bg-zinc-800 text-gray-400'
                           }`}
                         >
                           {booking.status}
                         </span>
                       </div>
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-muted-foreground">
+                        <span className="text-gray-400">
                           Payment: {booking.payment_type}
                         </span>
-                        <span className="font-semibold text-foreground">
+                        <span className="font-semibold text-primary">
                           £{booking.total_amount.toFixed(2)}
                         </span>
                       </div>
@@ -280,20 +299,23 @@ export default function UserDashboard() {
           </Card>
 
           {/* Orders Section */}
-          <Card className="lg:col-span-3">
+          <Card className="lg:col-span-3 bg-zinc-900 border-primary/30">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-white">
                 <ShoppingBag className="h-5 w-5 text-primary" />
                 My Orders
               </CardTitle>
-              <CardDescription>Track your product orders</CardDescription>
+              <CardDescription className="text-gray-400">Track your product orders</CardDescription>
             </CardHeader>
             <CardContent>
               {orders.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
+                <div className="text-center py-8 text-gray-400">
                   <ShoppingBag className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p>No orders yet</p>
-                  <Button variant="link" onClick={() => navigate('/shop')} className="mt-2">
+                  <Button 
+                    onClick={() => navigate('/shop')} 
+                    className="mt-2 bg-primary hover:bg-primary/90 text-black font-semibold"
+                  >
                     Browse our shop
                   </Button>
                 </div>
@@ -302,17 +324,17 @@ export default function UserDashboard() {
                   {orders.map((order) => (
                     <div
                       key={order.id}
-                      className="p-4 border border-border rounded-lg hover:border-primary transition-colors"
+                      className="p-4 border border-primary/20 rounded-lg hover:border-primary transition-colors bg-black/30"
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <p className="font-semibold text-foreground">
+                          <p className="font-semibold text-white">
                             Order #{order.id.slice(0, 8)}
                           </p>
-                          <p className="text-sm text-muted-foreground mt-1">
+                          <p className="text-sm text-gray-400 mt-1">
                             {format(new Date(order.created_at), 'MMMM dd, yyyy')}
                           </p>
-                          <p className="text-sm text-muted-foreground mt-1">
+                          <p className="text-sm text-gray-400 mt-1">
                             Items:{' '}
                             {Array.isArray(order.items)
                               ? order.items.map((item: any) => item.product?.title).join(', ')
@@ -325,15 +347,15 @@ export default function UserDashboard() {
                               ? 'bg-primary/20 text-primary'
                               : order.status === 'pending'
                               ? 'bg-yellow-500/20 text-yellow-600'
-                              : 'bg-muted text-muted-foreground'
+                              : 'bg-zinc-800 text-gray-400'
                           }`}
                         >
                           {order.status}
                         </span>
                       </div>
-                      <div className="flex justify-between items-center text-sm pt-2 border-t border-border">
-                        <span className="text-muted-foreground">Total</span>
-                        <span className="font-semibold text-foreground">
+                      <div className="flex justify-between items-center text-sm pt-2 border-t border-primary/20">
+                        <span className="text-gray-400">Total</span>
+                        <span className="font-semibold text-primary">
                           £{order.total_amount.toFixed(2)}
                         </span>
                       </div>
