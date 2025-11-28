@@ -157,12 +157,15 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="bg-card border-b border-border">
+      <div className="bg-black border-b border-primary/20">
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
-          <Button onClick={handleLogout} variant="outline" className="gap-2">
+          <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
+          <Button 
+            onClick={handleLogout} 
+            className="gap-2 bg-primary hover:bg-primary/90 text-black font-semibold"
+          >
             <LogOut className="h-4 w-4" />
             Log Out
           </Button>
@@ -172,43 +175,43 @@ export default function AdminDashboard() {
       <div className="container mx-auto px-4 py-8">
         {/* Stats Cards */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-          <Card>
+          <Card className="bg-zinc-900 border-primary/30">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Bookings</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-300">Total Bookings</CardTitle>
               <Calendar className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-foreground">{totalBookings}</div>
+              <div className="text-2xl font-bold text-white">{totalBookings}</div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-zinc-900 border-primary/30">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Confirmed Bookings</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-300">Confirmed Bookings</CardTitle>
               <Users className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-foreground">{confirmedBookings}</div>
+              <div className="text-2xl font-bold text-white">{confirmedBookings}</div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-zinc-900 border-primary/30">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-300">Total Orders</CardTitle>
               <ShoppingBag className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-foreground">{totalOrders}</div>
+              <div className="text-2xl font-bold text-white">{totalOrders}</div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-zinc-900 border-primary/30">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-300">Total Revenue</CardTitle>
               <TrendingUp className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-foreground">
+              <div className="text-2xl font-bold text-primary">
                 £{totalRevenue.toFixed(2)}
               </div>
             </CardContent>
@@ -216,20 +219,20 @@ export default function AdminDashboard() {
         </div>
 
         {/* Filters */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-zinc-900 border-primary/30">
           <CardHeader>
-            <CardTitle>Filters</CardTitle>
-            <CardDescription>Filter bookings by status and date range</CardDescription>
+            <CardTitle className="text-white">Filters</CardTitle>
+            <CardDescription className="text-gray-400">Filter bookings by status and date range</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-3">
               <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status" className="text-gray-300">Status</Label>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger id="status">
+                  <SelectTrigger id="status" className="bg-black border-primary/20 text-white">
                     <SelectValue placeholder="All statuses" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-zinc-900 border-primary/30">
                     <SelectItem value="all">All Statuses</SelectItem>
                     <SelectItem value="pending">Pending</SelectItem>
                     <SelectItem value="confirmed">Confirmed</SelectItem>
@@ -240,22 +243,24 @@ export default function AdminDashboard() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="dateFrom">Date From</Label>
+                <Label htmlFor="dateFrom" className="text-gray-300">Date From</Label>
                 <Input
                   id="dateFrom"
                   type="date"
                   value={dateFrom}
                   onChange={(e) => setDateFrom(e.target.value)}
+                  className="bg-black border-primary/20 text-white"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="dateTo">Date To</Label>
+                <Label htmlFor="dateTo" className="text-gray-300">Date To</Label>
                 <Input
                   id="dateTo"
                   type="date"
                   value={dateTo}
                   onChange={(e) => setDateTo(e.target.value)}
+                  className="bg-black border-primary/20 text-white"
                 />
               </div>
             </div>
@@ -263,50 +268,50 @@ export default function AdminDashboard() {
         </Card>
 
         {/* Bookings Table */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-zinc-900 border-primary/30">
           <CardHeader>
-            <CardTitle>All Bookings</CardTitle>
-            <CardDescription>View and manage all customer bookings</CardDescription>
+            <CardTitle className="text-white">All Bookings</CardTitle>
+            <CardDescription className="text-gray-400">View and manage all customer bookings</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="rounded-md border">
+            <div className="rounded-md border border-primary/20">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Services</TableHead>
-                    <TableHead>Date & Time</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Payment</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
+                  <TableRow className="border-primary/20 hover:bg-black/30">
+                    <TableHead className="text-gray-300">Customer</TableHead>
+                    <TableHead className="text-gray-300">Services</TableHead>
+                    <TableHead className="text-gray-300">Date & Time</TableHead>
+                    <TableHead className="text-gray-300">Status</TableHead>
+                    <TableHead className="text-gray-300">Payment</TableHead>
+                    <TableHead className="text-right text-gray-300">Amount</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredBookings.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                    <TableRow className="border-primary/20">
+                      <TableCell colSpan={6} className="text-center py-8 text-gray-400">
                         No bookings found
                       </TableCell>
                     </TableRow>
                   ) : (
                     filteredBookings.map((booking) => (
-                      <TableRow key={booking.id}>
+                      <TableRow key={booking.id} className="border-primary/20 hover:bg-black/30">
                         <TableCell>
                           <div>
-                            <p className="font-medium">
+                            <p className="font-medium text-white">
                               {booking.guest_name || 'Registered User'}
                             </p>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm text-gray-400">
                               {booking.guest_email || 'N/A'}
                             </p>
                           </div>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="text-gray-300">
                           {Array.isArray(booking.services)
                             ? booking.services.map((s: any) => s.name).join(', ')
                             : 'N/A'}
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="text-gray-300">
                           {format(new Date(booking.booking_date), 'MMM dd, yyyy')} at{' '}
                           {booking.booking_time}
                         </TableCell>
@@ -317,14 +322,14 @@ export default function AdminDashboard() {
                                 ? 'bg-primary/20 text-primary'
                                 : booking.status === 'pending'
                                 ? 'bg-yellow-500/20 text-yellow-600'
-                                : 'bg-muted text-muted-foreground'
+                                : 'bg-zinc-800 text-gray-400'
                             }`}
                           >
                             {booking.status}
                           </span>
                         </TableCell>
-                        <TableCell className="capitalize">{booking.payment_type}</TableCell>
-                        <TableCell className="text-right font-medium">
+                        <TableCell className="capitalize text-gray-300">{booking.payment_type}</TableCell>
+                        <TableCell className="text-right font-medium text-primary">
                           £{Number(booking.total_amount).toFixed(2)}
                         </TableCell>
                       </TableRow>
@@ -337,44 +342,44 @@ export default function AdminDashboard() {
         </Card>
 
         {/* Orders Table */}
-        <Card>
+        <Card className="bg-zinc-900 border-primary/30">
           <CardHeader>
-            <CardTitle>All Orders</CardTitle>
-            <CardDescription>View all product orders</CardDescription>
+            <CardTitle className="text-white">All Orders</CardTitle>
+            <CardDescription className="text-gray-400">View all product orders</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="rounded-md border">
+            <div className="rounded-md border border-primary/20">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Order ID</TableHead>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Items</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
+                  <TableRow className="border-primary/20 hover:bg-black/30">
+                    <TableHead className="text-gray-300">Order ID</TableHead>
+                    <TableHead className="text-gray-300">Customer</TableHead>
+                    <TableHead className="text-gray-300">Items</TableHead>
+                    <TableHead className="text-gray-300">Date</TableHead>
+                    <TableHead className="text-gray-300">Status</TableHead>
+                    <TableHead className="text-right text-gray-300">Amount</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {orders.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                    <TableRow className="border-primary/20">
+                      <TableCell colSpan={6} className="text-center py-8 text-gray-400">
                         No orders found
                       </TableCell>
                     </TableRow>
                   ) : (
                     orders.map((order) => (
-                      <TableRow key={order.id}>
-                        <TableCell className="font-mono text-sm">
+                      <TableRow key={order.id} className="border-primary/20 hover:bg-black/30">
+                        <TableCell className="font-mono text-sm text-gray-300">
                           #{order.id.slice(0, 8)}
                         </TableCell>
-                        <TableCell>{order.guest_email || 'Registered User'}</TableCell>
-                        <TableCell>
+                        <TableCell className="text-gray-300">{order.guest_email || 'Registered User'}</TableCell>
+                        <TableCell className="text-gray-300">
                           {Array.isArray(order.items)
                             ? order.items.length + ' item(s)'
                             : 'N/A'}
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="text-gray-300">
                           {format(new Date(order.created_at), 'MMM dd, yyyy')}
                         </TableCell>
                         <TableCell>
@@ -384,13 +389,13 @@ export default function AdminDashboard() {
                                 ? 'bg-primary/20 text-primary'
                                 : order.status === 'pending'
                                 ? 'bg-yellow-500/20 text-yellow-600'
-                                : 'bg-muted text-muted-foreground'
+                                : 'bg-zinc-800 text-gray-400'
                             }`}
                           >
                             {order.status}
                           </span>
                         </TableCell>
-                        <TableCell className="text-right font-medium">
+                        <TableCell className="text-right font-medium text-primary">
                           £{Number(order.total_amount).toFixed(2)}
                         </TableCell>
                       </TableRow>
