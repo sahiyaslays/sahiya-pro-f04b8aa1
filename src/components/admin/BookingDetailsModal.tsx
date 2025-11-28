@@ -1,17 +1,163 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 interface BookingDetailsModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   booking: any;
+  onStatusUpdate?: () => void;
 }
 
-export function BookingDetailsModal({ open, onOpenChange, booking }: BookingDetailsModalProps) {
+export function BookingDetailsModal({ open, onOpenChange, booking, onStatusUpdate }: BookingDetailsModalProps) {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showRejectDialog, setShowRejectDialog] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState("");
+
   if (!booking) return null;
 
   const services = Array.isArray(booking.services) ? booking.services : [];
+  
+  const handleAcceptBooking = async () => {
+    setIsProcessing(true);
+    try {
+      // Update booking status
+      const { error: updateError } = await supabase
+        .from('bookings')
+        .update({ status: 'confirmed' })
+        .eq('id', booking.id);
+
+      if (updateError) throw updateError;
+
+      // Send confirmation email
+      const { error: emailError } = await supabase.functions.invoke('send-booking-email', {
+        body: {
+          emailType: 'confirmation',
+          bookingId: booking.id,
+          customerName: booking.guest_name,
+          customerEmail: booking.guest_email,
+          customerPhone: booking.guest_phone,
+          services: services,
+          bookingDate: new Date(booking.booking_date).toLocaleDateString('en-GB', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          }),
+          bookingTime: booking.booking_time,
+          totalAmount: booking.total_amount,
+          paymentType: booking.payment_type,
+          specialRequests: booking.special_requests,
+          stylistId: booking.stylist_id,
+        }
+      });
+
+      if (emailError) {
+        console.error('Email error:', emailError);
+        toast({
+          title: "Booking Confirmed",
+          description: "Booking status updated but email notification failed. Please contact customer directly.",
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Booking Accepted",
+          description: "Confirmation email sent to customer successfully.",
+        });
+      }
+
+      onStatusUpdate?.();
+      onOpenChange(false);
+    } catch (error: any) {
+      console.error('Error accepting booking:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to accept booking",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleRejectBooking = async () => {
+    if (!rejectionReason.trim()) {
+      toast({
+        title: "Rejection Reason Required",
+        description: "Please provide a reason for rejecting this booking.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      // Update booking status
+      const { error: updateError } = await supabase
+        .from('bookings')
+        .update({ status: 'cancelled' })
+        .eq('id', booking.id);
+
+      if (updateError) throw updateError;
+
+      // Send rejection email
+      const { error: emailError } = await supabase.functions.invoke('send-booking-email', {
+        body: {
+          emailType: 'rejection',
+          bookingId: booking.id,
+          customerName: booking.guest_name,
+          customerEmail: booking.guest_email,
+          customerPhone: booking.guest_phone,
+          services: services,
+          bookingDate: new Date(booking.booking_date).toLocaleDateString('en-GB', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          }),
+          bookingTime: booking.booking_time,
+          totalAmount: booking.total_amount,
+          paymentType: booking.payment_type,
+          specialRequests: booking.special_requests,
+          rejectionReason: rejectionReason,
+        }
+      });
+
+      if (emailError) {
+        console.error('Email error:', emailError);
+        toast({
+          title: "Booking Rejected",
+          description: "Booking status updated but email notification failed. Please contact customer directly.",
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Booking Rejected",
+          description: "Rejection email sent to customer successfully.",
+        });
+      }
+
+      setShowRejectDialog(false);
+      setRejectionReason("");
+      onStatusUpdate?.();
+      onOpenChange(false);
+    } catch (error: any) {
+      console.error('Error rejecting booking:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to reject booking",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
   
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -174,8 +320,65 @@ export function BookingDetailsModal({ open, onOpenChange, booking }: BookingDeta
               </div>
             </div>
           </div>
+
+          {/* Action Buttons - Only show for pending bookings */}
+          {booking.status === 'pending' && (
+            <>
+              <Separator />
+              <div className="flex gap-3 justify-end">
+                <Button
+                  onClick={() => setShowRejectDialog(true)}
+                  disabled={isProcessing}
+                  variant="destructive"
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  {isProcessing ? "Processing..." : "Reject Booking"}
+                </Button>
+                <Button
+                  onClick={handleAcceptBooking}
+                  disabled={isProcessing}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                >
+                  {isProcessing ? "Processing..." : "Accept Booking"}
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </DialogContent>
+
+      {/* Rejection Reason Dialog */}
+      <AlertDialog open={showRejectDialog} onOpenChange={setShowRejectDialog}>
+        <AlertDialogContent className="bg-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-gray-900">Reject Booking</AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-600">
+              Please provide a reason for rejecting this booking. This will be sent to the customer.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <Textarea
+            placeholder="e.g., Unavailable on that date, Fully booked, etc."
+            value={rejectionReason}
+            onChange={(e) => setRejectionReason(e.target.value)}
+            className="min-h-[100px] bg-white text-gray-900 border-gray-300"
+          />
+          <AlertDialogFooter>
+            <AlertDialogCancel 
+              disabled={isProcessing}
+              className="bg-gray-100 text-gray-900 hover:bg-gray-200"
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleRejectBooking}
+              disabled={isProcessing || !rejectionReason.trim()}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              {isProcessing ? "Processing..." : "Send Rejection"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Dialog>
   );
 }
