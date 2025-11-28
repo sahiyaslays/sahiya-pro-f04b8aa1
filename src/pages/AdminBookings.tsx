@@ -6,6 +6,7 @@ import AdminSidebar from "@/components/AdminSidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { BookingDetailsModal } from "@/components/admin/BookingDetailsModal";
 import { Loader2 } from "lucide-react";
 
@@ -93,11 +94,11 @@ export default function AdminBookings() {
       <AdminSidebar />
       <div className="flex-1 p-8">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">All Bookings</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">Recent Bookings</h1>
 
           <Card className="bg-white shadow-sm border border-gray-200">
             <CardHeader className="border-b border-gray-200">
-              <CardTitle className="text-xl text-gray-900">Booking Management</CardTitle>
+              <CardTitle className="text-xl text-gray-900">All Bookings ({bookings.length})</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               <div className="overflow-x-auto">
@@ -110,12 +111,13 @@ export default function AdminBookings() {
                       <TableHead className="text-gray-700 font-semibold">Time</TableHead>
                       <TableHead className="text-gray-700 font-semibold">Status</TableHead>
                       <TableHead className="text-gray-700 font-semibold">Amount</TableHead>
+                      <TableHead className="text-gray-700 font-semibold text-right">Action</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {bookings.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={6} className="text-center text-gray-500 py-8">
+                        <TableCell colSpan={7} className="text-center text-gray-500 py-8">
                           No bookings found
                         </TableCell>
                       </TableRow>
@@ -123,8 +125,7 @@ export default function AdminBookings() {
                       bookings.map((booking) => (
                         <TableRow 
                           key={booking.id}
-                          onClick={() => handleRowClick(booking)}
-                          className="cursor-pointer hover:bg-gray-50 transition-colors"
+                          className="hover:bg-gray-50 transition-colors"
                         >
                           <TableCell className="font-medium text-gray-900">
                             {booking.guest_name || 'N/A'}
@@ -141,6 +142,15 @@ export default function AdminBookings() {
                           </TableCell>
                           <TableCell className="font-semibold text-gray-900">
                             ${booking.total_amount.toFixed(2)}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              size="sm"
+                              onClick={() => handleRowClick(booking)}
+                              className="bg-[#D4AF37] hover:bg-[#B8941F] text-white"
+                            >
+                              Details
+                            </Button>
                           </TableCell>
                         </TableRow>
                       ))
