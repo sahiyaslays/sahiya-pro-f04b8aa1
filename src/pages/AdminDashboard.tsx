@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import AdminSidebar from '@/components/AdminSidebar';
 import {
   Table,
   TableBody,
@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, LogOut, Calendar, ShoppingBag, TrendingUp, Users } from 'lucide-react';
+import { Loader2, Calendar, ShoppingBag, TrendingUp, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 
@@ -101,9 +101,6 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleLogout = async () => {
-    await signOut();
-  };
 
   // Calculate stats
   const totalBookings = bookings.length;
@@ -130,22 +127,12 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Header */}
-      <div className="bg-black border-b border-primary/20">
-        <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
-          <Button 
-            onClick={handleLogout} 
-            className="gap-2 bg-primary hover:bg-primary/90 text-black font-semibold"
-          >
-            <LogOut className="h-4 w-4" />
-            Log Out
-          </Button>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-black flex">
+      <AdminSidebar />
+      
+      <div className="flex-1 p-8 overflow-auto">
+        <h1 className="text-3xl font-bold text-white mb-8">Dashboard Overview</h1>
+        
         {/* Stats Cards */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
           <Card className="bg-zinc-900 border-primary/30">
@@ -191,60 +178,10 @@ export default function AdminDashboard() {
           </Card>
         </div>
 
-        {/* Filters */}
+        {/* Recent Bookings Table */}
         <Card className="mb-8 bg-zinc-900 border-primary/30">
           <CardHeader>
-            <CardTitle className="text-white">Filters</CardTitle>
-            <CardDescription className="text-gray-400">Filter bookings by status and date range</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="space-y-2">
-                <Label htmlFor="status" className="text-gray-300">Status</Label>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger id="status" className="bg-black border-primary/20 text-white">
-                    <SelectValue placeholder="All statuses" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-zinc-900 border-primary/30">
-                    <SelectItem value="all">All Statuses</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="confirmed">Confirmed</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
-                    <SelectItem value="cancelled">Cancelled</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="dateFrom" className="text-gray-300">Date From</Label>
-                <Input
-                  id="dateFrom"
-                  type="date"
-                  value={dateFrom}
-                  onChange={(e) => setDateFrom(e.target.value)}
-                  className="bg-black border-primary/20 text-white"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="dateTo" className="text-gray-300">Date To</Label>
-                <Input
-                  id="dateTo"
-                  type="date"
-                  value={dateTo}
-                  onChange={(e) => setDateTo(e.target.value)}
-                  className="bg-black border-primary/20 text-white"
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Bookings Table */}
-        <Card className="mb-8 bg-zinc-900 border-primary/30">
-          <CardHeader>
-            <CardTitle className="text-white">All Bookings</CardTitle>
-            <CardDescription className="text-gray-400">View and manage all customer bookings</CardDescription>
+            <CardTitle className="text-white">Recent Bookings</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="rounded-md border border-primary/20">
@@ -260,14 +197,14 @@ export default function AdminDashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredBookings.length === 0 ? (
+                  {bookings.slice(0, 10).length === 0 ? (
                     <TableRow className="border-primary/20">
                       <TableCell colSpan={6} className="text-center py-8 text-gray-400">
                         No bookings found
                       </TableCell>
                     </TableRow>
                   ) : (
-                    filteredBookings.map((booking) => (
+                    bookings.slice(0, 10).map((booking) => (
                       <TableRow key={booking.id} className="border-primary/20 hover:bg-black/30">
                         <TableCell>
                           <div>
@@ -314,11 +251,10 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
 
-        {/* Orders Table */}
+        {/* Recent Orders Table */}
         <Card className="bg-zinc-900 border-primary/30">
           <CardHeader>
-            <CardTitle className="text-white">All Orders</CardTitle>
-            <CardDescription className="text-gray-400">View all product orders</CardDescription>
+            <CardTitle className="text-white">Recent Orders</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="rounded-md border border-primary/20">
@@ -334,14 +270,14 @@ export default function AdminDashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {orders.length === 0 ? (
+                  {orders.slice(0, 10).length === 0 ? (
                     <TableRow className="border-primary/20">
                       <TableCell colSpan={6} className="text-center py-8 text-gray-400">
                         No orders found
                       </TableCell>
                     </TableRow>
                   ) : (
-                    orders.map((order) => (
+                    orders.slice(0, 10).map((order) => (
                       <TableRow key={order.id} className="border-primary/20 hover:bg-black/30">
                         <TableCell className="font-mono text-sm text-gray-300">
                           #{order.id.slice(0, 8)}

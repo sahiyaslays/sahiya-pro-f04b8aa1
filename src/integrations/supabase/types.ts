@@ -119,6 +119,45 @@ export type Database = {
         }
         Relationships: []
       }
+      products: {
+        Row: {
+          active: boolean | null
+          category: string
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          price: number
+          stock_quantity: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          category: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          price: number
+          stock_quantity?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          price?: number
+          stock_quantity?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -143,6 +182,45 @@ export type Database = {
           last_name?: string
           phone?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          active: boolean | null
+          category: string
+          created_at: string | null
+          description: string | null
+          duration: number
+          id: string
+          image_url: string | null
+          name: string
+          price: number
+          updated_at: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          category: string
+          created_at?: string | null
+          description?: string | null
+          duration: number
+          id?: string
+          image_url?: string | null
+          name: string
+          price: number
+          updated_at?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          duration?: number
+          id?: string
+          image_url?: string | null
+          name?: string
+          price?: number
+          updated_at?: string | null
         }
         Relationships: []
       }
