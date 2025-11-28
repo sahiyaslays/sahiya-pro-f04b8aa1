@@ -30,10 +30,10 @@ export default function AdminSidebar() {
   };
 
   return (
-    <div className="w-64 min-h-screen bg-zinc-900 border-r border-primary/20 flex flex-col">
-      <div className="p-6 border-b border-primary/20">
+    <div className="w-64 min-h-screen bg-white border-r border-gray-200 flex flex-col shadow-sm">
+      <div className="p-6 border-b border-gray-200">
         <h2 className="text-2xl font-bold text-primary">Sahiya Slays</h2>
-        <p className="text-sm text-gray-400 mt-1">Admin Panel</p>
+        <p className="text-sm text-gray-600 mt-1">Admin Panel</p>
       </div>
 
       <nav className="flex-1 p-4 space-y-2">
@@ -45,8 +45,8 @@ export default function AdminSidebar() {
                 variant="ghost"
                 className={`w-full justify-start gap-3 ${
                   isActive(item.path)
-                    ? 'bg-primary/20 text-primary hover:bg-primary/30'
-                    : 'text-gray-300 hover:bg-zinc-800 hover:text-white'
+                    ? 'bg-primary/10 text-primary hover:bg-primary/20'
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
                 }`}
               >
                 <Icon className="h-5 w-5" />
@@ -57,11 +57,11 @@ export default function AdminSidebar() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-primary/20">
+      <div className="p-4 border-t border-gray-200">
         <Button
           onClick={signOut}
           variant="outline"
-          className="w-full gap-2 border-primary/20 text-white hover:bg-zinc-800"
+          className="w-full gap-2 border-gray-200 text-gray-700 hover:bg-gray-100"
         >
           <LogOut className="h-4 w-4" />
           Log Out
