@@ -1,5 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BookingData, BookingStep } from '@/types/booking';
+import { useSearchParams } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import { ProgressBar } from '@/components/booking/ProgressBar';
 import { BookingSummary } from '@/components/booking/BookingSummary';
@@ -11,7 +17,10 @@ import { ReviewAndPay } from '@/components/booking/ReviewAndPay';
 import { BookingSuccess } from '@/components/booking/BookingSuccess';
 
 const Booking = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [currentStep, setCurrentStep] = useState<BookingStep>(1);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [bookingReference, setBookingReference] = useState('');
   const [bookingData, setBookingData] = useState<BookingData>({
     services: [],
     customerDetails: {
@@ -22,6 +31,107 @@ const Booking = () => {
       wantsReminders: false
     }
   });
+
+  // Handle successful booking return from Stripe
+  useEffect(() => {
+    const success = searchParams.get('success');
+    const bookingId = searchParams.get('bookingId');
+
+    if (success === 'true' && bookingId) {
+      handleBookingSuccess(bookingId);
+      // Clean up URL
+      setSearchParams({});
+    }
+  }, [searchParams]);
+
+  const handleBookingSuccess = async (bookingId: string) => {
+    try {
+      // Fetch booking details
+      const { data: booking, error } = await supabase
+        .from('bookings')
+        .select('*')
+        .eq('id', bookingId)
+        .single();
+
+      if (error) throw error;
+
+      setBookingReference(bookingId.substring(0, 8).toUpperCase());
+      
+      // Send confirmation emails
+      try {
+        await supabase.functions.invoke('send-booking-email', {
+          body: {
+            type: 'booking_request',
+            bookingId: bookingId,
+            customerEmail: booking.guest_email,
+            customerName: booking.guest_name,
+            services: booking.services,
+            bookingDate: booking.booking_date,
+            bookingTime: booking.booking_time,
+            totalAmount: booking.total_amount,
+            paymentType: booking.payment_type,
+            specialRequests: booking.special_requests,
+            stylistId: booking.stylist_id,
+          }
+        });
+      } catch (emailError) {
+        console.error('Email error:', emailError);
+      }
+
+      // Try to create account for guest users
+      if (booking.guest_email && !booking.user_id) {
+        try {
+          await createGuestAccount(booking.guest_email, booking.guest_name);
+        } catch (accountError) {
+          console.error('Account creation error:', accountError);
+        }
+      }
+
+      setShowSuccessModal(true);
+    } catch (error) {
+      console.error('Error handling booking success:', error);
+      toast.error('Failed to load booking details');
+    }
+  };
+
+  const createGuestAccount = async (email: string, name: string) => {
+    try {
+      // Generate random password
+      const randomPassword = Math.random().toString(36).slice(-12) + 'A1!';
+      
+      const names = name.split(' ');
+      const firstName = names[0] || '';
+      const lastName = names.slice(1).join(' ') || '';
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password: randomPassword,
+        options: {
+          emailRedirectTo: `${window.location.origin}/user-dashboard`,
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            phone: '',
+          },
+        },
+      });
+
+      if (error) {
+        // If account already exists, that's okay
+        if (error.message.includes('already registered')) {
+          console.log('Account already exists for:', email);
+          return;
+        }
+        throw error;
+      }
+
+      console.log('Account created successfully for:', email);
+      toast.success('Account created! Check your email to set your password.');
+    } catch (error: any) {
+      console.error('Account creation error:', error);
+      throw error;
+    }
+  };
 
   const updateBookingData = (data: Partial<BookingData>) => {
     setBookingData(prev => ({ ...prev, ...data }));
@@ -99,6 +209,51 @@ const Booking = () => {
   return (
     <div className="min-h-screen bg-gray-50 font-abel">
       <Header />
+
+      {/* Success Modal */}
+      <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
+        <DialogContent className="sm:max-w-md">
+          <div className="flex flex-col items-center text-center space-y-4 py-6">
+            <div className="h-16 w-16 bg-green-100 rounded-full flex items-center justify-center">
+              <CheckCircle className="h-10 w-10 text-green-600" />
+            </div>
+            <div className="space-y-2">
+              <h2 className="text-2xl font-semibold text-foreground">
+                Booking Request Submitted!
+              </h2>
+              <p className="text-muted-foreground">
+                We'll review your booking and send confirmation to your email.
+              </p>
+              {bookingReference && (
+                <p className="text-sm text-muted-foreground">
+                  Reference: <span className="font-mono font-semibold">{bookingReference}</span>
+                </p>
+              )}
+            </div>
+            <div className="flex gap-3 w-full">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowSuccessModal(false);
+                  window.location.href = '/';
+                }}
+                className="flex-1"
+              >
+                Back to Home
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowSuccessModal(false);
+                  window.location.href = '/user-dashboard';
+                }}
+                className="flex-1 bg-foreground text-background hover:bg-foreground/90"
+              >
+                View Dashboard
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
       
       {/* Add spacing for header */}
       <div className="pt-16">
