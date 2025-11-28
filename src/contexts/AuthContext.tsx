@@ -123,7 +123,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(null);
       setSession(null);
       toast.success('Signed out successfully');
-      navigate('/auth');
+      navigate('/');
     } catch (error: any) {
       console.error('Sign out error:', error);
       toast.error('Failed to sign out');
