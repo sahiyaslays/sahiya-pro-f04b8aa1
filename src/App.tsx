@@ -29,6 +29,8 @@ import OrderConfirmation from "./pages/OrderConfirmation";
 import NotFound from "./pages/NotFound";
 import TermsConditions from "./pages/TermsConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import UserDashboard from "./pages/UserDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -75,6 +77,8 @@ const App = () => {
                 <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
                 <Route path="/terms-and-conditions" element={<TermsConditions />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/user-dashboard" element={<UserDashboard />} />
+                <Route path="/admin" element={<AdminDashboard />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
