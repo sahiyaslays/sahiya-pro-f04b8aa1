@@ -34,7 +34,9 @@ export function CustomerDetailsStep({
       newErrors.mobile = 'Please enter a valid UK mobile number';
     }
 
-    if (details.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(details.email)) {
+    if (!details.email || !details.email.trim()) {
+      newErrors.email = 'Email address is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(details.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
 
@@ -113,9 +115,11 @@ export function CustomerDetailsStep({
             )}
           </div>
 
-          {/* Email (Optional) */}
+          {/* Email */}
           <div className="space-y-1 md:space-y-2">
-            <Label htmlFor="email" className="text-xs md:text-sm">Email Address (Optional)</Label>
+            <Label htmlFor="email" className="text-xs md:text-sm">
+              Email Address <span className="text-red-500">*</span>
+            </Label>
             <Input
               id="email"
               type="email"
