@@ -167,6 +167,7 @@ export default function AdminBookings() {
         open={modalOpen}
         onOpenChange={setModalOpen}
         booking={selectedBooking}
+        onStatusUpdate={fetchBookings}
       />
     </div>
   );
