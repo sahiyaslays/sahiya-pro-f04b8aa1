@@ -4,9 +4,16 @@ import { Button } from '@/components/ui/button';
 import { useEditMode } from '@/contexts/EditModeContext';
 import { HistoryPanel } from '@/components/HistoryPanel';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const EditModeButton: React.FC = () => {
   const { isEditMode, toggleEditMode, saveChanges, hasChanges, toggleHistory, showHistory } = useEditMode();
+  const { user } = useAuth();
+  
+  // Only show for admin user
+  if (!user || user.email !== 'sahiyaslays@gmail.com') {
+    return null;
+  }
 
   return (
     <>
