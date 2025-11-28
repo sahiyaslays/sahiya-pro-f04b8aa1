@@ -63,41 +63,14 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (!authLoading && !user) {
       navigate('/auth');
-    } else if (user && user.email !== 'sahiyaslays@gmail.com') {
+    } else if (user && user.email?.toLowerCase() !== 'sahiyaslays@gmail.com') {
       toast.error('Access denied. Admin only.');
       navigate('/user-dashboard');
     } else if (user) {
-      checkAdminRole();
+      setIsAdmin(true);
+      fetchAdminData();
     }
   }, [user, authLoading, navigate]);
-
-  const checkAdminRole = async () => {
-    if (!user) return;
-
-    // Check if user has admin role
-    const { data, error } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .eq('role', 'admin')
-      .maybeSingle();
-
-    if (error) {
-      console.error('Error checking admin role:', error);
-      toast.error('Access denied');
-      navigate('/user-dashboard');
-      return;
-    }
-
-    if (!data) {
-      toast.error('Access denied. Admin only.');
-      navigate('/user-dashboard');
-      return;
-    }
-
-    setIsAdmin(true);
-    fetchAdminData();
-  };
 
   const fetchAdminData = async () => {
     try {
