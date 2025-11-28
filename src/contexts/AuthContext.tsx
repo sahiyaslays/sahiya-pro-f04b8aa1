@@ -119,16 +119,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      
+      // Clear local state first
       setUser(null);
       setSession(null);
+      
+      // Attempt to sign out from Supabase
+      // Even if this fails (e.g., session already expired), we've cleared local state
+      await supabase.auth.signOut();
+      
       toast.success('Signed out successfully');
       navigate('/');
     } catch (error: any) {
       console.error('Sign out error:', error);
-      toast.error('Failed to sign out');
+      // Still navigate away even if server signout failed
+      toast.success('Signed out successfully');
+      navigate('/');
     }
   };
 
