@@ -325,21 +325,37 @@ const Services = () => {
       <section className="py-16 px-4">
         <div className="max-w-[1040px] mx-auto text-center space-y-12">
           <div>
-            <h2 className="text-2xl md:text-3xl font-normal tracking-[0.15em] mb-6 text-foreground uppercase">
+            <EditableText
+              id="cancellation-policy-title"
+              as="h2"
+              className="text-2xl md:text-3xl font-normal tracking-[0.15em] mb-6 text-foreground uppercase"
+            >
               CANCELLATION POLICY
-            </h2>
-            <p className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto">
+            </EditableText>
+            <EditableText
+              id="cancellation-policy-text"
+              as="p"
+              className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto"
+            >
               At Sahiya, we kindly request at least 48 hours' notice for cancellations or rescheduling. Since services are reserved just for you, a cancellation fee may apply. We may request a deposit to secure bookings; deposits are used toward your final bill and are non-refundable for late cancellations or no-shows. Thank you for your understanding and support.
-            </p>
+            </EditableText>
           </div>
           
           <div>
-            <h2 className="text-2xl md:text-3xl font-normal tracking-[0.15em] mb-6 text-foreground uppercase">
+            <EditableText
+              id="allergy-testing-policy-title"
+              as="h2"
+              className="text-2xl md:text-3xl font-normal tracking-[0.15em] mb-6 text-foreground uppercase"
+            >
               ALLERGY TESTING POLICY
-            </h2>
-            <p className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto">
+            </EditableText>
+            <EditableText
+              id="allergy-testing-policy-text"
+              as="p"
+              className="text-base md:text-lg text-foreground leading-relaxed max-w-3xl mx-auto"
+            >
               For new colour clients at Sahiya, please attend the salon at least 48 hours before your appointment for a complimentary skin allergy test.
-            </p>
+            </EditableText>
           </div>
         </div>
       </section>
