@@ -121,7 +121,7 @@ const Services = () => {
           <div className="relative max-w-sm mx-auto">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
-              placeholder="Search services..."
+              placeholder={String(localStorage.getItem('editableContent') ? JSON.parse(localStorage.getItem('editableContent') || '{}')['search-placeholder'] || 'Search services...' : 'Search services...')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 h-9 text-sm bg-white"
@@ -141,7 +141,7 @@ const Services = () => {
               size="sm"
               className="text-xs tracking-wider uppercase transition-all duration-200 whitespace-nowrap flex-shrink-0"
             >
-              ALL SERVICES
+              <EditableText id="nav-all-services">ALL SERVICES</EditableText>
             </Button>
             {servicesData.map((category) => (
               <Button
@@ -151,7 +151,7 @@ const Services = () => {
                 size="sm"
                 className="text-xs tracking-wider uppercase transition-all duration-200 whitespace-nowrap flex-shrink-0"
               >
-                {category.title}
+                <EditableText id={`nav-category-${category.id}`}>{category.title}</EditableText>
               </Button>
             ))}
           </div>
@@ -165,9 +165,13 @@ const Services = () => {
             <div key={category.id} className="space-y-6">
               {/* Category Header */}
               <div className="w-full bg-foreground py-2.5">
-                <h2 className="text-center text-background text-lg md:text-xl font-normal tracking-[0.15em] uppercase">
+                <EditableText 
+                  id={`category-header-${category.id}`}
+                  as="h2"
+                  className="text-center text-background text-lg md:text-xl font-normal tracking-[0.15em] uppercase"
+                >
                   {category.title}
-                </h2>
+                </EditableText>
               </div>
 
               {/* Subcategories */}
@@ -175,9 +179,13 @@ const Services = () => {
                 <div key={subcategory.id} className="space-y-4">
                   {/* Subcategory Header */}
                   <div className="text-center">
-                    <h3 className="text-base md:text-lg font-normal tracking-[0.1em] text-foreground uppercase mb-3">
+                    <EditableText
+                      id={`subcategory-header-${subcategory.id}`}
+                      as="h3"
+                      className="text-base md:text-lg font-normal tracking-[0.1em] text-foreground uppercase mb-3"
+                    >
                       {subcategory.title}
-                    </h3>
+                    </EditableText>
                     <div className="w-12 h-[1px] bg-primary mx-auto"></div>
                   </div>
 
