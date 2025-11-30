@@ -15,7 +15,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
   className,
   as: Component = 'span'
 }) => {
-  const { isEditMode, editedContent, updateContent } = useEditMode();
+  const { isEditMode, editedContent, updateContent, highlightMode } = useEditMode();
   const [isEditing, setIsEditing] = useState(false);
   const [tempContent, setTempContent] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -114,7 +114,8 @@ export const EditableText: React.FC<EditableTextProps> = ({
       data-edit-id={id}
       className={cn(
         className,
-        isEditMode && "cursor-pointer hover:bg-primary/10 hover:outline hover:outline-2 hover:outline-primary/30 rounded transition-all duration-200"
+        isEditMode && "cursor-pointer hover:bg-primary/10 hover:outline hover:outline-2 hover:outline-primary/30 rounded transition-all duration-200",
+        highlightMode && !isEditMode && "outline outline-2 outline-primary/50 bg-primary/5 rounded animate-pulse shadow-lg shadow-primary/20"
       )}
       onClick={handleClick}
     >

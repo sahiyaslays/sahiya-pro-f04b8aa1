@@ -18,6 +18,8 @@ interface EditModeContextType {
   restoreFromHistory: (historyItem: ChangeHistory) => void;
   showHistory: boolean;
   toggleHistory: () => void;
+  highlightMode: boolean;
+  toggleHighlightMode: () => void;
 }
 
 const EditModeContext = createContext<EditModeContextType | undefined>(undefined);
@@ -41,6 +43,7 @@ export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) 
   const [showHistory, setShowHistory] = useState(false);
   const [history, setHistory] = useState<ChangeHistory[]>([]);
   const [persistedContent, setPersistedContent] = useState<Record<string, string>>({});
+  const [highlightMode, setHighlightMode] = useState(false);
 
   // Load persisted content and history on mount
   useEffect(() => {
@@ -86,6 +89,10 @@ export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) 
 
   const toggleHistory = () => {
     setShowHistory(!showHistory);
+  };
+
+  const toggleHighlightMode = () => {
+    setHighlightMode(!highlightMode);
   };
 
   const updateContent = (id: string, content: string) => {
@@ -176,6 +183,8 @@ export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) 
         restoreFromHistory,
         showHistory,
         toggleHistory,
+        highlightMode,
+        toggleHighlightMode,
       }}
     >
       {children}
