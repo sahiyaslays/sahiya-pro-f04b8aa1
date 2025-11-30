@@ -1,5 +1,5 @@
 import React from 'react';
-import { Edit3, Save, X, History } from 'lucide-react';
+import { Edit3, Save, X, History, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEditMode } from '@/contexts/EditModeContext';
 import { HistoryPanel } from '@/components/HistoryPanel';
@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 
 export const EditModeButton: React.FC = () => {
-  const { isEditMode, toggleEditMode, saveChanges, hasChanges, toggleHistory, showHistory } = useEditMode();
+  const { isEditMode, toggleEditMode, saveChanges, hasChanges, toggleHistory, showHistory, highlightMode, toggleHighlightMode } = useEditMode();
   const { user } = useAuth();
   
   // Only show for admin user
@@ -34,6 +34,25 @@ export const EditModeButton: React.FC = () => {
             <X className="h-5 w-5" />
           ) : (
             <Edit3 className="h-5 w-5" />
+          )}
+        </Button>
+
+        {/* Highlight Mode Button */}
+        <Button
+          onClick={toggleHighlightMode}
+          size="icon"
+          variant={highlightMode ? "default" : "outline"}
+          className={cn(
+            "h-10 w-10 rounded-full shadow-lg transition-all duration-300",
+            highlightMode 
+              ? "bg-primary hover:bg-primary/90" 
+              : "bg-background hover:bg-accent"
+          )}
+        >
+          {highlightMode ? (
+            <Eye className="h-4 w-4" />
+          ) : (
+            <EyeOff className="h-4 w-4" />
           )}
         </Button>
 
