@@ -107,7 +107,7 @@ export default function ProductDetail() {
       <Helmet>
         <title>{product.title} | Sahiya Slays</title>
         <meta name="description" content={product.short_description} />
-        <link rel="canonical" href={`/product/${product.slug}`} />
+        <link rel="canonical" href={`/shop/${product.slug}`} />
         <meta property="og:title" content={`${product.title} | Sahiya Slays`} />
         <meta property="og:description" content={product.short_description} />
         <meta property="og:image" content={product.images[0]} />
