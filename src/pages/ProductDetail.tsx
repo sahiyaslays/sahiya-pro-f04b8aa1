@@ -350,12 +350,19 @@ export default function ProductDetail() {
                 
                 <TabsContent value="description" className="mt-6">
                   <div className="prose prose-sm max-w-none">
-                    <EditableText 
-                      id={`product-detail-description-${product.id}`}
-                      className="prose prose-sm max-w-none"
-                    >
-                      {product.description_long}
-                    </EditableText>
+                    {isEditMode ? (
+                      <EditableText 
+                        id={`product-detail-description-${product.id}`}
+                        className="prose prose-sm max-w-none"
+                      >
+                        {product.description_long}
+                      </EditableText>
+                    ) : (
+                      <div 
+                        dangerouslySetInnerHTML={{ __html: product.description_long }}
+                        className="[&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mb-2 [&_strong]:font-semibold"
+                      />
+                    )}
                   </div>
                 </TabsContent>
                 
