@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { ProductImage } from '@/components/shop/ProductImage';
-import { Search, X } from 'lucide-react';
+import { QuickViewModal } from '@/components/shop/QuickViewModal';
+import { Search, X, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const SORT_OPTIONS: { value: SortOption; label: string }[] = [
@@ -24,6 +25,8 @@ export default function Shop() {
   const [sortBy, setSortBy] = useState<SortOption>('default');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [quickViewOpen, setQuickViewOpen] = useState(false);
 
   const categories = Array.from(new Set(PRODUCTS.map(p => p.category)));
 
@@ -75,6 +78,13 @@ export default function Shop() {
 
   const clearSearch = () => {
     setSearchQuery('');
+  };
+
+  const handleQuickView = (e: React.MouseEvent, product: Product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setQuickViewProduct(product);
+    setQuickViewOpen(true);
   };
 
   return (
@@ -191,33 +201,48 @@ export default function Shop() {
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
                 {filteredAndSortedProducts.map((product) => (
-                  <Link
+                  <div
                     key={product.id}
-                    to={`/shop/${product.slug}`}
-                    className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                    className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow relative"
                   >
-                    <ProductImage
-                      src={product.images[0]}
-                      alt={product.title}
-                      className="group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="p-4">
-                      <h3 className="text-sm md:text-base font-semibold text-foreground mb-2 line-clamp-2">
-                        {product.title}
-                      </h3>
-                      <p className="text-muted-foreground text-xs md:text-sm mb-3 line-clamp-2">
-                        {product.short_description}
-                      </p>
-                      <div className="flex justify-between items-center">
-                        <span className="text-primary font-bold text-sm md:text-lg">
-                          {formatPriceRange(product.price_min, product.price_max)}
-                        </span>
+                    <Link to={`/shop/${product.slug}`}>
+                      <div className="relative">
+                        <ProductImage
+                          src={product.images[0]}
+                          alt={product.title}
+                          className="group-hover:scale-105 transition-transform duration-300"
+                        />
                         {product.is_sale && (
-                          <Badge variant="destructive" className="text-xs">Sale</Badge>
+                          <Badge variant="destructive" className="absolute top-2 left-2 z-10">
+                            Sale
+                          </Badge>
                         )}
+                        {/* Quick View Button */}
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                          onClick={(e) => handleQuickView(e, product)}
+                        >
+                          <Eye className="h-4 w-4 mr-1" />
+                          Quick View
+                        </Button>
                       </div>
-                    </div>
-                  </Link>
+                      <div className="p-4">
+                        <h3 className="text-sm md:text-base font-semibold text-foreground mb-2 line-clamp-2">
+                          {product.title}
+                        </h3>
+                        <p className="text-muted-foreground text-xs md:text-sm mb-3 line-clamp-2">
+                          {product.short_description}
+                        </p>
+                        <div className="flex justify-between items-center">
+                          <span className="text-primary font-bold text-sm md:text-lg">
+                            {formatPriceRange(product.price_min, product.price_max)}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
                 ))}
               </div>
             )}
@@ -226,6 +251,13 @@ export default function Shop() {
         
         <Footer />
       </div>
+
+      {/* Quick View Modal */}
+      <QuickViewModal
+        product={quickViewProduct}
+        open={quickViewOpen}
+        onOpenChange={setQuickViewOpen}
+      />
     </>
   );
 }
