@@ -547,7 +547,7 @@ export default function Checkout() {
                         ) : (
                           <Button
                             type="submit"
-                            className="w-full py-3 text-lg"
+                            className={`w-full py-3 text-lg ${!isFormValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
                             disabled={!isFormValid() || isProcessing}
                           >
                             {isProcessing 
@@ -556,6 +556,12 @@ export default function Checkout() {
                                 ? 'Continue to Payment' 
                                 : 'Place Order'}
                           </Button>
+                        )}
+                        
+                        {!isFormValid() && (
+                          <p className="text-xs text-destructive text-center mt-2">
+                            Please fill in all required fields including country
+                          </p>
                         )}
 
                         {/* Trust Badges */}
