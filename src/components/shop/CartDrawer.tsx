@@ -60,7 +60,7 @@ export const CartDrawer = () => {
                     
                     <div className="flex-1 min-w-0">
                       <Link
-                        to={`/product/${item.product.slug}`}
+                        to={`/shop/${item.product.slug}`}
                         onClick={closeDrawer}
                         className="block font-medium text-sm hover:text-primary transition-colors line-clamp-2"
                       >

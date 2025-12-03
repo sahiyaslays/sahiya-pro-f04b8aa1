@@ -3,13 +3,15 @@ import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { ProductCard } from '@/components/shop/ProductCard';
 import { EditableText } from '@/components/EditableText';
 import { Product, SortOption } from '@/types/shop';
 import { PRODUCTS, formatPriceRange } from '@/data/shopData';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import { ProductImage } from '@/components/shop/ProductImage';
+import { Search, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: 'default', label: 'Default sorting' },
@@ -21,11 +23,22 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
 export default function Shop() {
   const [sortBy, setSortBy] = useState<SortOption>('default');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const categories = Array.from(new Set(PRODUCTS.map(p => p.category)));
 
   const filteredAndSortedProducts = useMemo(() => {
     let productsFiltered = [...PRODUCTS];
+
+    // Search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      productsFiltered = productsFiltered.filter(product => 
+        product.title.toLowerCase().includes(query) ||
+        product.short_description.toLowerCase().includes(query) ||
+        product.category.toLowerCase().includes(query)
+      );
+    }
 
     // Filter by categories if any selected
     if (selectedCategories.length > 0) {
@@ -43,16 +56,14 @@ export default function Shop() {
         productsFiltered.sort((a, b) => b.price_max - a.price_max);
         break;
       case 'newest':
-        // Reverse order for newest (assuming later in array = newer)
         productsFiltered.reverse();
         break;
       default:
-        // Default order
         break;
     }
 
     return productsFiltered;
-  }, [sortBy, selectedCategories]);
+  }, [sortBy, selectedCategories, searchQuery]);
 
   const toggleCategory = (category: string) => {
     setSelectedCategories(prev => 
@@ -60,6 +71,10 @@ export default function Shop() {
         ? prev.filter(c => c !== category)
         : [...prev, category]
     );
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
   };
 
   return (
@@ -98,6 +113,30 @@ export default function Shop() {
               </nav>
             </div>
 
+            {/* Search Bar */}
+            <div className="mb-6">
+              <div className="relative max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-10"
+                />
+                {searchQuery && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
+                    onClick={clearSearch}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
+
             {/* Category Filters */}
             <div className="mb-6">
               <div className="flex flex-wrap gap-2">
@@ -117,7 +156,10 @@ export default function Shop() {
             {/* Top Bar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
               <p className="text-sm text-muted-foreground">
-                Showing all {filteredAndSortedProducts.length} results
+                {searchQuery 
+                  ? `Found ${filteredAndSortedProducts.length} results for "${searchQuery}"`
+                  : `Showing all ${filteredAndSortedProducts.length} results`
+                }
               </p>
               
               <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
@@ -137,7 +179,14 @@ export default function Shop() {
             {/* Products Grid */}
             {filteredAndSortedProducts.length === 0 ? (
               <div className="text-center py-20">
-                <p className="text-muted-foreground text-lg">No products found</p>
+                <p className="text-muted-foreground text-lg mb-4">
+                  {searchQuery ? `No products found for "${searchQuery}"` : 'No products found'}
+                </p>
+                {searchQuery && (
+                  <Button variant="outline" onClick={clearSearch}>
+                    Clear search
+                  </Button>
+                )}
               </div>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
