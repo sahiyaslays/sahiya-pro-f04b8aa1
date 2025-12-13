@@ -1045,19 +1045,69 @@ export const servicesData: ServiceCategory[] = [
         title: 'Facial Treatments',
         services: [
           {
+            id: 'facial-classic',
+            name: 'Facial- Classic',
+            options: [{ label: '1h 30min', duration: 90, price: 145 }]
+          },
+          {
+            id: 'facial-eye-treatment',
+            name: 'Facial- Eye Treatment',
+            options: [{ label: '1h 15min', duration: 75, price: 120 }]
+          },
+          {
+            id: 'facial-dermalogica',
+            name: 'Facial - Dermalogica',
+            options: [{ label: '1h 30min', duration: 90, price: 150 }]
+          },
+          {
+            id: 'facial-skin-peel',
+            name: 'Facial - Skin Peel',
+            options: [{ label: '45 min', duration: 45, price: 75 }]
+          },
+          {
+            id: 'facial-microdermabrasion',
+            name: 'Facial - Microdermabrasion',
+            options: [{ label: '1h 15min', duration: 75, price: 120 }]
+          },
+          {
+            id: 'facial-dermaplaning',
+            name: 'Facial- Dermaplaning',
+            options: [{ label: '1 hour', duration: 60, price: 95 }]
+          },
+          {
+            id: 'facial-radio-frequency-skin-tightening',
+            name: 'Facial - Radio Frequency Skin Tightening',
+            options: [{ label: '2h 30min', duration: 150, price: 350 }]
+          },
+          {
+            id: 'facial-led-light-therapy',
+            name: 'Facial - LED Light Therapy',
+            options: [{ label: '1 hour', duration: 60, price: 110 }]
+          },
+          {
+            id: 'facial-skin-rejuvenation',
+            name: 'Facial - Skin Rejuvenation',
+            options: [{ label: '2 hours', duration: 120, price: 290 }]
+          },
+          {
+            id: 'facial-laser-skin-rejuvenation',
+            name: 'Facial - Laser Skin Rejuvenation',
+            options: [{ label: '2 hours', duration: 120, price: 290 }]
+          },
+          {
+            id: 'facial-pigmentation-treatment',
+            name: 'Facial - Pigmentation Treatment',
+            options: [{ label: '1h 30min', duration: 90, price: 150 }]
+          },
+          {
+            id: 'facial-dermapen',
+            name: 'Facial - Dermapen',
+            options: [{ label: '1h 30min', duration: 90, price: 150 }]
+          },
+          {
             id: 'facial-micro-needling',
-            name: 'Facial - Micro-needling',
-            options: [{ label: '45 min', duration: 45, price: 100 }]
-          },
-          {
-            id: 'facial-hydrafacial-luxury',
-            name: 'Facial - HydraFacial (Luxury)',
-            options: [{ label: '1h 15min', duration: 75, price: 125 }]
-          },
-          {
-            id: 'facial-million-dollar',
-            name: 'Facial - Million Dollar Facial',
-            options: [{ label: '1h 15min', duration: 75, price: 125 }]
+            name: 'Facial - Micro Needling',
+            options: [{ label: '1h 30min', duration: 90, price: 145 }]
           },
           {
             id: 'facial-anti-ageing',
@@ -1065,54 +1115,59 @@ export const servicesData: ServiceCategory[] = [
             options: [{ label: '2 hours', duration: 120, price: 220 }]
           },
           {
-            id: 'facial-dermalux-led',
-            name: 'Facial - Dermalux LED Light Therapy',
-            options: [{ label: '20 min', duration: 20, price: 25 }]
+            id: 'facial-deep-cleansing',
+            name: 'Facial-Deep Cleansing',
+            options: [{ label: '1h 45min', duration: 105, price: 180 }]
           },
           {
-            id: 'facial-express-cleanse',
-            name: 'Facial - Express Cleanse',
-            options: [{ label: '30 min', duration: 30, price: 35 }]
+            id: 'facial-gold',
+            name: 'Facial - Gold',
+            options: [{ label: '1h 30min', duration: 90, price: 140 }]
+          },
+          {
+            id: 'facial-hydrating',
+            name: 'Facial- Hydrating',
+            options: [{ label: '1 hour', duration: 60, price: 95 }]
+          },
+          {
+            id: 'facial-acne-treatment',
+            name: 'Facial-Acne Treatment',
+            options: [{ label: '1 hour', duration: 60, price: 95 }]
+          },
+          {
+            id: 'facial-high-frequency',
+            name: 'Facial- High Frequency',
+            options: [{ label: '45 min', duration: 45, price: 60 }]
+          },
+          {
+            id: 'facial-caci-non-surgical-face-lift',
+            name: 'Facial-CACI Non-Surgical Face Lift',
+            options: [{ label: '1 hour', duration: 60, price: 95 }]
           },
           {
             id: 'facial-caci-jowl-lift',
-            name: 'Facial - CACI Jowl Lift',
-            options: [{ label: '45 min', duration: 45, price: 40 }]
-          },
-          {
-            id: 'facial-express-dermaplane',
-            name: 'Facial - Express Dermaplane',
+            name: 'Facial- CACI Jowl Lift',
             options: [{ label: '30 min', duration: 30, price: 45 }]
           },
           {
-            id: 'facial-mini-eco',
-            name: 'Facial - Mini ECO',
-            options: [{ label: '30 min', duration: 30, price: 45 }]
+            id: 'facial-caci-eye-revive',
+            name: 'Facial - CACI Eye Revive',
+            options: [{ label: '40 min', duration: 40, price: 55 }]
           },
           {
-            id: 'facial-mini-hydrating',
-            name: 'Facial - Mini Hydrating',
-            options: [{ label: '30 min', duration: 30, price: 45 }]
+            id: 'facial-caci-hydratone',
+            name: 'Facial - CACI Hydratone',
+            options: [{ label: '30 min', duration: 30, price: 40 }]
           },
           {
-            id: 'facial-full-eco',
-            name: 'Facial - Full ECO',
-            options: [{ label: '1 hour', duration: 60, price: 75 }]
+            id: 'facial-caci-skin-rejuvenation',
+            name: 'Facial- CACI Skin Rejuvenation',
+            options: [{ label: '1 hour', duration: 60, price: 110 }]
           },
           {
-            id: 'facial-full-hydrating',
-            name: 'Facial - Full Hydrating',
-            options: [{ label: '1 hour', duration: 60, price: 75 }]
-          },
-          {
-            id: 'dermaplaning-express',
-            name: 'Dermaplaning - Express',
-            options: [{ label: '30 min', duration: 30, price: 45 }]
-          },
-          {
-            id: 'dermaplaning-full',
-            name: 'Dermaplaning - Full',
-            options: [{ label: '1 hour', duration: 60, price: 75 }]
+            id: 'facials-chemical-peel',
+            name: 'Facials - Chemical Peel',
+            options: [{ label: '45 min', duration: 45, price: 70 }]
           }
         ]
       }
