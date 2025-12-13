@@ -763,125 +763,128 @@ export const servicesData: ServiceCategory[] = [
         ]
       },
       {
-        id: 'hair-extensions-removal-fitting',
-        title: 'Hair Extensions Removal & Fitting Services',
+        id: 'hair-extension-removal-refitting',
+        title: 'Hair Extension Removal & Refitting Services',
         services: [
           {
-            id: 'tape-in-extensions-fitting',
-            name: 'Tape-In Extensions Fitting',
-            options: [
-              { label: 'Long Hair', duration: 120, price: 150 },
-              { label: 'Medium Hair', duration: 105, price: 130 },
-              { label: 'Short Hair', duration: 90, price: 110 }
-            ]
+            id: 'hollywood-weave-refit-1-row',
+            name: 'Hollywood Weave Refit 1 Row',
+            options: [{ label: 'Standard', duration: 60, price: 140 }]
           },
           {
-            id: 'tape-in-extensions-removal',
-            name: 'Tape-In Extensions Removal',
-            options: [
-              { label: 'Long Hair', duration: 60, price: 50 },
-              { label: 'Medium Hair', duration: 50, price: 42 },
-              { label: 'Short Hair', duration: 40, price: 35 }
-            ]
+            id: 'hollywood-weave-refit-2-3-rows',
+            name: 'Hollywood Weave Refit 2–3 Rows',
+            options: [{ label: 'Standard', duration: 90, price: 200 }]
           },
           {
-            id: 'clip-in-extensions-fitting',
-            name: 'Clip-In Extensions Fitting',
-            options: [
-              { label: 'Long Hair', duration: 45, price: 45 },
-              { label: 'Medium Hair', duration: 35, price: 38 },
-              { label: 'Short Hair', duration: 25, price: 30 }
-            ]
+            id: 'hollywood-weave-refit-4-5-rows',
+            name: 'Hollywood Weave Refit 4–5 Rows',
+            options: [{ label: 'Standard', duration: 120, price: 240 }]
           },
           {
-            id: 'micro-ring-extensions-fitting',
-            name: 'Micro Ring Extensions Fitting',
-            options: [
-              { label: 'Long Hair', duration: 180, price: 200 },
-              { label: 'Medium Hair', duration: 150, price: 170 },
-              { label: 'Short Hair', duration: 120, price: 140 }
-            ]
+            id: 'hollywood-weave-refit-6-7-rows',
+            name: 'Hollywood Weave Refit 6–7 Rows',
+            options: [{ label: 'Standard', duration: 150, price: 280 }]
           },
           {
-            id: 'micro-ring-extensions-removal',
-            name: 'Micro Ring Extensions Removal',
-            options: [
-              { label: 'Long Hair', duration: 90, price: 70 },
-              { label: 'Medium Hair', duration: 75, price: 60 },
-              { label: 'Short Hair', duration: 60, price: 50 }
-            ]
+            id: 'enhanced-weave-refit',
+            name: 'Enhanced Weave Refit',
+            options: [{ label: 'Standard', duration: 90, price: 200 }]
           },
           {
-            id: 'nano-ring-extensions-fitting',
-            name: 'Nano Ring Extensions Fitting',
-            options: [
-              { label: 'Long Hair', duration: 210, price: 220 },
-              { label: 'Medium Hair', duration: 180, price: 190 },
-              { label: 'Short Hair', duration: 150, price: 160 }
-            ]
+            id: 'enhanced-weave-refit-mini',
+            name: 'Enhanced Weave Refit Mini',
+            options: [{ label: 'Standard', duration: 120, price: 300 }]
           },
           {
-            id: 'nano-ring-extensions-removal',
-            name: 'Nano Ring Extensions Removal',
-            options: [
-              { label: 'Long Hair', duration: 90, price: 75 },
-              { label: 'Medium Hair', duration: 75, price: 65 },
-              { label: 'Short Hair', duration: 60, price: 55 }
-            ]
+            id: 'tape-refit-up-to-6',
+            name: 'Tape Refit Up to 6',
+            options: [{ label: 'Standard', duration: 60, price: 140 }]
           },
           {
-            id: 'sew-in-extensions-fitting',
-            name: 'Sew-In Extensions Fitting',
-            options: [
-              { label: 'Long Hair', duration: 240, price: 180 },
-              { label: 'Medium Hair', duration: 210, price: 160 },
-              { label: 'Short Hair', duration: 180, price: 140 }
-            ]
+            id: 'tape-refit-up-to-12',
+            name: 'Tape Refit Up to 12',
+            options: [{ label: 'Standard', duration: 90, price: 200 }]
           },
           {
-            id: 'sew-in-extensions-removal',
-            name: 'Sew-In Extensions Removal',
-            options: [
-              { label: 'Long Hair', duration: 75, price: 60 },
-              { label: 'Medium Hair', duration: 60, price: 50 },
-              { label: 'Short Hair', duration: 45, price: 40 }
-            ]
+            id: 'tape-refit-up-to-20',
+            name: 'Tape Refit Up to 20',
+            options: [{ label: 'Standard', duration: 120, price: 270 }]
           },
           {
-            id: 'pre-bonded-extensions-fitting',
-            name: 'Pre-Bonded Extensions Fitting',
-            options: [
-              { label: 'Long Hair', duration: 180, price: 190 },
-              { label: 'Medium Hair', duration: 150, price: 165 },
-              { label: 'Short Hair', duration: 120, price: 140 }
-            ]
+            id: 'tape-removal',
+            name: 'Tape Removal',
+            options: [{ label: 'Standard', duration: 30, price: 50 }]
           },
           {
-            id: 'pre-bonded-extensions-removal',
-            name: 'Pre-Bonded Extensions Removal',
-            options: [
-              { label: 'Long Hair', duration: 90, price: 75 },
-              { label: 'Medium Hair', duration: 75, price: 65 },
-              { label: 'Short Hair', duration: 60, price: 55 }
-            ]
+            id: 'keratin-removal-150-plus',
+            name: 'Keratin Removal 150+ pcs',
+            options: [{ label: 'Standard', duration: 90, price: 130 }]
           },
           {
-            id: 'extensions-maintenance',
-            name: 'Extensions Maintenance',
-            options: [
-              { label: 'Long Hair', duration: 90, price: 80 },
-              { label: 'Medium Hair', duration: 75, price: 70 },
-              { label: 'Short Hair', duration: 60, price: 60 }
-            ]
+            id: 'keratin-removal-up-to-150',
+            name: 'Keratin Removal Up to 150',
+            options: [{ label: 'Standard', duration: 60, price: 80 }]
           },
           {
-            id: 'extensions-color-match',
-            name: 'Extensions Color Match Consultation',
-            options: [
-              { label: 'Long Hair', duration: 30, price: 25 },
-              { label: 'Medium Hair', duration: 30, price: 25 },
-              { label: 'Short Hair', duration: 30, price: 25 }
-            ]
+            id: 'enhanced-weave-removal',
+            name: 'Enhanced Weave Removal',
+            options: [{ label: 'Standard', duration: 45, price: 70 }]
+          },
+          {
+            id: 'hollywood-weave-removal',
+            name: 'Hollywood Weave Removal',
+            options: [{ label: 'Standard', duration: 30, price: 50 }]
+          },
+          {
+            id: 'micro-ring-quick-fix',
+            name: 'Micro Ring Quick Fix',
+            options: [{ label: 'Standard', duration: 15, price: 10 }]
+          },
+          {
+            id: 'micro-ring-removal',
+            name: 'Micro Ring Removal',
+            options: [{ label: 'Standard', duration: 30, price: 50 }]
+          },
+          {
+            id: 'micro-ring-refit-100g',
+            name: 'Micro Ring Refit 100g',
+            options: [{ label: 'Standard', duration: 120, price: 220 }]
+          },
+          {
+            id: 'micro-ring-refit-up-to-150g',
+            name: 'Micro Ring Refit Up to 150g',
+            options: [{ label: 'Standard', duration: 150, price: 270 }]
+          },
+          {
+            id: 'keratin-refit-up-to-50g',
+            name: 'Keratin Refit Up to 50g',
+            options: [{ label: 'Standard', duration: 120, price: 270 }]
+          },
+          {
+            id: 'keratin-refit-up-to-100g',
+            name: 'Keratin Refit Up to 100g',
+            options: [{ label: 'Standard', duration: 150, price: 340 }]
+          },
+          {
+            id: 'keratin-refit-up-to-200g',
+            name: 'Keratin Refit Up to 200g',
+            options: [{ label: 'Standard', duration: 180, price: 460 }]
+          },
+          {
+            id: 'removal-plus-nutrition',
+            name: 'Removal + Nutrition',
+            options: [{ label: 'Standard', duration: 60, price: 135 }]
+          },
+          {
+            id: 'custom-clip-ins',
+            name: 'Custom Clip-ins',
+            options: [{ label: 'Standard', duration: 45, price: 75 }]
+          },
+          {
+            id: 'extension-removal-service',
+            name: 'Extension Removal Service',
+            options: [{ label: 'Standard', duration: 30, price: 50 }]
           }
         ]
       },
