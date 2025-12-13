@@ -25,46 +25,41 @@ export interface ServiceSubcategory {
 export const servicesData: ServiceCategory[] = [
   {
     id: 'consultation-patch-test',
-    title: 'CONSULTATION/PATCH TEST',
+    title: 'CONSULTATION / PATCH TEST',
     subcategories: [
       {
         id: 'consultation-services',
         title: 'Consultation Services',
         services: [
           {
-            id: 'consultation',
-            name: 'Consultation',
-            options: [{ label: '15 min', duration: 15, price: 0 }]
-          },
-          {
             id: 'patch-test',
             name: 'Patch Test',
-            options: [{ label: '15 min', duration: 15, price: 0 }]
+            options: [{ label: '15 min', duration: 15, price: 10 }]
           },
           {
-            id: 'colour-patch-test',
-            name: 'Colour Patch Test',
-            options: [{ label: '15 min', duration: 15, price: 0 }]
+            id: 'colour-consult',
+            name: 'Colour Consult',
+            options: [{ label: '15 min', duration: 15, price: 10 }]
           },
           {
-            id: 'hair-extensions-consultation',
-            name: 'Hair Extensions Consultation',
-            options: [{ label: 'Standard', duration: 15, price: 0 }]
+            id: 'extensions-consult-coloured-hair',
+            name: 'Extensions Consult (Coloured Hair)',
+            options: [{ label: '20 min', duration: 20, price: 15 }]
           },
           {
-            id: 'colour-correction-consultation',
-            name: 'Colour Correction Consultation',
-            options: [{ label: 'Standard', duration: 30, price: 0 }]
+            id: 'extensions-consult-cambodian-hair',
+            name: 'Extensions Consult (Cambodian Hair)',
+            options: [{ label: '20 min', duration: 20, price: 15 }]
           },
           {
-            id: 'keratin-smoothing-consultation',
-            name: 'Keratin Smoothing Consultation',
-            options: [{ label: 'Standard', duration: 30, price: 0 }]
+            id: 'video-consult',
+            name: 'Video Consult',
+            options: [{ label: '15 min', duration: 15, price: 10 }]
           },
           {
-            id: 'men-consultation',
-            name: 'Men - Consultation',
-            options: [{ label: 'Standard', duration: 15, price: 0 }]
+            id: 'hair-therapy-consult',
+            name: 'Hair Therapy Consult',
+            options: [{ label: '20 min', duration: 20, price: 15 }]
           }
         ]
       }
