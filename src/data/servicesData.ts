@@ -1102,32 +1102,6 @@ export const servicesData: ServiceCategory[] = [
     title: 'WAXING AND THREADING',
     subcategories: [
       {
-        id: 'facial-waxing',
-        title: 'Facial Waxing',
-        services: [
-          {
-            id: 'waxing-brows',
-            name: 'Waxing - Brows',
-            options: [{ label: '10 min', duration: 10, price: 8 }]
-          },
-          {
-            id: 'waxing-upper-lip',
-            name: 'Waxing - Upper Lip',
-            options: [{ label: '10 min', duration: 10, price: 6 }]
-          },
-          {
-            id: 'waxing-chin',
-            name: 'Waxing - Chin',
-            options: [{ label: '10 min', duration: 10, price: 6 }]
-          },
-          {
-            id: 'waxing-full-face',
-            name: 'Waxing - Full Face',
-            options: [{ label: '30 min', duration: 30, price: 25 }]
-          }
-        ]
-      },
-      {
         id: 'body-waxing',
         title: 'Body Waxing',
         services: [
