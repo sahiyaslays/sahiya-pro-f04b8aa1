@@ -1274,24 +1274,79 @@ export const servicesData: ServiceCategory[] = [
         title: 'Makeup Services',
         services: [
           {
-            id: 'makeup-soft-glam',
-            name: 'Makeup - Soft Glam',
-            options: [{ label: '1 hour', duration: 60, price: 45 }]
+            id: 'makeup',
+            name: 'Makeup',
+            options: [{ label: '45 min', duration: 45, price: 45 }]
           },
           {
-            id: 'makeup-full-glam',
-            name: 'Makeup - Full Glam',
-            options: [{ label: '1h 15min', duration: 75, price: 60 }]
+            id: 'day-makeup',
+            name: 'Day Makeup',
+            options: [{ label: '45 min', duration: 45, price: 45 }]
           },
           {
-            id: 'makeup-bridal-trial',
-            name: 'Makeup - Bridal Trial',
-            options: [{ label: '1h 30min', duration: 90, price: 70 }]
+            id: 'party-makeup',
+            name: 'Party Makeup',
+            options: [{ label: '1 hour', duration: 60, price: 75 }]
           },
           {
-            id: 'makeup-bridal-event-day',
-            name: 'Makeup - Bridal (Event Day)',
-            options: [{ label: '2 hours', duration: 120, price: 120 }]
+            id: 'festival-makeup',
+            name: 'Festival Makeup',
+            options: [{ label: '1 hour', duration: 60, price: 80 }]
+          },
+          {
+            id: 'evening-makeup',
+            name: 'Evening Makeup',
+            options: [{ label: '1h 15min', duration: 75, price: 95 }]
+          },
+          {
+            id: 'makeup-incl-strip-lashes',
+            name: 'Makeup incl. Strip Lashes',
+            options: [{ label: '1 hour', duration: 60, price: 85 }]
+          },
+          {
+            id: 'eye-makeup',
+            name: 'Eye Makeup',
+            options: [{ label: '30 min', duration: 30, price: 30 }]
+          },
+          {
+            id: 'eye-makeup-incl-strip-lashes',
+            name: 'Eye Makeup incl. Strip Lashes',
+            options: [{ label: '40 min', duration: 40, price: 40 }]
+          },
+          {
+            id: 'wedding-makeup-bridesmaid',
+            name: 'Wedding Makeup (Bridesmaid)',
+            options: [{ label: '1h 30min', duration: 90, price: 120 }]
+          },
+          {
+            id: 'wedding-makeup-mother-of-bride',
+            name: 'Wedding Makeup (Mother of The Bride)',
+            options: [{ label: '1h 30min', duration: 90, price: 145 }]
+          },
+          {
+            id: 'wedding-makeup-bride',
+            name: 'Wedding Makeup (Bride)',
+            options: [{ label: '2 hours', duration: 120, price: 150 }]
+          },
+          {
+            id: 'bridal-makeup',
+            name: 'Bridal Makeup',
+            options: [{ label: '2 hours', duration: 120, price: 150 }]
+          },
+          {
+            id: 'bridal-hair-and-makeup',
+            name: 'Bridal Hair & Makeup',
+            options: [{ label: '4 hours', duration: 240, price: 450 }]
+          },
+          {
+            id: 'makeup-and-hair-up',
+            name: 'Makeup & Hair Up',
+            options: [{ label: '3 hours', duration: 180, price: 360 }]
+          },
+          {
+            id: 'bridal-hair-and-makeup-trial',
+            name: 'Bridal Hair & Makeup - Trial',
+            options: [{ label: '2h 30min', duration: 150, price: 250 }]
           }
         ]
       }
