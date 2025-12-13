@@ -1008,29 +1008,94 @@ export const servicesData: ServiceCategory[] = [
         title: 'Extensions & Enhancements',
         services: [
           {
-            id: 'nails-biab-infill',
-            name: 'Nails - BIAB Infill',
+            id: 'nail-ext-full-set-acrylic-naked',
+            name: 'Nail Extensions - Full Set Acrylic (Naked Full Set)',
             options: [{ label: '1 hour', duration: 60, price: 35 }]
           },
           {
-            id: 'nails-biab-overlay',
-            name: 'Nails - BIAB Overlay',
-            options: [{ label: '1 hour', duration: 60, price: 35 }]
-          },
-          {
-            id: 'nails-acrylic-full-set',
-            name: 'Nails - Acrylic Full Set',
+            id: 'nail-ext-full-set-acrylic-naked-toes',
+            name: 'Nail Extensions - Full Set Acrylic (Naked Full Set Toes)',
             options: [{ label: '1h 15min', duration: 75, price: 45 }]
           },
           {
-            id: 'nails-acrylic-infill',
-            name: 'Nails - Acrylic Infill',
+            id: 'nail-ext-full-set-acrylic-french-tip',
+            name: 'Nail Extensions - Full Set Acrylic (French Tip)',
+            options: [{ label: '1h 15min', duration: 75, price: 45 }]
+          },
+          {
+            id: 'nail-ext-full-set-acrylic-with-design',
+            name: 'Nail Extensions - Full Set Acrylic with Design',
+            options: [{ label: '1h 30min', duration: 90, price: 50 }]
+          },
+          {
+            id: 'nail-ext-full-set-gel-biab',
+            name: 'Nail Extensions - Full Set Gel / BIAB',
             options: [{ label: '1 hour', duration: 60, price: 35 }]
           },
           {
-            id: 'nails-removal',
-            name: 'Nails - Removal',
+            id: 'nail-ext-full-set-pink-white',
+            name: 'Nail Extensions - Full Set Pink & White',
+            options: [{ label: '1h 15min', duration: 75, price: 48 }]
+          },
+          {
+            id: 'nail-ext-full-set-ombre',
+            name: 'Nail Extensions - Full Set Ombre',
+            options: [{ label: '1h 15min', duration: 75, price: 48 }]
+          },
+          {
+            id: 'nail-ext-gel-white-tips',
+            name: 'Nail Extensions - Gel White Tips',
+            options: [{ label: '1h 15min', duration: 75, price: 45 }]
+          },
+          {
+            id: 'nail-ext-acrylic-big-toes',
+            name: 'Nail Extensions - Acrylic - Big Toes',
             options: [{ label: '20 min', duration: 20, price: 10 }]
+          },
+          {
+            id: 'nail-ext-acrylic-removal-reapplication',
+            name: 'Nail Extensions - Acrylic Removal & Reapplication',
+            options: [{ label: '1h 45min', duration: 105, price: 65 }]
+          },
+          {
+            id: 'nail-ext-gel-removal-reapplication',
+            name: 'Nail Extensions - Gel Removal & Reapplication',
+            options: [{ label: '1h 30min', duration: 90, price: 55 }]
+          },
+          {
+            id: 'nail-ext-full-set-bio-sculpture-gel',
+            name: 'Nail Extensions - Full Set Bio Sculpture Gel',
+            options: [{ label: '1h 15min', duration: 75, price: 45 }]
+          },
+          {
+            id: 'nail-ext-gel-sculpture-infills',
+            name: 'Nail Extensions - GEL Sculpture Infills',
+            options: [{ label: '1 hour', duration: 60, price: 35 }]
+          },
+          {
+            id: 'nail-ext-acrylic-infills',
+            name: 'Nail Extensions - Acrylic Infills',
+            options: [{ label: '1 hour', duration: 60, price: 35 }]
+          },
+          {
+            id: 'nail-ext-gel-biab-infills',
+            name: 'Nail Extensions - Gel / BIAB Infills',
+            options: [{ label: '50 min', duration: 50, price: 30 }]
+          },
+          {
+            id: 'nail-ext-pink-white-infills',
+            name: 'Nail Extensions - Pink & White Infills',
+            options: [{ label: '1 hour', duration: 60, price: 38 }]
+          },
+          {
+            id: 'nail-ext-ombre-infills',
+            name: 'Nail Extensions - Ombre Infills',
+            options: [{ label: '1 hour', duration: 60, price: 35 }]
+          },
+          {
+            id: 'nail-ext-removal',
+            name: 'Nail Extensions - Removal',
+            options: [{ label: '20 min', duration: 20, price: 15 }]
           }
         ]
       }
