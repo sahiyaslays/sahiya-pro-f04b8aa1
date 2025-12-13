@@ -1309,14 +1309,44 @@ export const servicesData: ServiceCategory[] = [
         title: 'Threading',
         services: [
           {
-            id: 'threading-brows',
-            name: 'Threading - Brows',
-            options: [{ label: '10 min', duration: 10, price: 7 }]
+            id: 'threading-chin',
+            name: 'Chin',
+            options: [{ label: '15 min', duration: 15, price: 20 }]
+          },
+          {
+            id: 'threading-lower-lip',
+            name: 'Lower Lip',
+            options: [{ label: '15 min', duration: 15, price: 20 }]
           },
           {
             id: 'threading-upper-lip',
-            name: 'Threading - Upper Lip',
-            options: [{ label: '10 min', duration: 10, price: 5 }]
+            name: 'Upper Lip',
+            options: [{ label: '15 min', duration: 15, price: 20 }]
+          },
+          {
+            id: 'threading-eyebrows',
+            name: 'Eyebrows',
+            options: [{ label: '20 min', duration: 20, price: 25 }]
+          },
+          {
+            id: 'threading-forehead',
+            name: 'Forehead',
+            options: [{ label: '20 min', duration: 20, price: 25 }]
+          },
+          {
+            id: 'threading-lip-chin',
+            name: 'Lip & Chin',
+            options: [{ label: '25 min', duration: 25, price: 30 }]
+          },
+          {
+            id: 'threading-sides',
+            name: 'Sides',
+            options: [{ label: '25 min', duration: 25, price: 30 }]
+          },
+          {
+            id: 'threading-full-face',
+            name: 'Full Face',
+            options: [{ label: '45 min', duration: 45, price: 65 }]
           }
         ]
       }
