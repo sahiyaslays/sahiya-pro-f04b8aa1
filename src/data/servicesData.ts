@@ -435,45 +435,120 @@ export const servicesData: ServiceCategory[] = [
         title: "Ladies' - Hair Colouring",
         services: [
           {
-            id: 'root-tint',
-            name: 'Root Tint',
+            id: 'full-head-hl-cut-blow-dry',
+            name: 'Full Head HL + Cut & Blow Dry',
             options: [
-              { label: 'Short', duration: 75, price: 45 },
-              { label: 'Medium', duration: 90, price: 55 },
-              { label: 'Long', duration: 105, price: 65 }
+              { label: 'Long', duration: 180, price: 260 },
+              { label: 'Medium', duration: 150, price: 240 },
+              { label: 'Short', duration: 120, price: 220 }
             ]
           },
           {
-            id: 'full-head-tint',
-            name: 'Full Head Tint',
+            id: 'half-head-hl-cut-blow-dry',
+            name: 'Half Head HL + Cut & Blow Dry',
             options: [
-              { label: 'Short', duration: 90, price: 55 },
-              { label: 'Medium', duration: 105, price: 65 },
-              { label: 'Long', duration: 120, price: 75 }
+              { label: 'Long', duration: 150, price: 220 },
+              { label: 'Medium', duration: 120, price: 200 },
+              { label: 'Short', duration: 90, price: 180 }
             ]
           },
           {
-            id: 'semi-permanent-colour',
-            name: 'Semi-Permanent Colour',
+            id: 't-section-hl-cut-blow-dry',
+            name: 'T-Section HL + Cut & Blow Dry',
             options: [
-              { label: 'Short', duration: 60, price: 45 },
-              { label: 'Medium', duration: 75, price: 55 },
-              { label: 'Long', duration: 90, price: 65 }
+              { label: 'Long', duration: 120, price: 160 },
+              { label: 'Medium', duration: 90, price: 120 },
+              { label: 'Short', duration: 90, price: 120 }
             ]
           },
           {
-            id: 'glossing',
-            name: 'Glossing',
+            id: 'full-head-babylights',
+            name: 'Full Head Babylights',
             options: [
-              { label: 'Short', duration: 45, price: 35 },
-              { label: 'Medium', duration: 60, price: 45 },
-              { label: 'Long', duration: 75, price: 55 }
+              { label: 'Long', duration: 210, price: 290 },
+              { label: 'Medium', duration: 180, price: 260 },
+              { label: 'Short', duration: 150, price: 240 }
             ]
           },
           {
-            id: 'bleach-bath',
-            name: 'Bleach Bath',
+            id: 'balayage-treat-cut-blow-dry',
+            name: 'Balayage + Treat + Cut & Blow Dry',
+            options: [
+              { label: 'Long', duration: 180, price: 280 },
+              { label: 'Medium', duration: 150, price: 240 },
+              { label: 'Short', duration: 120, price: 220 }
+            ]
+          },
+          {
+            id: 'root-bleach',
+            name: 'Root Bleach',
+            options: [{ label: 'Standard', duration: 60, price: 75 }]
+          },
+          {
+            id: 'colour-correction',
+            name: 'Colour Correction',
+            options: [{ label: 'Standard', duration: 240, price: 380 }]
+          },
+          {
+            id: 'afro-colour-treat',
+            name: 'Afro Colour + Treat',
+            options: [
+              { label: 'Short', duration: 150, price: 240 },
+              { label: 'Medium', duration: 180, price: 260 },
+              { label: 'Long', duration: 210, price: 290 }
+            ]
+          },
+          {
+            id: 'toner-blow-dry',
+            name: 'Toner + Blow Dry',
             options: [{ label: 'Standard', duration: 60, price: 60 }]
+          },
+          {
+            id: 'add-on-toner',
+            name: 'Add-on Toner',
+            options: [{ label: 'Standard', duration: 30, price: 35 }]
+          },
+          {
+            id: 'toner-cut-blow-dry',
+            name: 'Toner + Cut & Blow Dry',
+            options: [{ label: 'Standard', duration: 75, price: 65 }]
+          },
+          {
+            id: 'root-bleach-tone',
+            name: 'Root Bleach + Tone',
+            options: [{ label: 'Standard', duration: 90, price: 95 }]
+          },
+          {
+            id: 'full-tint-perm-cut-blow-dry',
+            name: 'Full Tint Perm + Cut & Blow Dry',
+            options: [
+              { label: 'Short', duration: 90, price: 110 },
+              { label: 'Medium', duration: 75, price: 80 },
+              { label: 'Long', duration: 75, price: 80 }
+            ]
+          },
+          {
+            id: 'full-tint-semi-cut-blow-dry',
+            name: 'Full Tint Semi + Cut & Blow Dry',
+            options: [
+              { label: 'Medium', duration: 75, price: 80 },
+              { label: 'Short', duration: 90, price: 100 },
+              { label: 'Long', duration: 60, price: 70 }
+            ]
+          },
+          {
+            id: 'airtouch-balayage-cut-blow-dry',
+            name: 'AirTouch Balayage + Cut & Blow Dry',
+            options: [
+              { label: 'Medium', duration: 180, price: 325 },
+              { label: 'Short', duration: 150, price: 300 },
+              { label: 'Long', duration: 210, price: 350 }
+            ]
+          },
+          {
+            id: 'hair-nails-combo',
+            name: 'Hair & Nails Combo',
+            options: [{ label: 'Standard', duration: 120, price: 180 }]
           }
         ]
       },
