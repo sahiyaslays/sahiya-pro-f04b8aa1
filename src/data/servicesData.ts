@@ -283,129 +283,6 @@ export const servicesData: ServiceCategory[] = [
         ]
       },
       {
-        id: 'children-braids-cornrows-twists',
-        title: 'Children - Braids, Cornrows & Twists',
-        services: [
-          {
-            id: 'children-afro-braids',
-            name: 'Children - Afro Braids',
-            options: [
-              { label: 'Long Hair', duration: 30, price: 65 },
-              { label: 'Medium Hair', duration: 25, price: 55 },
-              { label: 'Short Hair', duration: 20, price: 45 }
-            ]
-          },
-          {
-            id: 'children-cornrows',
-            name: 'Children - Cornrows',
-            options: [
-              { label: 'Long Hair', duration: 40, price: 55 },
-              { label: 'Medium Hair', duration: 35, price: 45 },
-              { label: 'Short Hair', duration: 30, price: 35 }
-            ]
-          },
-          {
-            id: 'children-twists',
-            name: 'Children - Twists',
-            options: [
-              { label: 'Long Hair', duration: 45, price: 65 },
-              { label: 'Medium Hair', duration: 40, price: 55 },
-              { label: 'Short Hair', duration: 35, price: 45 }
-            ]
-          }
-        ]
-      },
-      {
-        id: 'children-haircuts-hairdressing',
-        title: 'Children - Haircuts & Hairdressing',
-        services: [
-          {
-            id: 'children-dry-haircut',
-            name: 'Children - Dry Haircut',
-            options: [
-              { label: 'Short', duration: 20, price: 12 },
-              { label: 'Medium', duration: 25, price: 15 },
-              { label: 'Long', duration: 30, price: 18 }
-            ]
-          },
-          {
-            id: 'children-wash-cut-blow-dry',
-            name: 'Children - Wash, Cut & Blow Dry',
-            options: [
-              { label: 'Short', duration: 30, price: 20 },
-              { label: 'Medium', duration: 35, price: 25 },
-              { label: 'Long', duration: 40, price: 30 }
-            ]
-          }
-        ]
-      },
-      {
-        id: 'hair-extras',
-        title: 'Hair Extras',
-        services: [
-          {
-            id: 'hair-half-up-half-down',
-            name: 'Hair - Half-Up Half-Down',
-            options: [
-              { label: 'Long Hair', duration: 60, price: 45 },
-              { label: 'Medium Hair', duration: 50, price: 38 },
-              { label: 'Short Hair', duration: 40, price: 32 }
-            ]
-          },
-          {
-            id: 'hair-braided-updo',
-            name: 'Hair - Braided Updo',
-            options: [
-              { label: 'Long Hair', duration: 90, price: 65 },
-              { label: 'Medium Hair', duration: 75, price: 55 },
-              { label: 'Short Hair', duration: 60, price: 48 }
-            ]
-          },
-          {
-            id: 'hair-sleek-bun',
-            name: 'Hair - Sleek Bun',
-            options: [
-              { label: 'Long Hair', duration: 45, price: 38 },
-              { label: 'Medium Hair', duration: 35, price: 32 },
-              { label: 'Short Hair', duration: 25, price: 28 }
-            ]
-          }
-        ]
-      },
-      {
-        id: 'ladies-braids-cornrows-twists',
-        title: "Ladies' - Braids, Cornrows & Twists",
-        services: [
-          {
-            id: 'ladies-braids',
-            name: 'Braids',
-            options: [
-              { label: 'Long Hair', duration: 90, price: 75 },
-              { label: 'Medium Hair', duration: 75, price: 65 },
-              { label: 'Short Hair', duration: 60, price: 55 }
-            ]
-          },
-          {
-            id: 'ladies-cornrows',
-            name: 'Cornrows',
-            options: [
-              { label: 'Long Hair', duration: 60, price: 50 },
-              { label: 'Medium Hair', duration: 45, price: 40 },
-              { label: 'Short Hair', duration: 30, price: 30 }
-            ]
-          },
-          {
-            id: 'ladies-twists',
-            name: 'Twists',
-            options: [
-              { label: 'Long Hair', duration: 90, price: 80 },
-              { label: 'Medium Hair', duration: 75, price: 70 },
-              { label: 'Short Hair', duration: 60, price: 60 }
-            ]
-          }
-        ]
-      },
-      {
         id: 'ladies-hair-colouring',
         title: "Ladies' - Hair Colouring",
         services: [
@@ -535,68 +412,191 @@ export const servicesData: ServiceCategory[] = [
             id: 'olaplex-standalone',
             name: 'Olaplex Standalone',
             options: [
-              { label: 'Short', duration: 45, price: 45 },
-              { label: 'Medium', duration: 60, price: 55 },
-              { label: 'Long', duration: 75, price: 65 }
+              { label: 'Short', duration: 45, price: 145 },
+              { label: 'Medium', duration: 60, price: 155 },
+              { label: 'Long', duration: 75, price: 165 }
             ]
           },
           {
             id: 'deep-conditioning-mask',
             name: 'Deep Conditioning Mask',
             options: [
-              { label: 'Short', duration: 30, price: 25 },
-              { label: 'Medium', duration: 45, price: 30 },
-              { label: 'Long', duration: 60, price: 35 }
+              { label: 'Short', duration: 30, price: 125 },
+              { label: 'Medium', duration: 45, price: 130 },
+              { label: 'Long', duration: 60, price: 135 }
             ]
           },
           {
             id: 'scalp-treatment',
             name: 'Scalp Treatment',
-            options: [{ label: 'Standard', duration: 45, price: 35 }]
+            options: [{ label: 'Standard', duration: 45, price: 135 }]
           },
           {
             id: 'protein-treatment',
             name: 'Protein Treatment',
-            options: [{ label: 'Standard', duration: 45, price: 35 }]
+            options: [{ label: 'Standard', duration: 45, price: 135 }]
           },
           {
             id: 'hot-oil-treatment',
             name: 'Hot Oil Treatment',
-            options: [{ label: 'Standard', duration: 45, price: 35 }]
+            options: [{ label: 'Standard', duration: 45, price: 135 }]
           },
           {
             id: 'hair-repair-package',
             name: 'Hair Repair Package',
             options: [
-              { label: 'Short', duration: 90, price: 75 },
-              { label: 'Medium', duration: 105, price: 85 },
-              { label: 'Long', duration: 120, price: 95 }
+              { label: 'Short', duration: 90, price: 175 },
+              { label: 'Medium', duration: 105, price: 185 },
+              { label: 'Long', duration: 120, price: 195 }
             ]
           },
           {
             id: 'split-end-treatment',
             name: 'Split End Treatment',
-            options: [{ label: 'Standard', duration: 30, price: 25 }]
+            options: [{ label: 'Standard', duration: 30, price: 125 }]
           },
           {
             id: 'detox-treatment',
             name: 'Detox Treatment',
-            options: [{ label: 'Standard', duration: 45, price: 35 }]
+            options: [{ label: 'Standard', duration: 45, price: 135 }]
           },
           {
             id: 'shine-gloss',
             name: 'Shine Gloss',
-            options: [{ label: 'Standard', duration: 30, price: 30 }]
+            options: [{ label: 'Standard', duration: 30, price: 130 }]
           },
           {
             id: 'anti-frizz-treatment',
             name: 'Anti-Frizz Treatment',
-            options: [{ label: 'Standard', duration: 60, price: 60 }]
+            options: [{ label: 'Standard', duration: 60, price: 160 }]
           },
           {
             id: 'post-colour-treatment',
             name: 'Post-Colour Treatment',
-            options: [{ label: 'Standard', duration: 30, price: 20 }]
+            options: [{ label: 'Standard', duration: 30, price: 120 }]
+          }
+        ]
+      },
+      {
+        id: 'children-braids-cornrows-twists',
+        title: 'Children - Braids, Cornrows & Twists',
+        services: [
+          {
+            id: 'children-afro-braids',
+            name: 'Children - Afro Braids',
+            options: [
+              { label: 'Long Hair', duration: 30, price: 65 },
+              { label: 'Medium Hair', duration: 25, price: 55 },
+              { label: 'Short Hair', duration: 20, price: 45 }
+            ]
+          },
+          {
+            id: 'children-cornrows',
+            name: 'Children - Cornrows',
+            options: [
+              { label: 'Long Hair', duration: 40, price: 55 },
+              { label: 'Medium Hair', duration: 35, price: 45 },
+              { label: 'Short Hair', duration: 30, price: 35 }
+            ]
+          },
+          {
+            id: 'children-twists',
+            name: 'Children - Twists',
+            options: [
+              { label: 'Long Hair', duration: 45, price: 65 },
+              { label: 'Medium Hair', duration: 40, price: 55 },
+              { label: 'Short Hair', duration: 35, price: 45 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'children-haircuts-hairdressing',
+        title: 'Children - Haircuts & Hairdressing',
+        services: [
+          {
+            id: 'children-dry-haircut',
+            name: 'Children - Dry Haircut',
+            options: [
+              { label: 'Short', duration: 20, price: 12 },
+              { label: 'Medium', duration: 25, price: 15 },
+              { label: 'Long', duration: 30, price: 18 }
+            ]
+          },
+          {
+            id: 'children-wash-cut-blow-dry',
+            name: 'Children - Wash, Cut & Blow Dry',
+            options: [
+              { label: 'Short', duration: 30, price: 20 },
+              { label: 'Medium', duration: 35, price: 25 },
+              { label: 'Long', duration: 40, price: 30 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'hair-extras',
+        title: 'Hair Extras',
+        services: [
+          {
+            id: 'hair-half-up-half-down',
+            name: 'Hair - Half-Up Half-Down',
+            options: [
+              { label: 'Long Hair', duration: 60, price: 45 },
+              { label: 'Medium Hair', duration: 50, price: 38 },
+              { label: 'Short Hair', duration: 40, price: 32 }
+            ]
+          },
+          {
+            id: 'hair-braided-updo',
+            name: 'Hair - Braided Updo',
+            options: [
+              { label: 'Long Hair', duration: 90, price: 65 },
+              { label: 'Medium Hair', duration: 75, price: 55 },
+              { label: 'Short Hair', duration: 60, price: 48 }
+            ]
+          },
+          {
+            id: 'hair-sleek-bun',
+            name: 'Hair - Sleek Bun',
+            options: [
+              { label: 'Long Hair', duration: 45, price: 38 },
+              { label: 'Medium Hair', duration: 35, price: 32 },
+              { label: 'Short Hair', duration: 25, price: 28 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'ladies-braids-cornrows-twists',
+        title: "Ladies' - Braids, Cornrows & Twists",
+        services: [
+          {
+            id: 'ladies-braids',
+            name: 'Braids',
+            options: [
+              { label: 'Long Hair', duration: 90, price: 75 },
+              { label: 'Medium Hair', duration: 75, price: 65 },
+              { label: 'Short Hair', duration: 60, price: 55 }
+            ]
+          },
+          {
+            id: 'ladies-cornrows',
+            name: 'Cornrows',
+            options: [
+              { label: 'Long Hair', duration: 60, price: 50 },
+              { label: 'Medium Hair', duration: 45, price: 40 },
+              { label: 'Short Hair', duration: 30, price: 30 }
+            ]
+          },
+          {
+            id: 'ladies-twists',
+            name: 'Twists',
+            options: [
+              { label: 'Long Hair', duration: 90, price: 80 },
+              { label: 'Medium Hair', duration: 75, price: 70 },
+              { label: 'Short Hair', duration: 60, price: 60 }
+            ]
           }
         ]
       },
