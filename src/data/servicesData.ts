@@ -252,6 +252,15 @@ export const servicesData: ServiceCategory[] = [
               { label: 'Medium Hair', duration: 105, price: 165 },
               { label: 'Short Hair', duration: 90, price: 145 }
             ]
+          },
+          {
+            id: 'olaplex-treatment-haircut-blow-dry',
+            name: 'Olaplex Treatment with Haircut and Blow-Dry',
+            options: [
+              { label: 'Long Hair', duration: 150, price: 205 },
+              { label: 'Medium Hair', duration: 135, price: 185 },
+              { label: 'Short Hair', duration: 120, price: 165 }
+            ]
           }
         ]
       },
