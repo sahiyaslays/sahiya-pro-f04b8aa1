@@ -39,7 +39,7 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'colour-consult',
             name: 'Colour Consult',
-            options: [{ label: '15 min', duration: 15, price: 10 }]
+            options: [{ label: '15 min', duration: 15, price: 20 }]
           },
           {
             id: 'extensions-consult-coloured-hair',
