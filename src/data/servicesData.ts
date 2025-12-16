@@ -44,22 +44,22 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'extensions-consult-coloured-hair',
             name: 'Extensions Consult (Coloured Hair)',
-            options: [{ label: '20 min', duration: 20, price: 15 }]
+            options: [{ label: '20 min', duration: 20, price: 25 }]
           },
           {
             id: 'extensions-consult-cambodian-hair',
             name: 'Extensions Consult (Cambodian Hair)',
-            options: [{ label: '20 min', duration: 20, price: 15 }]
+            options: [{ label: '20 min', duration: 20, price: 25 }]
           },
           {
             id: 'video-consult',
             name: 'Video Consult',
-            options: [{ label: '15 min', duration: 15, price: 10 }]
+            options: [{ label: '15 min', duration: 15, price: 15 }]
           },
           {
             id: 'hair-therapy-consult',
             name: 'Hair Therapy Consult',
-            options: [{ label: '20 min', duration: 20, price: 15 }]
+            options: [{ label: '20 min', duration: 20, price: 25 }]
           }
         ]
       }
