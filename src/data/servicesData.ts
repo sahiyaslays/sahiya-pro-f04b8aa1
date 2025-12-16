@@ -568,7 +568,7 @@ export const servicesData: ServiceCategory[] = [
         services: [
           {
             id: 'ladies-braids',
-            name: 'Braids',
+            name: 'Braids (Single)',
             options: [
               { label: 'Long Hair', duration: 90, price: 85 },
               { label: 'Medium Hair', duration: 75, price: 75 },
