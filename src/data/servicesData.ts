@@ -74,12 +74,30 @@ export const servicesData: ServiceCategory[] = [
         title: 'Styling',
         services: [
           {
+            id: 'hair-wash-haircut-blowdry-afro',
+            name: 'Hair - Wash Haircut and Blowdry (Afro Hair)',
+            options: [
+              { label: 'Long Hair', duration: 90, price: 95 },
+              { label: 'Medium Hair', duration: 75, price: 85 },
+              { label: 'Short Hair', duration: 60, price: 75 }
+            ]
+          },
+          {
             id: 'hair-wash-and-blow-dry',
             name: 'Hair - Wash & Blow-dry',
             options: [
               { label: 'Long Hair', duration: 60, price: 75 },
               { label: 'Medium Hair', duration: 50, price: 65 },
               { label: 'Short Hair', duration: 40, price: 55 }
+            ]
+          },
+          {
+            id: 'ladies-wash-cut-blow-dry',
+            name: 'Ladies - Wash, Cut and Blow-dry',
+            options: [
+              { label: 'Long Hair', duration: 75, price: 85 },
+              { label: 'Medium Hair', duration: 60, price: 75 },
+              { label: 'Short Hair', duration: 45, price: 65 }
             ]
           },
           {
@@ -128,12 +146,21 @@ export const servicesData: ServiceCategory[] = [
             ]
           },
           {
-            id: 'hair-straightening',
-            name: 'Hair - Straightening',
+            id: 'ladies-wet-cut',
+            name: 'Ladies - Wet Cut',
             options: [
-              { label: 'Long Hair', duration: 60, price: 40 },
-              { label: 'Medium Hair', duration: 50, price: 35 },
-              { label: 'Short Hair', duration: 40, price: 30 }
+              { label: 'Long Hair', duration: 45, price: 55 },
+              { label: 'Medium Hair', duration: 35, price: 45 },
+              { label: 'Short Hair', duration: 25, price: 35 }
+            ]
+          },
+          {
+            id: 'ladies-dry-haircut',
+            name: 'Ladies - Dry Haircut',
+            options: [
+              { label: 'Long Hair', duration: 40, price: 45 },
+              { label: 'Medium Hair', duration: 30, price: 35 },
+              { label: 'Short Hair', duration: 20, price: 25 }
             ]
           },
           {
