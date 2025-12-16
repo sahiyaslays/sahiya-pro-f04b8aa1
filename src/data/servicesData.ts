@@ -77,9 +77,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'hair-wash-and-blow-dry',
             name: 'Hair - Wash & Blow-dry',
             options: [
-              { label: 'Long Hair', duration: 60, price: 40 },
-              { label: 'Medium Hair', duration: 50, price: 35 },
-              { label: 'Short Hair', duration: 40, price: 30 }
+              { label: 'Long Hair', duration: 60, price: 75 },
+              { label: 'Medium Hair', duration: 50, price: 65 },
+              { label: 'Short Hair', duration: 40, price: 55 }
             ]
           },
           {
