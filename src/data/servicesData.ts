@@ -261,6 +261,24 @@ export const servicesData: ServiceCategory[] = [
               { label: 'Medium Hair', duration: 135, price: 185 },
               { label: 'Short Hair', duration: 120, price: 165 }
             ]
+          },
+          {
+            id: 'ladies-afro-relaxer-blow-dry-trim',
+            name: "Ladies' - Afro Relaxer, Blow dry & Trim",
+            options: [
+              { label: 'Long Hair', duration: 30, price: 85 },
+              { label: 'Medium Hair', duration: 30, price: 75 },
+              { label: 'Short Hair', duration: 30, price: 65 }
+            ]
+          },
+          {
+            id: 'ladies-japanese-momoko-hair-straightening',
+            name: "Ladies' - Japanese Momoko HAIR Straightening",
+            options: [
+              { label: 'Long Length', duration: 180, price: 550 },
+              { label: 'Medium Length', duration: 180, price: 500 },
+              { label: 'Short Length', duration: 180, price: 450 }
+            ]
           }
         ]
       },
