@@ -245,30 +245,12 @@ export const servicesData: ServiceCategory[] = [
             ]
           },
           {
-            id: 'hair-half-up-half-down',
-            name: 'Hair - Half-Up Half-Down',
+            id: 'olaplex-treatment-blow-dry',
+            name: 'Olaplex Treatment with Blow-Dry',
             options: [
-              { label: 'Long Hair', duration: 60, price: 45 },
-              { label: 'Medium Hair', duration: 50, price: 38 },
-              { label: 'Short Hair', duration: 40, price: 32 }
-            ]
-          },
-          {
-            id: 'hair-braided-updo',
-            name: 'Hair - Braided Updo',
-            options: [
-              { label: 'Long Hair', duration: 90, price: 65 },
-              { label: 'Medium Hair', duration: 75, price: 55 },
-              { label: 'Short Hair', duration: 60, price: 48 }
-            ]
-          },
-          {
-            id: 'hair-sleek-bun',
-            name: 'Hair - Sleek Bun',
-            options: [
-              { label: 'Long Hair', duration: 45, price: 38 },
-              { label: 'Medium Hair', duration: 35, price: 32 },
-              { label: 'Short Hair', duration: 25, price: 28 }
+              { label: 'Long Hair', duration: 120, price: 185 },
+              { label: 'Medium Hair', duration: 105, price: 165 },
+              { label: 'Short Hair', duration: 90, price: 145 }
             ]
           }
         ]
@@ -281,27 +263,27 @@ export const servicesData: ServiceCategory[] = [
             id: 'children-afro-braids',
             name: 'Children - Afro Braids',
             options: [
-              { label: 'Long Hair', duration: 30, price: 45 },
-              { label: 'Medium Hair', duration: 25, price: 35 },
-              { label: 'Short Hair', duration: 20, price: 25 }
+              { label: 'Long Hair', duration: 30, price: 65 },
+              { label: 'Medium Hair', duration: 25, price: 55 },
+              { label: 'Short Hair', duration: 20, price: 45 }
             ]
           },
           {
             id: 'children-cornrows',
             name: 'Children - Cornrows',
             options: [
-              { label: 'Long Hair', duration: 40, price: 45 },
-              { label: 'Medium Hair', duration: 35, price: 35 },
-              { label: 'Short Hair', duration: 30, price: 25 }
+              { label: 'Long Hair', duration: 40, price: 55 },
+              { label: 'Medium Hair', duration: 35, price: 45 },
+              { label: 'Short Hair', duration: 30, price: 35 }
             ]
           },
           {
             id: 'children-twists',
             name: 'Children - Twists',
             options: [
-              { label: 'Long Hair', duration: 45, price: 50 },
-              { label: 'Medium Hair', duration: 40, price: 40 },
-              { label: 'Short Hair', duration: 35, price: 30 }
+              { label: 'Long Hair', duration: 45, price: 65 },
+              { label: 'Medium Hair', duration: 40, price: 55 },
+              { label: 'Short Hair', duration: 35, price: 45 }
             ]
           }
         ]
@@ -335,9 +317,31 @@ export const servicesData: ServiceCategory[] = [
         title: 'Hair Extras',
         services: [
           {
-            id: 'olaplex-addon',
-            name: 'Olaplex Add-on',
-            options: [{ label: 'Standard', duration: 15, price: 25 }]
+            id: 'hair-half-up-half-down',
+            name: 'Hair - Half-Up Half-Down',
+            options: [
+              { label: 'Long Hair', duration: 60, price: 45 },
+              { label: 'Medium Hair', duration: 50, price: 38 },
+              { label: 'Short Hair', duration: 40, price: 32 }
+            ]
+          },
+          {
+            id: 'hair-braided-updo',
+            name: 'Hair - Braided Updo',
+            options: [
+              { label: 'Long Hair', duration: 90, price: 65 },
+              { label: 'Medium Hair', duration: 75, price: 55 },
+              { label: 'Short Hair', duration: 60, price: 48 }
+            ]
+          },
+          {
+            id: 'hair-sleek-bun',
+            name: 'Hair - Sleek Bun',
+            options: [
+              { label: 'Long Hair', duration: 45, price: 38 },
+              { label: 'Medium Hair', duration: 35, price: 32 },
+              { label: 'Short Hair', duration: 25, price: 28 }
+            ]
           }
         ]
       },
