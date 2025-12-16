@@ -86,18 +86,45 @@ export const servicesData: ServiceCategory[] = [
             id: 'hair-updo-occasion',
             name: 'Hair - Updo / Occasion',
             options: [
-              { label: 'Long Hair', duration: 90, price: 60 },
-              { label: 'Medium Hair', duration: 75, price: 52 },
-              { label: 'Short Hair', duration: 60, price: 45 }
+              { label: 'Long Hair', duration: 90, price: 165 },
+              { label: 'Medium Hair', duration: 75, price: 145 },
+              { label: 'Short Hair', duration: 60, price: 125 }
             ]
           },
           {
-            id: 'hair-curl-styling',
-            name: 'Hair - Curl Styling',
+            id: 'ladies-wash-cut-blowdry-curl-styling',
+            name: 'Ladies - Wash, Cut and Blowdry Hair - Curl Styling',
             options: [
-              { label: 'Long Hair', duration: 60, price: 40 },
-              { label: 'Medium Hair', duration: 50, price: 35 },
-              { label: 'Short Hair', duration: 40, price: 30 }
+              { label: 'Long Hair', duration: 60, price: 140 },
+              { label: 'Medium Hair', duration: 50, price: 135 },
+              { label: 'Short Hair', duration: 40, price: 130 }
+            ]
+          },
+          {
+            id: 'ladies-curl-only-add-on',
+            name: 'Ladies Hair - Curl Only / Add On',
+            options: [
+              { label: 'Long Hair', duration: 45, price: 45 },
+              { label: 'Medium Hair', duration: 35, price: 35 },
+              { label: 'Short Hair', duration: 25, price: 25 }
+            ]
+          },
+          {
+            id: 'ladies-ghd-straightening',
+            name: 'Ladies - Hair - GHD Straightening',
+            options: [
+              { label: 'Long Hair', duration: 60, price: 75 },
+              { label: 'Medium Hair', duration: 50, price: 65 },
+              { label: 'Short Hair', duration: 40, price: 55 }
+            ]
+          },
+          {
+            id: 'ladies-rollers-pin-curl',
+            name: 'Ladies - Rollers or Pin Curl',
+            options: [
+              { label: 'Long Hair', duration: 60, price: 55 },
+              { label: 'Medium Hair', duration: 45, price: 45 },
+              { label: 'Short Hair', duration: 30, price: 25 }
             ]
           },
           {
@@ -119,12 +146,48 @@ export const servicesData: ServiceCategory[] = [
             ]
           },
           {
-            id: 'hair-silk-press',
-            name: 'Hair - Silk Press',
+            id: 'hair-silk-press-and-trim',
+            name: 'Silk Press and Trim',
             options: [
-              { label: 'Long Hair', duration: 120, price: 80 },
-              { label: 'Medium Hair', duration: 105, price: 70 },
-              { label: 'Short Hair', duration: 90, price: 60 }
+              { label: 'Long Hair', duration: 120, price: 125 },
+              { label: 'Medium Hair', duration: 105, price: 110 },
+              { label: 'Short Hair', duration: 90, price: 95 }
+            ]
+          },
+          {
+            id: 'ladies-hydration-treatment-blow-dry',
+            name: 'Ladies - Hydration Treatment and Blow Dry',
+            options: [
+              { label: 'Long Hair', duration: 90, price: 110 },
+              { label: 'Medium Hair', duration: 75, price: 100 },
+              { label: 'Short Hair', duration: 60, price: 95 }
+            ]
+          },
+          {
+            id: 'ladies-hydration-scalp-treatment-silk-press',
+            name: 'Ladies - Hydration, Scalp Treatment, Silk Press',
+            options: [
+              { label: 'Long Hair', duration: 150, price: 185 },
+              { label: 'Medium Hair', duration: 135, price: 165 },
+              { label: 'Short Hair', duration: 120, price: 145 }
+            ]
+          },
+          {
+            id: 'ladies-protein-hydration-treatment-silk-press',
+            name: 'Ladies - Protein, Hydration Treatment & Silk Press',
+            options: [
+              { label: 'Long Hair', duration: 180, price: 265 },
+              { label: 'Medium Hair', duration: 165, price: 245 },
+              { label: 'Short Hair', duration: 150, price: 225 }
+            ]
+          },
+          {
+            id: 'ladies-hair-bond-repair-treatment-blow-dry',
+            name: 'Ladies - Hair Bond Repair Treatment & Blow-Dry',
+            options: [
+              { label: 'Long Hair', duration: 120, price: 155 },
+              { label: 'Medium Hair', duration: 105, price: 145 },
+              { label: 'Short Hair', duration: 90, price: 125 }
             ]
           },
           {
