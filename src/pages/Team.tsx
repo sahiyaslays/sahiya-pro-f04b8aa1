@@ -22,7 +22,7 @@ const Team = () => {
       id: 3,
       name: "Hiba",
       role: "Braids Specialist",
-      image: "/lovable-uploads/sarah-loc-specialist.jpeg"
+      image: "/lovable-uploads/hiba-new.jpeg"
     },
     {
       id: 4,
@@ -78,7 +78,7 @@ const Team = () => {
                   <img 
                     src={member.image}
                     alt={`${member.name} - ${member.role} at Sahiya Slays`}
-                    className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-110"
+                    className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${member.name === "Hiba" ? "scale-150 object-[center_25%]" : "object-top"}`}
                   />
                 </div>
                 
