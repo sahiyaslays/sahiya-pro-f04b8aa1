@@ -9,8 +9,8 @@ const Team = () => {
     {
       id: 1,
       name: "Sahiya",
-      role: "Founder & CEO",
-      image: "/lovable-uploads/f0976d91-79f6-4699-b301-2ad6b3b93aab.png"
+      role: "Master Stylist / Owner",
+      image: "/lovable-uploads/sahiya-new.jpeg"
     },
     {
       id: 2,
@@ -78,7 +78,7 @@ const Team = () => {
                   <img 
                     src={member.image}
                     alt={`${member.name} - ${member.role} at Sahiya Slays`}
-                    className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${member.name === "Hiba" ? "scale-150 object-[center_25%]" : "object-top"}`}
+                    className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${member.name === "Hiba" ? "scale-150 object-[center_25%]" : member.name === "Sahiya" ? "scale-[2] object-[center_30%]" : "object-top"}`}
                   />
                 </div>
                 
