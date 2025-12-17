@@ -26,9 +26,9 @@ const Team = () => {
     },
     {
       id: 4,
-      name: "Archie",
-      role: "Senior Stylist",
-      image: "/lovable-uploads/archie-updated.png"
+      name: "Sarah",
+      role: "Senior Stylist - Loc Specialist",
+      image: "/lovable-uploads/sarah-loc-specialist.jpeg"
     },
     {
       id: 5,
