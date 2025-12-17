@@ -78,7 +78,7 @@ const Team = () => {
                   <img 
                     src={member.image}
                     alt={`${member.name} - ${member.role} at Sahiya Slays`}
-                    className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${member.name === "Hiba" ? "scale-150 object-[center_25%]" : member.name === "Sahiya" ? "scale-[2] object-[center_30%]" : "object-top"}`}
+                    className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${member.name === "Hiba" ? "scale-150 object-[center_25%]" : member.name === "Sahiya" ? "scale-[3] object-[center_35%]" : "object-top"}`}
                   />
                 </div>
                 
