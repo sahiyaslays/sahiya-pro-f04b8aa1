@@ -20,9 +20,9 @@ const Team = () => {
     },
     {
       id: 3,
-      name: "Isla",
-      role: "Social Media & Admin",
-      image: "/lovable-uploads/7ce2fdd8-9a67-425e-822c-1ca15d355af9.png"
+      name: "Hiba",
+      role: "Braids Specialist",
+      image: "/lovable-uploads/hiba-braids-specialist.jpeg"
     },
     {
       id: 4,
