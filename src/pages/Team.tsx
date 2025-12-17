@@ -14,9 +14,9 @@ const Team = () => {
     },
     {
       id: 2,
-      name: "Zara Williams",
-      role: "Senior Stylist & Colorist",
-      image: "/lovable-uploads/88122a6d-de54-49bc-b338-283e59c66061.png"
+      name: "Shelese",
+      role: "Nail Technician",
+      image: "/lovable-uploads/shelese-nail-tech.jpeg"
     },
     {
       id: 3,
@@ -96,7 +96,7 @@ const Team = () => {
                   <img 
                     src={member.image}
                     alt={`${member.name} - ${member.role} at Sahiya Slays`}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-110"
                   />
                 </div>
                 
