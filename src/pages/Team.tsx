@@ -29,24 +29,6 @@ const Team = () => {
       name: "Sarah",
       role: "Senior Stylist - Loc Specialist",
       image: "/lovable-uploads/sarah-loc-specialist.jpeg"
-    },
-    {
-      id: 5,
-      name: "Florence",
-      role: "Acrylic/ design nail tech",
-      image: "/lovable-uploads/019f7acf-1146-41d6-8444-31ad109929bc.png"
-    },
-    {
-      id: 6,
-      name: "Ryan",
-      role: "Senior Hair Stylist",
-      image: "/lovable-uploads/090793d1-fe57-4a91-9ace-d9fd511c322d.png"
-    },
-    {
-      id: 7,
-      name: "Hassan Manzoor",
-      role: "Web Designer",
-      image: "/src/assets/hassan-manzoor.jpg"
     }
   ];
 
