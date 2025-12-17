@@ -22,13 +22,13 @@ const Team = () => {
       id: 3,
       name: "Hiba",
       role: "Braids Specialist",
-      image: "/lovable-uploads/hiba-braids-specialist.jpeg"
+      image: "/lovable-uploads/sarah-loc-specialist.jpeg"
     },
     {
       id: 4,
       name: "Sarah",
       role: "Senior Stylist - Loc Specialist",
-      image: "/lovable-uploads/sarah-loc-specialist.jpeg"
+      image: "/lovable-uploads/hiba-braids-specialist.jpeg"
     }
   ];
 
