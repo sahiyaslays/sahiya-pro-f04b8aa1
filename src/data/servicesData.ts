@@ -290,8 +290,8 @@ export const servicesData: ServiceCategory[] = [
             id: 'full-head-hl-cut-blow-dry',
             name: 'Full Head HL + Cut & Blow Dry',
             options: [
-              { label: 'Long', duration: 180, price: 270 },
-              { label: 'Medium', duration: 150, price: 250 },
+              { label: 'Long', duration: 180, price: 310 },
+              { label: 'Medium', duration: 150, price: 290 },
               { label: 'Short', duration: 120, price: 270 }
             ]
           },
