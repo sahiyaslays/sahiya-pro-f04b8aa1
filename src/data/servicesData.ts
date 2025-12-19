@@ -375,8 +375,8 @@ export const servicesData: ServiceCategory[] = [
             name: 'Full Tint Perm + Cut & Blow Dry',
             options: [
               { label: 'Short', duration: 90, price: 120 },
-              { label: 'Medium', duration: 75, price: 90 },
-              { label: 'Long', duration: 75, price: 90 }
+              { label: 'Medium', duration: 75, price: 140 },
+              { label: 'Long', duration: 75, price: 160 }
             ]
           },
           {
