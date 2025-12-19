@@ -392,9 +392,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'airtouch-balayage-cut-blow-dry',
             name: 'AirTouch Balayage + Cut & Blow Dry',
             options: [
-              { label: 'Medium', duration: 180, price: 335 },
-              { label: 'Short', duration: 150, price: 310 },
-              { label: 'Long', duration: 210, price: 360 }
+              { label: 'Short', duration: 150, price: 760 },
+              { label: 'Medium', duration: 180, price: 780 },
+              { label: 'Long', duration: 210, price: 800 }
             ]
           },
         ]
