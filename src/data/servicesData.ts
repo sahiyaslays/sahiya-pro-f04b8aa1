@@ -299,7 +299,7 @@ export const servicesData: ServiceCategory[] = [
             id: 'half-head-hl-cut-blow-dry',
             name: 'Half Head HL + Cut & Blow Dry',
             options: [
-              { label: 'Long', duration: 150, price: 220 },
+              { label: 'Long', duration: 150, price: 230 },
               { label: 'Medium', duration: 120, price: 210 },
               { label: 'Short', duration: 90, price: 190 }
             ]
