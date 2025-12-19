@@ -339,7 +339,7 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'colour-correction',
             name: 'Colour Correction',
-            options: [{ label: 'Standard', duration: 240, price: 390 }]
+            options: [{ label: 'Standard', duration: 240, price: 600 }]
           },
           {
             id: 'afro-colour-treat',
