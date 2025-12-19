@@ -292,7 +292,7 @@ export const servicesData: ServiceCategory[] = [
             options: [
               { label: 'Long', duration: 180, price: 270 },
               { label: 'Medium', duration: 150, price: 250 },
-              { label: 'Short', duration: 120, price: 230 }
+              { label: 'Short', duration: 120, price: 270 }
             ]
           },
           {
