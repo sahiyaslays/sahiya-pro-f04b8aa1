@@ -140,21 +140,32 @@ serve(async (req) => {
 
       // Send booking confirmation emails
       try {
-        await supabaseClient.functions.invoke('send-booking-email', {
-          body: {
-            type: 'booking_request',
+        const emailResponse = await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-booking-email`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Deno.env.get("SUPABASE_ANON_KEY")}`,
+          },
+          body: JSON.stringify({
+            emailType: 'initial',
             bookingId: booking.id,
             customerEmail: bookingData.guestEmail || user?.email,
-            customerName: bookingData.guestName || user?.email,
-            services: bookingData.services,
+            customerName: bookingData.guestName || user?.email?.split('@')[0] || 'Customer',
+            customerPhone: bookingData.guestPhone || '',
+            services: bookingData.services.map(s => ({
+              name: s.name,
+              duration: s.duration,
+              price: `£${s.price.toFixed(2)}`,
+            })),
             bookingDate: bookingData.bookingDate,
             bookingTime: bookingData.bookingTime,
             totalAmount: bookingData.totalAmount,
             paymentType: bookingData.paymentType,
             specialRequests: bookingData.specialRequests,
             stylistId: bookingData.stylistId,
-          }
+          }),
         });
+        console.log("Email response:", await emailResponse.text());
       } catch (emailError) {
         console.error("Email sending error:", emailError);
       }

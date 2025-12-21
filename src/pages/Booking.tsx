@@ -59,13 +59,19 @@ const Booking = () => {
       
       // Send confirmation emails
       try {
+        const services = Array.isArray(booking.services) ? booking.services : [];
         await supabase.functions.invoke('send-booking-email', {
           body: {
-            type: 'booking_request',
+            emailType: 'initial',
             bookingId: bookingId,
             customerEmail: booking.guest_email,
-            customerName: booking.guest_name,
-            services: booking.services,
+            customerName: booking.guest_name || 'Customer',
+            customerPhone: booking.guest_phone || '',
+            services: services.map((s: any) => ({
+              name: s.name || 'Service',
+              duration: s.duration || 0,
+              price: typeof s.price === 'number' ? `£${s.price.toFixed(2)}` : s.price || '£0.00',
+            })),
             bookingDate: booking.booking_date,
             bookingTime: booking.booking_time,
             totalAmount: booking.total_amount,
@@ -74,6 +80,7 @@ const Booking = () => {
             stylistId: booking.stylist_id,
           }
         });
+        console.log('Booking confirmation email sent successfully');
       } catch (emailError) {
         console.error('Email error:', emailError);
       }
