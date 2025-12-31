@@ -33,14 +33,22 @@ interface BookingEmailRequest {
 }
 
 const handler = async (req: Request): Promise<Response> => {
+  console.log("[SEND-BOOKING-EMAIL] Function invoked");
+  console.log("[SEND-BOOKING-EMAIL] Request method:", req.method);
+  
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const bookingData: BookingEmailRequest = await req.json();
-    console.log("Processing booking email, type:", bookingData.emailType, "ID:", bookingData.bookingId);
+    const rawBody = await req.text();
+    console.log("[SEND-BOOKING-EMAIL] Raw request body:", rawBody);
+    
+    const bookingData: BookingEmailRequest = JSON.parse(rawBody);
+    console.log("[SEND-BOOKING-EMAIL] Parsed data - Type:", bookingData.emailType, "ID:", bookingData.bookingId);
+    console.log("[SEND-BOOKING-EMAIL] Customer email:", bookingData.customerEmail);
+    console.log("[SEND-BOOKING-EMAIL] RESEND_API_KEY configured:", !!Deno.env.get("RESEND_API_KEY"));
 
     const paymentTypeText = 
       bookingData.paymentType === "deposit" ? "£20 Deposit Paid" :
@@ -314,13 +322,24 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
+    console.log("[SEND-BOOKING-EMAIL] Sending", emailPromises.length, "email(s)...");
+    
     const results = await Promise.all(emailPromises);
-    console.log("Booking emails sent:", results);
+    console.log("[SEND-BOOKING-EMAIL] Resend API responses:", JSON.stringify(results));
+    
+    // Check for any errors in results
+    const errors = results.filter((r: any) => r.error);
+    if (errors.length > 0) {
+      console.error("[SEND-BOOKING-EMAIL] Some emails failed:", JSON.stringify(errors));
+    } else {
+      console.log("[SEND-BOOKING-EMAIL] All emails sent successfully!");
+    }
 
     return new Response(
       JSON.stringify({
         success: true,
         results,
+        emailCount: emailPromises.length,
       }),
       {
         status: 200,
@@ -331,8 +350,9 @@ const handler = async (req: Request): Promise<Response> => {
       }
     );
   } catch (error: any) {
-    console.error("Error in send-booking-email function:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error("[SEND-BOOKING-EMAIL] Error:", error.message);
+    console.error("[SEND-BOOKING-EMAIL] Stack:", error.stack);
+    return new Response(JSON.stringify({ error: error.message, stack: error.stack }), {
       status: 500,
       headers: { "Content-Type": "application/json", ...corsHeaders },
     });
