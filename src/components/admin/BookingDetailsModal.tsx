@@ -35,7 +35,13 @@ export function BookingDetailsModal({ open, onOpenChange, booking, onStatusUpdat
 
       if (updateError) throw updateError;
 
-      // Send confirmation email
+      // Send confirmation email - format services properly
+      const formattedServices = services.map((s: any) => ({
+        name: s.name || "Service",
+        duration: s.duration || 0,
+        price: typeof s.price === "number" ? `£${s.price.toFixed(2)}` : (s.price || "£0.00"),
+      }));
+
       const { error: emailError } = await supabase.functions.invoke('send-booking-email', {
         body: {
           emailType: 'confirmation',
@@ -43,7 +49,7 @@ export function BookingDetailsModal({ open, onOpenChange, booking, onStatusUpdat
           customerName: booking.guest_name,
           customerEmail: booking.guest_email,
           customerPhone: booking.guest_phone,
-          services: services,
+          services: formattedServices,
           bookingDate: new Date(booking.booking_date).toLocaleDateString('en-GB', { 
             weekday: 'long', 
             year: 'numeric', 
@@ -106,7 +112,13 @@ export function BookingDetailsModal({ open, onOpenChange, booking, onStatusUpdat
 
       if (updateError) throw updateError;
 
-      // Send rejection email
+      // Send rejection email - format services properly
+      const formattedServicesForRejection = services.map((s: any) => ({
+        name: s.name || "Service",
+        duration: s.duration || 0,
+        price: typeof s.price === "number" ? `£${s.price.toFixed(2)}` : (s.price || "£0.00"),
+      }));
+
       const { error: emailError } = await supabase.functions.invoke('send-booking-email', {
         body: {
           emailType: 'rejection',
@@ -114,7 +126,7 @@ export function BookingDetailsModal({ open, onOpenChange, booking, onStatusUpdat
           customerName: booking.guest_name,
           customerEmail: booking.guest_email,
           customerPhone: booking.guest_phone,
-          services: services,
+          services: formattedServicesForRejection,
           bookingDate: new Date(booking.booking_date).toLocaleDateString('en-GB', { 
             weekday: 'long', 
             year: 'numeric', 
@@ -254,7 +266,7 @@ export function BookingDetailsModal({ open, onOpenChange, booking, onStatusUpdat
                       {service.duration} min • Qty: {service.quantity || 1}
                     </p>
                   </div>
-                  <p className="font-semibold text-gray-900">${service.price}</p>
+                  <p className="font-semibold text-gray-900">£{typeof service.price === 'number' ? service.price.toFixed(2) : service.price}</p>
                 </div>
               ))}
             </div>
@@ -276,7 +288,7 @@ export function BookingDetailsModal({ open, onOpenChange, booking, onStatusUpdat
               </div>
               <div>
                 <p className="text-sm text-gray-600">Total Amount</p>
-                <p className="text-base font-semibold text-[#D4AF37]">${booking.total_amount.toFixed(2)}</p>
+                <p className="text-base font-semibold text-[#D4AF37]">£{booking.total_amount.toFixed(2)}</p>
               </div>
               {booking.stripe_payment_intent_id && (
                 <div className="md:col-span-2">

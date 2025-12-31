@@ -13,6 +13,8 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  console.log("[STRIPE-WEBHOOK] Received request");
+
   const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
     apiVersion: "2023-10-16",
   });
@@ -66,6 +68,7 @@ serve(async (req) => {
       console.log("[STRIPE-WEBHOOK] Processing checkout.session.completed");
       console.log("[STRIPE-WEBHOOK] Session ID:", session.id);
       console.log("[STRIPE-WEBHOOK] Session metadata:", JSON.stringify(session.metadata));
+      console.log("[STRIPE-WEBHOOK] Payment status:", session.payment_status);
 
       const bookingId = session.metadata?.booking_id;
       
@@ -95,6 +98,7 @@ serve(async (req) => {
       }
 
       console.log("[STRIPE-WEBHOOK] Found booking:", booking.id, "Status:", booking.status);
+      console.log("[STRIPE-WEBHOOK] Booking details - guest_email:", booking.guest_email, "guest_name:", booking.guest_name);
 
       // Only process if booking is still pending
       if (booking.status === "pending") {
@@ -118,21 +122,26 @@ serve(async (req) => {
 
         console.log("[STRIPE-WEBHOOK] Booking status updated to confirmed");
 
-        // Send confirmation emails
+        // Send confirmation emails to BOTH customer AND admin
         try {
           const services = Array.isArray(booking.services) ? booking.services : [];
           
+          // Format services properly - handle both string and number prices
+          const formattedServices = services.map((s: any) => ({
+            name: s.name || "Service",
+            duration: s.duration || 0,
+            price: typeof s.price === "number" 
+              ? `£${s.price.toFixed(2)}` 
+              : (s.price || "£0.00"),
+          }));
+
           const emailPayload = {
             emailType: "confirmation",
             bookingId: booking.id,
             customerEmail: booking.guest_email,
             customerName: booking.guest_name || "Customer",
             customerPhone: booking.guest_phone || "",
-            services: services.map((s: any) => ({
-              name: s.name || "Service",
-              duration: s.duration || 0,
-              price: typeof s.price === "number" ? `£${s.price.toFixed(2)}` : s.price || "£0.00",
-            })),
+            services: formattedServices,
             bookingDate: booking.booking_date,
             bookingTime: booking.booking_time,
             totalAmount: booking.total_amount,

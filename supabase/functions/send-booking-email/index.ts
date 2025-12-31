@@ -156,8 +156,9 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // CONFIRMATION EMAIL - Send to customer
+    // CONFIRMATION EMAIL - Send to customer AND admin
     if (bookingData.emailType === 'confirmation') {
+      // Email to customer
       emailPromises.push(
         resend.emails.send({
           from: "Sahiya Slays <onboarding@resend.dev>",
@@ -187,7 +188,7 @@ const handler = async (req: Request): Promise<Response> => {
                 <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0; border-radius: 5px;">
                   <h3 style="margin: 0 0 10px 0; color: #000;">Your Services</h3>
                   ${servicesHtml}
-                  <p style="margin: 15px 0 5px 0;"><strong>Total Amount:</strong> £${bookingData.totalAmount.toFixed(2)}</p>
+                  <p style="margin: 15px 0 5px 0;"><strong>Total Amount:</strong> £${typeof bookingData.totalAmount === 'number' ? bookingData.totalAmount.toFixed(2) : bookingData.totalAmount}</p>
                   <p style="margin: 5px 0;"><strong>Payment:</strong> ${paymentTypeText}</p>
                 </div>
 
@@ -209,6 +210,55 @@ const handler = async (req: Request): Promise<Response> => {
               <div style="background-color: #f5f5f5; padding: 20px; text-align: center; font-size: 12px; color: #666;">
                 <p>415 Wick Lane, TradeStars Block G, Bow, London E3 2JG</p>
                 <p>07809441074 | contact@sahiyaslays.com</p>
+              </div>
+            </div>
+          `,
+        })
+      );
+
+      // Email to admin - notify of confirmed booking
+      emailPromises.push(
+        resend.emails.send({
+          from: "Sahiya Slays Bookings <onboarding@resend.dev>",
+          to: "sahiyaslays@gmail.com",
+          subject: `✅ BOOKING CONFIRMED & PAID - ${bookingData.customerName}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <div style="background-color: #4caf50; color: #fff; padding: 20px;">
+                <h1 style="margin: 0;">✅ Booking Confirmed & Paid</h1>
+              </div>
+              
+              <div style="padding: 30px 20px;">
+                <div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 20px 0;">
+                  <p style="margin: 0; color: #2e7d32; font-weight: bold;">Payment received - Booking auto-confirmed!</p>
+                </div>
+
+                <div style="background-color: #e3f2fd; border-left: 4px solid #2196F3; padding: 15px; margin: 20px 0;">
+                  <h3 style="margin: 0 0 10px 0; color: #000; font-size: 16px;">👤 Customer Information</h3>
+                  <p style="margin: 5px 0;"><strong>Name:</strong> ${bookingData.customerName}</p>
+                  <p style="margin: 5px 0;"><strong>Email:</strong> ${bookingData.customerEmail}</p>
+                  <p style="margin: 5px 0;"><strong>Phone:</strong> ${bookingData.customerPhone}</p>
+                </div>
+
+                <div style="background-color: #fff3cd; border-left: 4px solid #D4AF37; padding: 15px; margin: 20px 0;">
+                  <h3 style="margin: 0 0 10px 0; color: #000; font-size: 16px;">📅 Appointment Details</h3>
+                  <p style="margin: 5px 0;"><strong>Date:</strong> ${bookingData.bookingDate}</p>
+                  <p style="margin: 5px 0;"><strong>Time:</strong> ${bookingData.bookingTime}</p>
+                </div>
+
+                <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0; border-radius: 5px;">
+                  <h3 style="margin: 0 0 10px 0; color: #000;">Services</h3>
+                  ${servicesHtml}
+                  <p style="margin: 15px 0 5px 0;"><strong>Total:</strong> £${typeof bookingData.totalAmount === 'number' ? bookingData.totalAmount.toFixed(2) : bookingData.totalAmount}</p>
+                  <p style="margin: 5px 0;"><strong>Payment:</strong> ${paymentTypeText}</p>
+                </div>
+
+                ${bookingData.specialRequests ? `
+                <div style="background-color: #fff9e6; border-left: 4px solid #FFC107; padding: 15px; margin: 20px 0;">
+                  <h3 style="margin: 0 0 10px 0; color: #000; font-size: 16px;">📝 Customer Notes</h3>
+                  <p style="margin: 5px 0;">${bookingData.specialRequests}</p>
+                </div>
+                ` : ''}
               </div>
             </div>
           `,

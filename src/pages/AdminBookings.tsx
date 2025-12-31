@@ -141,7 +141,7 @@ export default function AdminBookings() {
                             </Badge>
                           </TableCell>
                           <TableCell className="font-semibold text-gray-900">
-                            ${booking.total_amount.toFixed(2)}
+                            £{booking.total_amount.toFixed(2)}
                           </TableCell>
                           <TableCell className="text-right">
                             <Button
