@@ -1,20 +1,89 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import Header from "@/components/Header";
-import { servicesData, Service } from "@/data/servicesData";
+import { supabase } from "@/integrations/supabase/client";
 import { ServiceBookingModal } from "@/components/booking/ServiceBookingModal";
-import { Search, ChevronDown, ChevronRight } from "lucide-react";
+import { Search, ChevronDown, ChevronRight, Loader2 } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Footer } from "@/components/Footer";
 import { EditableText } from "@/components/EditableText";
 
+interface ServiceOption {
+  name: string;
+  duration: number;
+  price: number;
+}
+
+interface DatabaseService {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  duration: number;
+  category: string;
+  subcategory: string | null;
+  image_url: string | null;
+  options: ServiceOption[] | null;
+  active: boolean | null;
+}
+
+interface DisplayService {
+  id: string;
+  name: string;
+  description: string;
+  options: { label: string; duration: number; price: number }[];
+}
+
+interface DisplaySubcategory {
+  id: string;
+  title: string;
+  services: DisplayService[];
+}
+
+interface DisplayCategory {
+  id: string;
+  title: string;
+  subcategories: DisplaySubcategory[];
+}
+
 const Services = () => {
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [services, setServices] = useState<DatabaseService[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedService, setSelectedService] = useState<DisplayService | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [expandedServices, setExpandedServices] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('services')
+        .select('*')
+        .eq('active', true)
+        .order('category', { ascending: true })
+        .order('name', { ascending: true });
+
+      if (error) throw error;
+      
+      // Parse options from JSON
+      const parsedServices = (data || []).map((s: any) => ({
+        ...s,
+        options: s.options ? (s.options as ServiceOption[]) : null
+      }));
+      
+      setServices(parsedServices);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const formatPrice = (price: number) => {
     return price === 0 ? 'Free' : `£${price}`;
@@ -32,7 +101,61 @@ const Services = () => {
     return `${hours}h ${remainingMinutes}min`;
   };
 
-  const getServiceDisplayInfo = (service: Service) => {
+  // Group services by category and subcategory
+  const groupedServices = (): DisplayCategory[] => {
+    const categories = new Map<string, Map<string, DisplayService[]>>();
+
+    services.forEach(service => {
+      if (!categories.has(service.category)) {
+        categories.set(service.category, new Map());
+      }
+      
+      const subcatMap = categories.get(service.category)!;
+      const subcategory = service.subcategory || 'General';
+      
+      if (!subcatMap.has(subcategory)) {
+        subcatMap.set(subcategory, []);
+      }
+
+      // Convert to display format
+      const displayService: DisplayService = {
+        id: service.id,
+        name: service.name,
+        description: service.description || '',
+        options: service.options && service.options.length > 0
+          ? service.options.map(opt => ({
+              label: opt.name,
+              duration: opt.duration,
+              price: opt.price
+            }))
+          : [{ label: 'Standard', duration: service.duration, price: service.price }]
+      };
+
+      subcatMap.get(subcategory)!.push(displayService);
+    });
+
+    // Convert to array format
+    const result: DisplayCategory[] = [];
+    categories.forEach((subcatMap, catName) => {
+      const subcategories: DisplaySubcategory[] = [];
+      subcatMap.forEach((services, subcatName) => {
+        subcategories.push({
+          id: `${catName}-${subcatName}`.toLowerCase().replace(/\s+/g, '-'),
+          title: subcatName,
+          services
+        });
+      });
+      result.push({
+        id: catName.toLowerCase().replace(/\s+/g, '-'),
+        title: catName,
+        subcategories
+      });
+    });
+
+    return result;
+  };
+
+  const getServiceDisplayInfo = (service: DisplayService) => {
     const firstOption = service.options[0];
     const minPrice = Math.min(...service.options.map(opt => opt.price));
     const maxPrice = Math.max(...service.options.map(opt => opt.price));
@@ -48,6 +171,8 @@ const Services = () => {
       hasMultipleOptions: service.options.length > 1
     };
   };
+
+  const servicesData = groupedServices();
 
   const filteredServices = servicesData.map(category => ({
     ...category,
@@ -81,6 +206,14 @@ const Services = () => {
     '/lovable-uploads/8083105a-56c1-478e-92f8-6424fb55f2d1.png',
     '/lovable-uploads/88122a6d-de54-49bc-b338-283e59c66061.png'
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background font-abel">
@@ -121,7 +254,7 @@ const Services = () => {
           <div className="relative max-w-sm mx-auto">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
-              placeholder={String(localStorage.getItem('editableContent') ? JSON.parse(localStorage.getItem('editableContent') || '{}')['search-placeholder'] || 'Search services...' : 'Search services...')}
+              placeholder="Search services..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 h-9 text-sm bg-white"
@@ -141,7 +274,7 @@ const Services = () => {
               size="sm"
               className="text-xs tracking-wider uppercase transition-all duration-200 whitespace-nowrap flex-shrink-0"
             >
-              <EditableText id="nav-all-services">ALL SERVICES</EditableText>
+              ALL SERVICES
             </Button>
             {servicesData.map((category) => (
               <Button
@@ -151,7 +284,7 @@ const Services = () => {
                 size="sm"
                 className="text-xs tracking-wider uppercase transition-all duration-200 whitespace-nowrap flex-shrink-0"
               >
-                <EditableText id={`nav-category-${category.id}`}>{category.title}</EditableText>
+                {category.title}
               </Button>
             ))}
           </div>
@@ -161,62 +294,113 @@ const Services = () => {
       {/* Services Content */}
       <section className="py-8 px-4">
         <div className="max-w-[1040px] mx-auto space-y-8">
-          {activeCategories.map((category) => (
-            <div key={category.id} className="space-y-6">
-              {/* Category Header */}
-              <div className="w-full bg-foreground py-2.5">
-                <EditableText 
-                  id={`category-header-${category.id}`}
-                  as="h2"
-                  className="text-center text-background text-lg md:text-xl font-normal tracking-[0.15em] uppercase"
-                >
-                  {category.title}
-                </EditableText>
-              </div>
+          {activeCategories.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">
+                {searchTerm ? `No services found matching "${searchTerm}"` : 'No services available'}
+              </p>
+            </div>
+          ) : (
+            activeCategories.map((category) => (
+              <div key={category.id} className="space-y-6">
+                {/* Category Header */}
+                <div className="w-full bg-foreground py-2.5">
+                  <h2 className="text-center text-background text-lg md:text-xl font-normal tracking-[0.15em] uppercase">
+                    {category.title}
+                  </h2>
+                </div>
 
-              {/* Subcategories */}
-              {category.subcategories.map((subcategory) => (
-                <div key={subcategory.id} className="space-y-4">
-                  {/* Subcategory Header */}
-                  <div className="text-center">
-                    <EditableText
-                      id={`subcategory-header-${subcategory.id}`}
-                      as="h3"
-                      className="text-base md:text-lg font-normal tracking-[0.1em] text-foreground uppercase mb-3"
-                    >
-                      {subcategory.title}
-                    </EditableText>
-                    <div className="w-12 h-[1px] bg-primary mx-auto"></div>
-                  </div>
+                {/* Subcategories */}
+                {category.subcategories.map((subcategory) => (
+                  <div key={subcategory.id} className="space-y-4">
+                    {/* Subcategory Header */}
+                    <div className="text-center">
+                      <h3 className="text-base md:text-lg font-normal tracking-[0.1em] text-foreground uppercase mb-3">
+                        {subcategory.title}
+                      </h3>
+                      <div className="w-12 h-[1px] bg-primary mx-auto"></div>
+                    </div>
 
-                  {/* Services */}
-                  <div className="space-y-1">
-                    {subcategory.services.map((service) => {
-                      const displayInfo = getServiceDisplayInfo(service);
-                      const isExpanded = expandedServices.has(service.id);
-                      const hasMultipleOptions = service.options.length > 1;
-                      
-                      return (
-                        <div key={service.id} className="space-y-1">
-                          {hasMultipleOptions ? (
-                            <Collapsible 
-                              open={isExpanded} 
-                              onOpenChange={() => toggleServiceExpanded(service.id)}
-                            >
-                              <CollapsibleTrigger className="w-full max-w-4xl mx-auto block">
+                    {/* Services */}
+                    <div className="space-y-1">
+                      {subcategory.services.map((service) => {
+                        const displayInfo = getServiceDisplayInfo(service);
+                        const isExpanded = expandedServices.has(service.id);
+                        const hasMultipleOptions = service.options.length > 1;
+                        
+                        return (
+                          <div key={service.id} className="space-y-1">
+                            {hasMultipleOptions ? (
+                              <Collapsible 
+                                open={isExpanded} 
+                                onOpenChange={() => toggleServiceExpanded(service.id)}
+                              >
+                                <CollapsibleTrigger className="w-full max-w-4xl mx-auto block">
+                                  <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200">
+                                    <div className="flex-1 text-left">
+                                      <div className="flex items-center gap-2">
+                                        <h4 className="text-foreground text-sm md:text-base font-normal tracking-wide uppercase">
+                                          {service.name}
+                                        </h4>
+                                        <span className="text-xs text-muted-foreground bg-gray-100 px-2 py-0.5 rounded">
+                                          {service.options.length} options
+                                        </span>
+                                      </div>
+                                      <div className="text-xs text-muted-foreground mt-0.5">
+                                        {displayInfo.duration} • {displayInfo.price}
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-3">
+                                      <span className="text-xs text-muted-foreground">
+                                        {isExpanded ? 'Hide' : 'Show'} options
+                                      </span>
+                                      {isExpanded ? (
+                                        <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                                      ) : (
+                                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                                      )}
+                                    </div>
+                                  </div>
+                                </CollapsibleTrigger>
+                                
+                                <CollapsibleContent className="max-w-4xl mx-auto">
+                                  <div className="ml-4 mr-4 mb-2 space-y-2 bg-gray-50 rounded-lg p-3">
+                                    {service.options.map((option, index) => (
+                                      <div key={index} className="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-100">
+                                        <div className="flex-1">
+                                          <span className="text-sm font-medium text-foreground">
+                                            {option.label}
+                                          </span>
+                                          <div className="text-xs text-muted-foreground">
+                                            {formatDuration(option.duration)}
+                                          </div>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                          <span className="text-sm font-medium text-primary">
+                                            {formatPrice(option.price)}
+                                          </span>
+                                          <Button
+                                            onClick={() => setSelectedService(service)}
+                                            size="sm"
+                                            className="px-3 py-1 text-xs tracking-wider uppercase h-7"
+                                          >
+                                            Book
+                                          </Button>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </CollapsibleContent>
+                              </Collapsible>
+                            ) : (
+                              <div className="w-full max-w-4xl mx-auto">
                                 <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200">
                                   <div className="flex-1 text-left">
                                     <div className="flex items-center gap-2">
-                                      <EditableText
-                                        id={`service-name-${service.id}`}
-                                        as="h4"
-                                        className="text-foreground text-sm md:text-base font-normal tracking-wide uppercase"
-                                      >
+                                      <h4 className="text-foreground text-sm md:text-base font-normal tracking-wide uppercase">
                                         {service.name}
-                                      </EditableText>
-                                      <span className="text-xs text-muted-foreground bg-gray-100 px-2 py-0.5 rounded">
-                                        {service.options.length} options
-                                      </span>
+                                      </h4>
                                     </div>
                                     <div className="text-xs text-muted-foreground mt-0.5">
                                       {displayInfo.duration} • {displayInfo.price}
@@ -224,107 +408,25 @@ const Services = () => {
                                   </div>
                                   
                                   <div className="flex items-center gap-3">
-                                    <span className="text-xs text-muted-foreground">
-                                      {isExpanded ? 'Hide' : 'Show'} options
-                                    </span>
-                                    {isExpanded ? (
-                                      <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                                    ) : (
-                                      <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                                    )}
-                                  </div>
-                                </div>
-                              </CollapsibleTrigger>
-                              
-                              <CollapsibleContent className="max-w-4xl mx-auto">
-                                <div className="ml-4 mr-4 mb-2 space-y-2 bg-gray-50 rounded-lg p-3">
-                                  {service.options.map((option, index) => (
-                                    <div key={index} className="flex items-center justify-between py-2 px-3 bg-white rounded border border-gray-100">
-                                      <div className="flex-1">
-                                        <EditableText
-                                          id={`service-option-label-${service.id}-${index}`}
-                                          as="span"
-                                          className="text-sm font-medium text-foreground"
-                                        >
-                                          {option.label}
-                                        </EditableText>
-                                        <div className="text-xs text-muted-foreground">
-                                          {formatDuration(option.duration)}
-                                        </div>
-                                      </div>
-                                      <div className="flex items-center gap-3">
-                                        <EditableText
-                                          id={`service-option-price-${service.id}-${index}`}
-                                          as="span"
-                                          className="text-sm font-medium text-primary"
-                                        >
-                                          {formatPrice(option.price)}
-                                        </EditableText>
-                                        <Button
-                                          onClick={() => setSelectedService(service)}
-                                          size="sm"
-                                          className="px-3 py-1 text-xs tracking-wider uppercase h-7"
-                                        >
-                                          Book
-                                        </Button>
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              </CollapsibleContent>
-                            </Collapsible>
-                          ) : (
-                            <div className="w-full max-w-4xl mx-auto">
-                              <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200">
-                                <div className="flex-1 text-left">
-                                  <div className="flex items-center gap-2">
-                                    <EditableText
-                                      id={`service-name-${service.id}`}
-                                      as="h4"
-                                      className="text-foreground text-sm md:text-base font-normal tracking-wide uppercase"
+                                    <Button
+                                      onClick={() => setSelectedService(service)}
+                                      size="sm"
+                                      className="px-3 py-1 text-xs tracking-wider uppercase h-7"
                                     >
-                                      {service.name}
-                                    </EditableText>
+                                      Book
+                                    </Button>
                                   </div>
-                                  <div className="text-xs text-muted-foreground mt-0.5">
-                                    {displayInfo.duration} • <EditableText
-                                      id={`service-price-${service.id}`}
-                                      as="span"
-                                      className="text-xs text-muted-foreground"
-                                    >
-                                      {displayInfo.price}
-                                    </EditableText>
-                                  </div>
-                                </div>
-                                
-                                <div className="flex items-center gap-3">
-                                  <Button
-                                    onClick={() => setSelectedService(service)}
-                                    size="sm"
-                                    className="px-3 py-1 text-xs tracking-wider uppercase h-7"
-                                  >
-                                    Book
-                                  </Button>
                                 </div>
                               </div>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ))}
-
-          {/* No results message */}
-          {activeCategories.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">
-                No services found matching "{searchTerm}"
-              </p>
-            </div>
+                ))}
+              </div>
+            ))
           )}
         </div>
       </section>
@@ -376,7 +478,7 @@ const Services = () => {
               <div key={index} className="aspect-square overflow-hidden">
                 <img 
                   src={image} 
-                  alt={`Salon detail ${index + 1}`}
+                  alt={`Salon image ${index + 1}`}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
               </div>
@@ -387,12 +489,20 @@ const Services = () => {
 
       <Footer />
 
-      {/* Booking Modal */}
+      {/* Service Booking Modal */}
       {selectedService && (
         <ServiceBookingModal
+          service={{
+            id: selectedService.id,
+            name: selectedService.name,
+            options: selectedService.options.map(opt => ({
+              label: opt.label,
+              duration: opt.duration,
+              price: opt.price
+            }))
+          }}
           isOpen={!!selectedService}
           onClose={() => setSelectedService(null)}
-          service={selectedService}
         />
       )}
     </div>
