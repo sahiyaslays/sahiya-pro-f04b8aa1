@@ -1,18 +1,48 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { EditableText } from '@/components/EditableText';
-import { Product, SortOption } from '@/types/shop';
-import { PRODUCTS, formatPriceRange } from '@/data/shopData';
+import { SortOption } from '@/types/shop';
+import { supabase } from '@/integrations/supabase/client';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { ProductImage } from '@/components/shop/ProductImage';
 import { QuickViewModal } from '@/components/shop/QuickViewModal';
-import { Search, X, Eye } from 'lucide-react';
+import { Search, X, Eye, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+// Display product interface
+interface DisplayProduct {
+  id: string;
+  title: string;
+  slug: string;
+  short_description: string;
+  category: string;
+  price_min: number;
+  price_max: number;
+  images: string[];
+  is_sale: boolean;
+  variants: any[];
+  long_description?: string;
+}
+
+// Convert database product to display format
+interface DisplayProduct {
+  id: string;
+  title: string;
+  slug: string;
+  short_description: string;
+  category: string;
+  price_min: number;
+  price_max: number;
+  images: string[];
+  is_sale: boolean;
+  variants: any[];
+  long_description?: string;
+}
 
 const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: 'default', label: 'Default sorting' },
@@ -22,16 +52,81 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
 ];
 
 export default function Shop() {
+  const [products, setProducts] = useState<DisplayProduct[]>([]);
+  const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<SortOption>('default');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [quickViewProduct, setQuickViewProduct] = useState<DisplayProduct | null>(null);
   const [quickViewOpen, setQuickViewOpen] = useState(false);
 
-  const categories = Array.from(new Set(PRODUCTS.map(p => p.category)));
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('active', true)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      // Transform database products to display format
+      const displayProducts: DisplayProduct[] = (data || []).map((p: any) => {
+        // Build images array
+        let images: string[] = [];
+        if (p.images && Array.isArray(p.images) && p.images.length > 0) {
+          images = p.images;
+        } else if (p.image_url) {
+          images = [p.image_url];
+        } else {
+          images = ['/placeholder.svg'];
+        }
+
+        // Calculate price range from variants if available
+        let priceMin = p.price;
+        let priceMax = p.price;
+        
+        if (p.variants && Array.isArray(p.variants) && p.variants.length > 0) {
+          const variantPrices = p.variants.map((v: any) => v.price || p.price);
+          priceMin = Math.min(...variantPrices);
+          priceMax = Math.max(...variantPrices);
+        } else if (p.price_min !== null && p.price_max !== null) {
+          priceMin = p.price_min;
+          priceMax = p.price_max;
+        }
+
+        return {
+          id: p.id,
+          title: p.name,
+          slug: p.slug || p.id,
+          short_description: p.short_description || p.description || '',
+          category: p.category,
+          price_min: priceMin,
+          price_max: priceMax,
+          images,
+          is_sale: p.is_sale || false,
+          variants: p.variants || [],
+          long_description: p.description || '',
+        };
+      });
+
+      setProducts(displayProducts);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const categories = Array.from(new Set(products.map(p => p.category)));
 
   const filteredAndSortedProducts = useMemo(() => {
-    let productsFiltered = [...PRODUCTS];
+    let productsFiltered = [...products];
 
     // Search filter
     if (searchQuery.trim()) {
@@ -59,14 +154,14 @@ export default function Shop() {
         productsFiltered.sort((a, b) => b.price_max - a.price_max);
         break;
       case 'newest':
-        productsFiltered.reverse();
+        // Already sorted by newest from database
         break;
       default:
         break;
     }
 
     return productsFiltered;
-  }, [sortBy, selectedCategories, searchQuery]);
+  }, [products, sortBy, selectedCategories, searchQuery]);
 
   const toggleCategory = (category: string) => {
     setSelectedCategories(prev => 
@@ -80,12 +175,27 @@ export default function Shop() {
     setSearchQuery('');
   };
 
-  const handleQuickView = (e: React.MouseEvent, product: Product) => {
+  const handleQuickView = (e: React.MouseEvent, product: DisplayProduct) => {
     e.preventDefault();
     e.stopPropagation();
     setQuickViewProduct(product);
     setQuickViewOpen(true);
   };
+
+  const formatPriceRange = (min: number, max: number) => {
+    if (min === max) {
+      return `£${min.toFixed(2)}`;
+    }
+    return `£${min.toFixed(2)} - £${max.toFixed(2)}`;
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -148,20 +258,22 @@ export default function Shop() {
             </div>
 
             {/* Category Filters */}
-            <div className="mb-6">
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
-                  <Badge
-                    key={category}
-                    variant={selectedCategories.includes(category) ? "default" : "outline"}
-                    className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-                    onClick={() => toggleCategory(category)}
-                  >
-                    {category}
-                  </Badge>
-                ))}
+            {categories.length > 0 && (
+              <div className="mb-6">
+                <div className="flex flex-wrap gap-2">
+                  {categories.map((category) => (
+                    <Badge
+                      key={category}
+                      variant={selectedCategories.includes(category) ? "default" : "outline"}
+                      className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+                      onClick={() => toggleCategory(category)}
+                    >
+                      {category}
+                    </Badge>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Top Bar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
@@ -254,7 +366,7 @@ export default function Shop() {
 
       {/* Quick View Modal */}
       <QuickViewModal
-        product={quickViewProduct}
+        product={quickViewProduct as any}
         open={quickViewOpen}
         onOpenChange={setQuickViewOpen}
       />
