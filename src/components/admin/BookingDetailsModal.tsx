@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { Mail } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 interface BookingDetailsModalProps {
@@ -17,6 +18,7 @@ interface BookingDetailsModalProps {
 
 export function BookingDetailsModal({ open, onOpenChange, booking, onStatusUpdate }: BookingDetailsModalProps) {
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [showRejectDialog, setShowRejectDialog] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
 
@@ -177,6 +179,67 @@ export function BookingDetailsModal({ open, onOpenChange, booking, onStatusUpdat
       case 'completed': return 'bg-blue-100 text-blue-800 border-blue-300';
       case 'cancelled': return 'bg-red-100 text-red-800 border-red-300';
       default: return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+    }
+  };
+
+  // Function to manually send confirmation email
+  const handleSendConfirmationEmail = async () => {
+    setIsSendingEmail(true);
+    try {
+      const formattedServices = services.map((s: any) => ({
+        name: s.name || "Service",
+        duration: s.duration || 0,
+        price: typeof s.price === "number" ? `£${s.price.toFixed(2)}` : (s.price || "£0.00"),
+      }));
+
+      console.log("[ADMIN] Sending manual confirmation email for booking:", booking.id);
+      
+      const { data, error: emailError } = await supabase.functions.invoke('send-booking-email', {
+        body: {
+          emailType: 'confirmation',
+          bookingId: booking.id,
+          customerName: booking.guest_name,
+          customerEmail: booking.guest_email,
+          customerPhone: booking.guest_phone,
+          services: formattedServices,
+          bookingDate: new Date(booking.booking_date).toLocaleDateString('en-GB', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          }),
+          bookingTime: booking.booking_time,
+          totalAmount: booking.total_amount,
+          paymentType: booking.payment_type,
+          specialRequests: booking.special_requests,
+          stylistId: booking.stylist_id,
+        }
+      });
+
+      console.log("[ADMIN] Email function response:", data, emailError);
+
+      if (emailError) {
+        console.error('[ADMIN] Email error:', emailError);
+        toast({
+          title: "Email Failed",
+          description: `Failed to send email: ${emailError.message}`,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Email Sent",
+          description: "Confirmation email sent to customer and admin successfully.",
+        });
+      }
+    } catch (error: any) {
+      console.error('[ADMIN] Error sending email:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to send email",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSendingEmail(false);
     }
   };
 
@@ -344,6 +407,24 @@ export function BookingDetailsModal({ open, onOpenChange, booking, onStatusUpdat
                 <p className="text-xs text-green-600 mt-1">
                   Session ID: {booking.stripe_session_id}
                 </p>
+              </div>
+            </>
+          )}
+
+          {/* Manual Email Button for Confirmed Bookings */}
+          {booking.status === 'confirmed' && (
+            <>
+              <Separator />
+              <div className="flex justify-end">
+                <Button
+                  onClick={handleSendConfirmationEmail}
+                  disabled={isSendingEmail}
+                  variant="outline"
+                  className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                >
+                  <Mail className="w-4 h-4 mr-2" />
+                  {isSendingEmail ? "Sending..." : "Resend Confirmation Email"}
+                </Button>
               </div>
             </>
           )}
