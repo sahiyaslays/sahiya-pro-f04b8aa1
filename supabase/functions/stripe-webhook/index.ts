@@ -13,7 +13,10 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  console.log("[STRIPE-WEBHOOK] Received request");
+  const requestUrl = new URL(req.url);
+  console.log("[STRIPE-WEBHOOK] Received request at:", requestUrl.pathname);
+  console.log("[STRIPE-WEBHOOK] Request method:", req.method);
+  console.log("[STRIPE-WEBHOOK] Request headers:", JSON.stringify(Object.fromEntries(req.headers.entries())));
 
   const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
     apiVersion: "2023-10-16",
