@@ -333,6 +333,21 @@ export function BookingDetailsModal({ open, onOpenChange, booking, onStatusUpdat
             </div>
           </div>
 
+          {/* Payment Status Indicator for Pending Bookings */}
+          {booking.status === 'pending' && booking.stripe_session_id && (
+            <>
+              <Separator />
+              <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-sm font-medium text-green-800">
+                  ✓ Payment Received via Stripe
+                </p>
+                <p className="text-xs text-green-600 mt-1">
+                  Session ID: {booking.stripe_session_id}
+                </p>
+              </div>
+            </>
+          )}
+
           {/* Action Buttons - Only show for pending bookings */}
           {booking.status === 'pending' && (
             <>
@@ -351,7 +366,7 @@ export function BookingDetailsModal({ open, onOpenChange, booking, onStatusUpdat
                   disabled={isProcessing}
                   className="bg-green-600 hover:bg-green-700 text-white"
                 >
-                  {isProcessing ? "Processing..." : "Accept Booking"}
+                  {isProcessing ? "Processing..." : booking.stripe_session_id ? "Confirm Paid Booking" : "Accept Booking"}
                 </Button>
               </div>
             </>
