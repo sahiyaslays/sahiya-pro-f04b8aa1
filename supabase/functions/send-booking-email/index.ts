@@ -65,7 +65,7 @@ const handler = async (req: Request): Promise<Response> => {
       // Email to customer
       emailPromises.push(
         resend.emails.send({
-          from: "Sahiya Slays <onboarding@resend.dev>",
+          from: "Sahiya Slays <contact@sahiyaslays.com>",
           to: bookingData.customerEmail,
           subject: "Booking Request Received - Awaiting Confirmation",
           html: `
@@ -117,7 +117,7 @@ const handler = async (req: Request): Promise<Response> => {
       // Email to admin
       emailPromises.push(
         resend.emails.send({
-          from: "Sahiya Slays Bookings <onboarding@resend.dev>",
+          from: "Sahiya Slays Bookings <contact@sahiyaslays.com>",
           to: "sahiyaslays@gmail.com",
           subject: `🔔 NEW BOOKING REQUEST - ${bookingData.customerName}`,
           html: `
@@ -169,7 +169,7 @@ const handler = async (req: Request): Promise<Response> => {
       // Email to customer
       emailPromises.push(
         resend.emails.send({
-          from: "Sahiya Slays <onboarding@resend.dev>",
+          from: "Sahiya Slays <contact@sahiyaslays.com>",
           to: bookingData.customerEmail,
           subject: "✅ Booking Confirmed - We Look Forward to Seeing You!",
           html: `
@@ -227,7 +227,7 @@ const handler = async (req: Request): Promise<Response> => {
       // Email to admin - notify of confirmed booking
       emailPromises.push(
         resend.emails.send({
-          from: "Sahiya Slays Bookings <onboarding@resend.dev>",
+          from: "Sahiya Slays Bookings <contact@sahiyaslays.com>",
           to: "sahiyaslays@gmail.com",
           subject: `✅ BOOKING CONFIRMED & PAID - ${bookingData.customerName}`,
           html: `
@@ -278,7 +278,7 @@ const handler = async (req: Request): Promise<Response> => {
     if (bookingData.emailType === 'rejection') {
       emailPromises.push(
         resend.emails.send({
-          from: "Sahiya Slays <onboarding@resend.dev>",
+          from: "Sahiya Slays <contact@sahiyaslays.com>",
           to: bookingData.customerEmail,
           subject: "Booking Update - Unable to Confirm",
           html: `
