@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { EditableText } from "@/components/EditableText";
+import SEO from "@/components/SEO";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 const Team = () => {
   const teamMembers = [
@@ -34,11 +36,23 @@ const Team = () => {
 
   return (
     <div className="min-h-screen bg-background font-abel">
+      <SEO 
+        title="Meet Our Team | Hair Stylists & Beauty Experts | Sahiya Slays London"
+        description="Meet our talented team of hair stylists, nail technicians & beauty experts at Sahiya Slays, East London. Specialists in textured hair, braids, and nails."
+        canonical="/team"
+        ogType="article"
+        keywords="hair stylists London, beauty experts East London, textured hair specialists, braids specialist"
+      />
       <Header />
       
       {/* Hero Section */}
       <section className="h-[34vh] md:h-[40vh] bg-white flex items-center justify-center px-4 pt-20">
         <div className="text-center max-w-4xl mx-auto">
+          {/* Breadcrumbs */}
+          <div className="mb-4">
+            <Breadcrumbs />
+          </div>
+          
           {/* Brand tagline */}
           <div className="text-primary text-xs md:text-sm tracking-widest mb-4 uppercase">
             <EditableText id="team-page-label">SS • HAIR • BEAUTY • NAILS</EditableText>
@@ -72,26 +86,29 @@ const Team = () => {
           {/* Team Grid - 3 columns desktop, 2 tablet, 1 mobile */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {teamMembers.map((member) => (
-              <div key={member.id} className="group text-center">
+              <article key={member.id} className="group text-center">
                 {/* Team Member Image - Smaller circular style */}
                 <div className="aspect-square max-w-[220px] mx-auto mb-3 overflow-hidden rounded-full">
                   <img 
                     src={member.image}
-                    alt={`${member.name} - ${member.role} at Sahiya Slays`}
+                    alt={`${member.name} - ${member.role} at Sahiya Slays hair salon London`}
                     className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${member.name === "Hiba" ? "scale-150 object-[center_25%]" : "object-top"}`}
+                    loading="lazy"
+                    width="220"
+                    height="220"
                   />
                 </div>
                 
                 {/* Member Info */}
                 <div className="text-center">
-                  <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-wide text-foreground">
+                  <h2 className="text-xl md:text-2xl font-bold mb-2 tracking-wide text-foreground">
                     {member.name}
-                  </h3>
+                  </h2>
                   <p className="text-base text-muted-foreground font-light tracking-wide">
                     {member.role}
                   </p>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
 
