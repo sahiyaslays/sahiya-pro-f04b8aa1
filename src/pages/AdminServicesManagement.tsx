@@ -30,41 +30,26 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, Plus, Pencil, Trash2, Search, Image as ImageIcon, Settings, ChevronDown, ChevronRight } from 'lucide-react';
+import { Loader2, Plus, Pencil, Trash2, Search, ChevronDown, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import AdminSidebar from '@/components/AdminSidebar';
-import { ImageUploader } from '@/components/admin/ImageUploader';
 import { ServiceOptionsBuilder, ServiceOption } from '@/components/admin/ServiceOptionsBuilder';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Json } from '@/integrations/supabase/types';
 
-// All 10 service categories
+// All 10 service categories (matching database)
 const SERVICE_CATEGORIES = [
-  'Consultation/Patch Test',
-  'Hair',
-  'Nails',
-  'Facials',
-  'Waxing and Threading',
-  'Brows and Lashes',
-  'Make Up',
-  'Tanning',
-  'Piercing',
-  'Body'
+  'CONSULTATION / PATCH TEST',
+  'HAIR',
+  'NAILS',
+  'FACIALS',
+  'WAXING AND THREADING',
+  'BROWS AND LASHES',
+  'MAKE UP',
+  'TANNING',
+  'PIERCING',
+  'BODY'
 ];
-
-// Subcategories for each category
-const SUBCATEGORIES: Record<string, string[]> = {
-  'Consultation/Patch Test': ['General'],
-  'Hair': ['Hair Styling', 'Hair Colouring', 'Hair Treatments', 'Hair Extensions', 'Braids', 'Weaves & Wigs'],
-  'Nails': ['Manicure', 'Pedicure', 'Nail Art', 'Gel Nails', 'Acrylic Nails'],
-  'Facials': ['Express Facials', 'Deep Cleansing', 'Anti-Aging', 'Hydrating'],
-  'Waxing and Threading': ['Face', 'Body', 'Full Body'],
-  'Brows and Lashes': ['Brow Shaping', 'Brow Tinting', 'Lash Extensions', 'Lash Lift'],
-  'Make Up': ['Bridal', 'Party', 'Special Occasion', 'Lesson'],
-  'Tanning': ['Spray Tan', 'Self Tan Application'],
-  'Piercing': ['Ear', 'Nose', 'Body'],
-  'Body': ['Massage', 'Body Wraps', 'Exfoliation']
-};
 
 interface Service {
   id: string;
@@ -74,7 +59,6 @@ interface Service {
   duration: number;
   category: string;
   subcategory: string | null;
-  image_url: string | null;
   options: ServiceOption[] | null;
   active: boolean;
   created_at: string;
@@ -96,9 +80,8 @@ export default function AdminServicesManagement() {
     description: '',
     price: '',
     duration: '',
-    category: 'Hair',
+    category: 'HAIR',
     subcategory: '',
-    image_url: '',
     active: true,
     options: [] as ServiceOption[],
   });
@@ -160,7 +143,6 @@ export default function AdminServicesManagement() {
         duration: baseDuration,
         category: formData.category,
         subcategory: formData.subcategory || null,
-        image_url: formData.image_url || null,
         options: formData.options.length > 0 ? formData.options as unknown as Json : null,
         active: formData.active,
       };
@@ -200,7 +182,6 @@ export default function AdminServicesManagement() {
       duration: service.duration.toString(),
       category: service.category,
       subcategory: service.subcategory || '',
-      image_url: service.image_url || '',
       active: service.active,
       options: service.options || [],
     });
@@ -248,19 +229,13 @@ export default function AdminServicesManagement() {
       description: '',
       price: '',
       duration: '',
-      category: 'Hair',
+      category: 'HAIR',
       subcategory: '',
-      image_url: '',
       active: true,
       options: [],
     });
   };
 
-  const handleImageUpload = (urls: string[]) => {
-    if (urls.length > 0) {
-      setFormData({ ...formData, image_url: urls[0] });
-    }
-  };
 
   const toggleCategoryExpanded = (category: string) => {
     const newExpanded = new Set(expandedCategories);
@@ -389,7 +364,6 @@ export default function AdminServicesManagement() {
                           <Table>
                             <TableHeader>
                               <TableRow className="border-gray-200 hover:bg-gray-50">
-                                <TableHead className="text-gray-700 w-12"></TableHead>
                                 <TableHead className="text-gray-700">Name</TableHead>
                                 <TableHead className="text-gray-700">Subcategory</TableHead>
                                 <TableHead className="text-gray-700">Price</TableHead>
@@ -402,19 +376,6 @@ export default function AdminServicesManagement() {
                             <TableBody>
                               {categoryServices.map((service) => (
                                 <TableRow key={service.id} className="border-gray-200 hover:bg-gray-50">
-                                  <TableCell>
-                                    {service.image_url ? (
-                                      <img 
-                                        src={service.image_url} 
-                                        alt={service.name}
-                                        className="w-10 h-10 object-cover rounded"
-                                      />
-                                    ) : (
-                                      <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center">
-                                        <ImageIcon className="w-5 h-5 text-gray-400" />
-                                      </div>
-                                    )}
-                                  </TableCell>
                                   <TableCell className="font-medium text-gray-900">
                                     {service.name}
                                   </TableCell>
@@ -503,9 +464,8 @@ export default function AdminServicesManagement() {
             
             <form onSubmit={handleSubmit}>
               <Tabs defaultValue="basic" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 mb-6">
+                <TabsList className="grid w-full grid-cols-2 mb-6">
                   <TabsTrigger value="basic">Basic Info</TabsTrigger>
-                  <TabsTrigger value="image">Image</TabsTrigger>
                   <TabsTrigger value="options">Options & Pricing</TabsTrigger>
                 </TabsList>
 
@@ -543,19 +503,13 @@ export default function AdminServicesManagement() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="subcategory" className="text-gray-700">Subcategory</Label>
-                      <Select
+                      <Input
+                        id="subcategory"
                         value={formData.subcategory}
-                        onValueChange={(value) => setFormData({ ...formData, subcategory: value })}
-                      >
-                        <SelectTrigger className="bg-white border-gray-300 text-gray-900">
-                          <SelectValue placeholder="Select subcategory" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border-gray-200">
-                          {(SUBCATEGORIES[formData.category] || []).map(sub => (
-                            <SelectItem key={sub} value={sub}>{sub}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        onChange={(e) => setFormData({ ...formData, subcategory: e.target.value })}
+                        className="bg-white border-gray-300 text-gray-900"
+                        placeholder="e.g., Styling, Hair Colouring"
+                      />
                     </div>
                     <div className="flex items-center space-x-2 pt-8">
                       <Switch
@@ -610,15 +564,6 @@ export default function AdminServicesManagement() {
                   )}
                 </TabsContent>
 
-                <TabsContent value="image" className="space-y-4">
-                  <ImageUploader
-                    bucket="service-images"
-                    images={formData.image_url ? [formData.image_url] : []}
-                    onImagesChange={handleImageUpload}
-                    maxImages={1}
-                    single={true}
-                  />
-                </TabsContent>
 
                 <TabsContent value="options" className="space-y-4">
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
