@@ -242,20 +242,26 @@ export const stylists: Stylist[] = [
   {
     id: 'sahiya',
     name: 'Sahiya',
-    role: 'Owner & Senior Stylist',
-    bio: 'Expert in colour and cutting with 10+ years experience'
+    role: 'Master Stylist & Owner',
+    bio: 'With over 10 years of experience in hair and beauty, Sahiya specializes in transformative styling and color techniques.'
   },
   {
-    id: 'senior-stylist-1',
-    name: 'Maria',
-    role: 'Senior Stylist',
-    bio: 'Specialist in highlights and balayage techniques'
+    id: 'shelese',
+    name: 'Shelese',
+    role: 'Nail Technician',
+    bio: 'Expert in nail art and extensions, Shelese brings creativity and precision to every manicure and pedicure.'
   },
   {
-    id: 'stylist-1',
-    name: 'Emma',
-    role: 'Stylist',
-    bio: 'Creative cuts and styling for all hair types'
+    id: 'hiba',
+    name: 'Hiba',
+    role: 'Braids Specialist',
+    bio: 'Specialized in all types of braids and protective styles, Hiba creates stunning looks that protect and enhance your natural hair.'
+  },
+  {
+    id: 'sarah',
+    name: 'Sarah',
+    role: 'Senior Stylist - Loc Specialist',
+    bio: 'Experienced in loc creation and maintenance, Sarah helps clients achieve beautiful, healthy locs at every stage.'
   }
 ];
 

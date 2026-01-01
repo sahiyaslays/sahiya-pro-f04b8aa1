@@ -4,11 +4,11 @@ import { Input } from "@/components/ui/input";
 import Header from "@/components/Header";
 import { supabase } from "@/integrations/supabase/client";
 import { ServiceBookingModal } from "@/components/booking/ServiceBookingModal";
-import { Search, ChevronDown, ChevronRight, Loader2 } from "lucide-react";
+import { Search, ChevronDown, ChevronRight, Loader2, Scissors, Sparkles, Hand, Heart, Droplets, Eye, Palette, Sun, Circle, User } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Footer } from "@/components/Footer";
 import { EditableText } from "@/components/EditableText";
-
+import { useRef, useCallback } from "react";
 interface ServiceOption {
   name: string;
   duration: number;
@@ -47,6 +47,20 @@ interface DisplayCategory {
   subcategories: DisplaySubcategory[];
 }
 
+// Category icons mapping
+const categoryIcons: Record<string, React.ReactNode> = {
+  'consultation-/-patch-test': <Circle className="w-3.5 h-3.5" />,
+  'hair': <Scissors className="w-3.5 h-3.5" />,
+  'nails': <Hand className="w-3.5 h-3.5" />,
+  'facials': <Sparkles className="w-3.5 h-3.5" />,
+  'waxing-and-threading': <Droplets className="w-3.5 h-3.5" />,
+  'brows-and-lashes': <Eye className="w-3.5 h-3.5" />,
+  'make-up': <Palette className="w-3.5 h-3.5" />,
+  'tanning': <Sun className="w-3.5 h-3.5" />,
+  'piercing': <Circle className="w-3.5 h-3.5" />,
+  'body': <Heart className="w-3.5 h-3.5" />,
+};
+
 const Services = () => {
   const [services, setServices] = useState<DatabaseService[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,6 +68,8 @@ const Services = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [expandedServices, setExpandedServices] = useState<Set<string>>(new Set());
+  const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const navRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchServices();
@@ -198,6 +214,32 @@ const Services = () => {
     setExpandedServices(newExpanded);
   };
 
+  // Scroll to category section when clicking on nav
+  const scrollToCategory = useCallback((categoryId: string) => {
+    setActiveCategory(categoryId);
+    if (categoryId === "") return;
+    
+    const element = categoryRefs.current[categoryId];
+    if (element) {
+      const navHeight = navRef.current?.offsetHeight || 100;
+      const headerHeight = 80; // approximate header height
+      const offset = navHeight + headerHeight + 20;
+      
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: 'smooth'
+      });
+    }
+  }, []);
+
+  // Get service count per category
+  const getCategoryServiceCount = useCallback((categoryId: string) => {
+    const category = filteredServices.find(c => c.id === categoryId);
+    if (!category) return 0;
+    return category.subcategories.reduce((acc, sub) => acc + sub.services.length, 0);
+  }, [filteredServices]);
+
   const salonImages = [
     '/lovable-uploads/ab3846e2-d8b3-4cac-99bf-c43a3d7fd10d.png',
     '/lovable-uploads/43f793dd-ec38-4c65-903e-36b7d3327cc9.png',
@@ -264,29 +306,49 @@ const Services = () => {
       </section>
 
       {/* Category Navigation - Sticky */}
-      <section className="sticky top-20 z-40 py-2.5 md:pt-2.5 md:pb-2.5 px-2 md:px-4 bg-white border-b border-gray-200 shadow-sm">
+      <section 
+        ref={navRef}
+        className="sticky top-20 z-40 py-2.5 md:py-3 px-2 md:px-4 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-md"
+      >
         <div className="max-w-[1040px] mx-auto">
-          {/* Categories - Mobile: single scrollable row, Desktop: wrapped */}
-          <div className="flex md:flex-wrap gap-1 md:gap-2 justify-start md:justify-center overflow-x-auto scrollbar-hide">
-            <Button
-              variant={activeCategory === "" ? "default" : "outline"}
-              onClick={() => setActiveCategory("")}
-              size="sm"
-              className="text-xs tracking-wider uppercase transition-all duration-200 whitespace-nowrap flex-shrink-0"
-            >
-              ALL SERVICES
-            </Button>
-            {servicesData.map((category) => (
+          {/* Categories - Mobile: single scrollable row with gradient indicators, Desktop: wrapped */}
+          <div className="relative">
+            {/* Scroll fade indicators for mobile */}
+            <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none md:hidden" />
+            <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none md:hidden" />
+            
+            <div className="flex md:flex-wrap gap-1.5 md:gap-2 justify-start md:justify-center overflow-x-auto scrollbar-hide py-0.5 px-1">
               <Button
-                key={category.id}
-                variant={activeCategory === category.id ? "default" : "outline"}
-                onClick={() => setActiveCategory(category.id)}
+                variant={activeCategory === "" ? "default" : "outline"}
+                onClick={() => scrollToCategory("")}
                 size="sm"
-                className="text-xs tracking-wider uppercase transition-all duration-200 whitespace-nowrap flex-shrink-0"
+                className="text-[10px] md:text-xs tracking-wider uppercase transition-all duration-200 whitespace-nowrap flex-shrink-0 h-8 md:h-9 px-3 md:px-4 rounded-full"
               >
-                {category.title}
+                All
+                <span className="ml-1 text-[9px] opacity-70">({services.length})</span>
               </Button>
-            ))}
+              {servicesData.map((category) => {
+                const count = getCategoryServiceCount(category.id);
+                const icon = categoryIcons[category.id];
+                
+                return (
+                  <Button
+                    key={category.id}
+                    variant={activeCategory === category.id ? "default" : "outline"}
+                    onClick={() => scrollToCategory(category.id)}
+                    size="sm"
+                    className="text-[10px] md:text-xs tracking-wider uppercase transition-all duration-200 whitespace-nowrap flex-shrink-0 h-8 md:h-9 px-2.5 md:px-4 rounded-full gap-1"
+                  >
+                    {icon}
+                    <span className="hidden sm:inline">{category.title}</span>
+                    <span className="sm:hidden">
+                      {category.title.length > 10 ? category.title.split(' ')[0] : category.title}
+                    </span>
+                    <span className="ml-0.5 text-[9px] opacity-70">({count})</span>
+                  </Button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -302,10 +364,15 @@ const Services = () => {
             </div>
           ) : (
             activeCategories.map((category) => (
-              <div key={category.id} className="space-y-6">
+              <div 
+                key={category.id} 
+                ref={(el) => { categoryRefs.current[category.id] = el; }}
+                className="space-y-6 scroll-mt-40"
+              >
                 {/* Category Header */}
-                <div className="w-full bg-foreground py-2.5">
-                  <h2 className="text-center text-background text-lg md:text-xl font-normal tracking-[0.15em] uppercase">
+                <div className="w-full bg-foreground py-2.5 md:py-3 flex items-center justify-center gap-2">
+                  <span className="text-background">{categoryIcons[category.id]}</span>
+                  <h2 className="text-center text-background text-base md:text-xl font-normal tracking-[0.15em] uppercase">
                     {category.title}
                   </h2>
                 </div>
