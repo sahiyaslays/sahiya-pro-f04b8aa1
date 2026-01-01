@@ -55,7 +55,7 @@ interface Order {
 }
 
 export default function AdminUsersManagement() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState<UserWithEmail[]>([]);
   const [loading, setLoading] = useState(true);
@@ -69,13 +69,13 @@ export default function AdminUsersManagement() {
   useEffect(() => {
     if (!authLoading && !user) {
       navigate('/auth');
-    } else if (user && user.email?.toLowerCase() !== 'sahiyaslays@gmail.com') {
+    } else if (!authLoading && user && !isAdmin) {
       toast.error('Access denied. Admin only.');
       navigate('/user-dashboard');
-    } else if (user) {
+    } else if (!authLoading && user && isAdmin) {
       fetchProfiles();
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, navigate, isAdmin]);
 
   const fetchProfiles = async () => {
     try {

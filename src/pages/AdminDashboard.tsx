@@ -70,26 +70,24 @@ interface Product {
 }
 
 export default function AdminDashboard() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) {
       navigate('/auth');
-    } else if (user && user.email?.toLowerCase() !== 'sahiyaslays@gmail.com') {
+    } else if (!authLoading && user && !isAdmin) {
       toast.error('Access denied. Admin only.');
       navigate('/user-dashboard');
-    } else if (user) {
-      setIsAdmin(true);
+    } else if (!authLoading && user && isAdmin) {
       fetchAdminData();
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, navigate, isAdmin]);
 
   const fetchAdminData = async () => {
     try {

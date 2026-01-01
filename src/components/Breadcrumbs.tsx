@@ -23,6 +23,7 @@ const routeNameMap: Record<string, string> = {
   'career': 'Career',
   'our-customers': 'Our Customers',
   'faq': 'FAQ',
+  'reviews': 'Reviews',
   'privacy-policy': 'Privacy Policy',
   'terms-conditions': 'Terms & Conditions',
   'cart': 'Cart',

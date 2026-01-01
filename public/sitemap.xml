@@ -67,6 +67,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://sahiyaslays.com/reviews</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://sahiyaslays.com/privacy-policy</loc>
     <lastmod>2025-01-01</lastmod>
     <changefreq>yearly</changefreq>

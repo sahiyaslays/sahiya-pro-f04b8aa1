@@ -32,25 +32,27 @@ interface Booking {
 
 export default function AdminBookings() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading: authLoading, isAdmin } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!user) {
+    if (!authLoading && !user) {
       navigate("/auth");
       return;
     }
 
-    if (user.email !== "sahiyaslays@gmail.com") {
+    if (!authLoading && user && !isAdmin) {
       navigate("/user-dashboard");
       return;
     }
 
-    fetchBookings();
-  }, [user, navigate]);
+    if (!authLoading && user && isAdmin) {
+      fetchBookings();
+    }
+  }, [user, authLoading, navigate, isAdmin]);
 
   const fetchBookings = async () => {
     try {

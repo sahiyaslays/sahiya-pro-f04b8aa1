@@ -99,7 +99,6 @@ const initialFormData: FormData = {
 };
 
 export default function AdminProductsManagement() {
-  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -111,16 +110,18 @@ export default function AdminProductsManagement() {
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
   const [saving, setSaving] = useState(false);
 
+  const { user, loading: authLoading, isAdmin } = useAuth();
+  
   useEffect(() => {
     if (!authLoading && !user) {
       navigate('/auth');
-    } else if (user && user.email?.toLowerCase() !== 'sahiyaslays@gmail.com') {
+    } else if (!authLoading && user && !isAdmin) {
       toast.error('Access denied. Admin only.');
       navigate('/user-dashboard');
-    } else if (user) {
+    } else if (!authLoading && user && isAdmin) {
       fetchProducts();
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, navigate, isAdmin]);
 
   const fetchProducts = async () => {
     try {
