@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Header from "@/components/Header";
 import { supabase } from "@/integrations/supabase/client";
 import { ServiceBookingModal } from "@/components/booking/ServiceBookingModal";
-import { Search, ChevronDown, ChevronRight, Loader2, Scissors, Sparkles, Hand, Heart, Droplets, Eye, Palette, Sun, Circle, User } from "lucide-react";
+import { Search, ChevronDown, ChevronRight, Loader2, Scissors, Sparkles, Hand, Heart, Droplets, Eye, Palette, Sun, Circle } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Footer } from "@/components/Footer";
 import { EditableText } from "@/components/EditableText";
-import { useRef, useCallback } from "react";
+import SEO from "@/components/SEO";
+import Breadcrumbs from "@/components/Breadcrumbs";
 interface ServiceOption {
   name: string;
   duration: number;
@@ -259,11 +260,23 @@ const Services = () => {
 
   return (
     <div className="min-h-screen bg-background font-abel">
+      <SEO 
+        title="Hair & Beauty Services | Silk Press, Extensions, Braids | Sahiya Slays London"
+        description="Expert hair services in Bow, London: silk press from £65, hair extensions, braiding, keratin treatments, balayage & nail services. Book online 24/7."
+        canonical="/services"
+        ogType="website"
+        keywords="silk press London, hair extensions East London, braiding services, keratin treatment, balayage, nail services Bow"
+      />
       <Header />
       
       {/* Hero Section */}
       <section className="h-[34vh] md:h-[40vh] bg-white flex items-center justify-center px-4 pt-20">
         <div className="text-center max-w-4xl mx-auto">
+          {/* Breadcrumbs */}
+          <div className="mb-4">
+            <Breadcrumbs />
+          </div>
+          
           {/* Brand tagline */}
           <div className="text-primary text-xs md:text-sm tracking-widest mb-4 uppercase">
             <EditableText id="services-page-label">SS • HAIR • BEAUTY • NAILS</EditableText>

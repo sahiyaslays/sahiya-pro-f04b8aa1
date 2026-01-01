@@ -22,6 +22,7 @@ const routeNameMap: Record<string, string> = {
   'news': 'News',
   'career': 'Career',
   'our-customers': 'Our Customers',
+  'faq': 'FAQ',
   'privacy-policy': 'Privacy Policy',
   'terms-conditions': 'Terms & Conditions',
   'cart': 'Cart',
