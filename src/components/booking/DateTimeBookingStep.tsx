@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent } from '@/components/ui/card';
 import { ServiceOption } from '@/data/servicesData';
 import { BookingFormData } from './ServiceBookingModal';
-import { format, addDays, isSameDay } from 'date-fns';
+import { format, addDays } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { Clock, Sun, Sunset, Moon } from 'lucide-react';
 
 interface DateTimeBookingStepProps {
   selectedOption: ServiceOption;
@@ -13,6 +14,11 @@ interface DateTimeBookingStepProps {
   selectedTime?: string;
   onNext: (data: Partial<BookingFormData>) => void;
   onBack: () => void;
+}
+
+interface TimeSlot {
+  time: string;
+  period: 'morning' | 'afternoon' | 'evening';
 }
 
 export function DateTimeBookingStep({
@@ -27,9 +33,9 @@ export function DateTimeBookingStep({
   );
   const [time, setTime] = useState<string | undefined>(selectedTime);
 
-  // Generate available time slots (9 AM to 7 PM)
-  const generateTimeSlots = () => {
-    const slots = [];
+  // Generate available time slots with period grouping (9 AM to 7 PM)
+  const timeSlots = useMemo((): TimeSlot[] => {
+    const slots: TimeSlot[] = [];
     const startHour = 9;
     const endHour = 19;
     const duration = selectedOption.duration;
@@ -42,14 +48,29 @@ export function DateTimeBookingStep({
         
         if (slotEndMinutes <= businessEndMinutes) {
           const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-          slots.push(timeString);
+          let period: 'morning' | 'afternoon' | 'evening' = 'morning';
+          
+          if (hour >= 17) {
+            period = 'evening';
+          } else if (hour >= 12) {
+            period = 'afternoon';
+          }
+          
+          slots.push({ time: timeString, period });
         }
       }
     }
     return slots;
-  };
+  }, [selectedOption.duration]);
 
-  const timeSlots = generateTimeSlots();
+  const groupedSlots = useMemo(() => {
+    const groups = {
+      morning: timeSlots.filter(s => s.period === 'morning'),
+      afternoon: timeSlots.filter(s => s.period === 'afternoon'),
+      evening: timeSlots.filter(s => s.period === 'evening'),
+    };
+    return groups;
+  }, [timeSlots]);
 
   const formatDuration = (minutes: number) => {
     if (minutes < 60) {
@@ -63,6 +84,14 @@ export function DateTimeBookingStep({
     return `${hours}h ${remainingMinutes}min`;
   };
 
+  const getEndTime = (startTime: string, durationMinutes: number) => {
+    const [hours, minutes] = startTime.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes + durationMinutes;
+    const endHours = Math.floor(totalMinutes / 60);
+    const endMinutes = totalMinutes % 60;
+    return `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`;
+  };
+
   const handleNext = () => {
     if (date && time) {
       onNext({
@@ -74,6 +103,18 @@ export function DateTimeBookingStep({
 
   const minDate = new Date();
   const maxDate = addDays(new Date(), 60); // Allow booking up to 2 months ahead
+
+  const periodIcons = {
+    morning: <Sun className="w-3.5 h-3.5 text-amber-500" />,
+    afternoon: <Sunset className="w-3.5 h-3.5 text-orange-500" />,
+    evening: <Moon className="w-3.5 h-3.5 text-indigo-500" />,
+  };
+
+  const periodLabels = {
+    morning: 'Morning',
+    afternoon: 'Afternoon',
+    evening: 'Evening',
+  };
 
   return (
     <div className="space-y-4 md:space-y-6">
@@ -123,23 +164,52 @@ export function DateTimeBookingStep({
           </CardContent>
         </Card>
 
-        {/* Time Selection */}
+        {/* Time Selection - Grouped by Period */}
         <Card>
           <CardContent className="p-2 md:p-4">
             <h5 className="font-medium text-foreground mb-2 md:mb-4 text-sm md:text-base">Choose Time</h5>
             {date ? (
-              <div className="grid grid-cols-4 md:grid-cols-3 gap-1 md:gap-2 max-h-48 md:max-h-64 overflow-y-auto">
-                {timeSlots.map((slot) => (
-                  <Button
-                    key={slot}
-                    variant={time === slot ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setTime(slot)}
-                    className="text-xs h-6 md:h-8 px-1 md:px-2"
-                  >
-                    {slot}
-                  </Button>
-                ))}
+              <div className="space-y-3 max-h-64 md:max-h-72 overflow-y-auto pr-1">
+                {(['morning', 'afternoon', 'evening'] as const).map((period) => {
+                  const slots = groupedSlots[period];
+                  if (slots.length === 0) return null;
+                  
+                  return (
+                    <div key={period}>
+                      <div className="flex items-center gap-1.5 mb-2">
+                        {periodIcons[period]}
+                        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                          {periodLabels[period]}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-4 md:grid-cols-3 gap-1 md:gap-2">
+                        {slots.map(({ time: slotTime }) => (
+                          <Button
+                            key={slotTime}
+                            variant={time === slotTime ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => setTime(slotTime)}
+                            className="text-xs h-7 md:h-8 px-1 md:px-2"
+                          >
+                            {slotTime}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* Show estimated end time */}
+                {time && (
+                  <div className="mt-3 pt-3 border-t border-border">
+                    <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>
+                        {time} - {getEndTime(time, selectedOption.duration)} ({formatDuration(selectedOption.duration)})
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <p className="text-xs md:text-sm text-muted-foreground text-center py-6 md:py-8">
@@ -160,7 +230,7 @@ export function DateTimeBookingStep({
           size="sm"
           className="px-4 md:px-8 text-xs md:text-sm"
         >
-          Next: Customer Details
+          Next: Choose Stylist
         </Button>
       </div>
     </div>
