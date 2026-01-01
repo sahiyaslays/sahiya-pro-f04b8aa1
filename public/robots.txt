@@ -12,3 +12,10 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /checkout/
+Disallow: /cart/
+Disallow: /user-dashboard/
+Disallow: /auth/
+
+Sitemap: https://sahiyaslays.com/sitemap.xml
