@@ -1,5 +1,4 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -13,6 +12,9 @@ import { ProductImage } from '@/components/shop/ProductImage';
 import { QuickViewModal } from '@/components/shop/QuickViewModal';
 import { Search, X, Eye, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import SEO from '@/components/SEO';
+import SchemaMarkup from '@/components/SchemaMarkup';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 // Display product interface
 interface DisplayProduct {
@@ -199,14 +201,39 @@ export default function Shop() {
 
   return (
     <>
-      <Helmet>
-        <title>Hair Extensions & Wigs Shop | Sahiya Slays</title>
-        <meta name="description" content="Shop premium hair extensions, closures, frontals and accessories at Sahiya Slays. Raw Cambodian hair, HD lace, and more." />
-        <link rel="canonical" href="/shop" />
-        <meta property="og:title" content="Hair Extensions & Wigs Shop | Sahiya Slays" />
-        <meta property="og:description" content="Shop premium hair extensions, closures, frontals and accessories at Sahiya Slays." />
-        <meta property="og:type" content="website" />
-      </Helmet>
+      <SEO 
+        title="Shop Hair Extensions & Wigs | Raw Cambodian Hair | Sahiya Slays"
+        description="Premium raw Cambodian hair bundles, HD lace wigs, frontals & hair care products. Virgin human hair lasting 4-5 years. Free UK shipping over £100."
+        canonical="/shop"
+        ogType="website"
+        keywords="hair extensions London, raw Cambodian hair, HD lace wigs, hair bundles UK, frontals closures"
+      />
+      <SchemaMarkup 
+        type="Product" 
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "Sahiya Slays Hair Products",
+          "description": "Premium hair extensions, wigs, closures and frontals",
+          "numberOfItems": products.length,
+          "itemListElement": products.slice(0, 10).map((product, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "item": {
+              "@type": "Product",
+              "name": product.title,
+              "url": `https://sahiyaslays.com/shop/${product.slug}`,
+              "image": product.images[0],
+              "offers": {
+                "@type": "AggregateOffer",
+                "lowPrice": product.price_min,
+                "highPrice": product.price_max,
+                "priceCurrency": "GBP"
+              }
+            }
+          }))
+        }}
+      />
 
       <div className="min-h-screen bg-background">
         <Header />
@@ -215,6 +242,7 @@ export default function Shop() {
           <div className="container mx-auto px-4 py-8">
             {/* Page Header */}
             <div className="mb-8">
+              <Breadcrumbs className="mb-4" />
               <EditableText 
                 id="shop-page-title" 
                 as="h1" 
@@ -222,15 +250,6 @@ export default function Shop() {
               >
                 Shop
               </EditableText>
-              <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground">
-                <ol className="flex items-center space-x-2">
-                  <li>
-                    <a href="/" className="hover:text-primary transition-colors">Home</a>
-                  </li>
-                  <li>/</li>
-                  <li aria-current="page">Shop</li>
-                </ol>
-              </nav>
             </div>
 
             {/* Search Bar */}

@@ -37,6 +37,7 @@ import AdminProductsManagement from "./pages/AdminProductsManagement";
 import AdminBookings from "./pages/AdminBookings";
 import AdminOrders from "./pages/AdminOrders";
 import AdminUsersManagement from "./pages/AdminUsersManagement";
+import FAQ from "./pages/FAQ";
 
 const queryClient = new QueryClient();
 
@@ -76,6 +77,7 @@ const App = () => {
                 <Route path="/career" element={<Career />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/our-customers" element={<OurCustomers />} />
+                <Route path="/faq" element={<FAQ />} />
                 <Route path="/booking" element={<Booking />} />
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/:slug" element={<ProductDetail />} />
