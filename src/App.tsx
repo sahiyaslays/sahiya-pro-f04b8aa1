@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { CartProvider } from "@/hooks/useCart";
@@ -57,13 +57,12 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <BrowserRouter>
-          <AuthProvider>
-            <CartProvider>
-              <EditModeProvider>
-                <Toaster />
-                <Sonner />
-                <ScrollToTop />
+        <AuthProvider>
+          <CartProvider>
+            <EditModeProvider>
+              <Toaster />
+              <Sonner />
+              <ScrollToTop />
               <CartDrawer />
               <EditModeButton />
               <Routes>
@@ -89,12 +88,12 @@ const App = () => {
                 <Route path="/terms-and-conditions" element={<TermsConditions />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/user-dashboard" element={<UserDashboard />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/services" element={<AdminServicesManagement />} />
-            <Route path="/admin/products" element={<AdminProductsManagement />} />
-            <Route path="/admin/bookings" element={<AdminBookings />} />
-            <Route path="/admin/orders" element={<AdminOrders />} />
-            <Route path="/admin/users" element={<AdminUsersManagement />} />
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/services" element={<AdminServicesManagement />} />
+                <Route path="/admin/products" element={<AdminProductsManagement />} />
+                <Route path="/admin/bookings" element={<AdminBookings />} />
+                <Route path="/admin/orders" element={<AdminOrders />} />
+                <Route path="/admin/users" element={<AdminUsersManagement />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
@@ -103,8 +102,7 @@ const App = () => {
             </EditModeProvider>
           </CartProvider>
         </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 };
