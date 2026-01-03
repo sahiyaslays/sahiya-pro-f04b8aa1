@@ -51,6 +51,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, [user]);
 
   useEffect(() => {
+    // SSR-safe: skip auth setup on server
+    if (typeof window === 'undefined') {
+      setLoading(false);
+      return;
+    }
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
@@ -70,7 +76,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signUp = async (email: string, password: string, firstName: string, lastName: string, phone: string) => {
     try {
-      const redirectUrl = `${window.location.origin}/user-dashboard`;
+      const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}/user-dashboard` : '/user-dashboard';
       
       const { data, error } = await supabase.auth.signUp({
         email,
