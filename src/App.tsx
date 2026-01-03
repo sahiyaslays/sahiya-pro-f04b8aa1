@@ -42,12 +42,14 @@ import Reviews from "./pages/Reviews";
 
 const queryClient = new QueryClient();
 
-// Component to handle scroll to top on route change
+// Component to handle scroll to top on route change (SSR-safe)
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+    }
   }, [pathname]);
   
   return null;
