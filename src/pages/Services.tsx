@@ -169,6 +169,13 @@ const Services = () => {
       });
     });
 
+    // Sort categories: move "brows-and-lashes" to the bottom
+    result.sort((a, b) => {
+      if (a.id === 'brows-and-lashes') return 1;
+      if (b.id === 'brows-and-lashes') return -1;
+      return 0;
+    });
+
     return result;
   };
 
