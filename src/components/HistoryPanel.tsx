@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { History, X, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEditMode } from '@/contexts/EditModeContext';
-import { cn } from '@/lib/utils';
 
+// Wrapper component for SSR safety
 export const HistoryPanel: React.FC = () => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Don't render during SSR
+  if (!mounted) {
+    return null;
+  }
+
+  return <HistoryPanelContent />;
+};
+
+// Inner component that safely uses hooks after mount
+const HistoryPanelContent: React.FC = () => {
   const { showHistory, toggleHistory, history, restoreFromHistory } = useEditMode();
 
   if (!showHistory) return null;
@@ -43,7 +59,7 @@ export const HistoryPanel: React.FC = () => {
             </div>
           ) : (
             <div className="p-2">
-              {history.map((item, index) => (
+              {history.map((item) => (
                 <div
                   key={item.id}
                   className="border rounded-lg p-3 mb-2 hover:bg-accent/50 transition-colors"
@@ -58,10 +74,8 @@ export const HistoryPanel: React.FC = () => {
                       </div>
                       <div className="text-xs space-y-1">
                         {(() => {
-                          // Handle backward compatibility and null checks
                           const stateToShow = item.fullState || (item as any).changes || {};
                           
-                          // Additional safety check to ensure stateToShow is an object
                           if (!stateToShow || typeof stateToShow !== 'object') {
                             return <div className="text-xs text-muted-foreground">No data available</div>;
                           }
@@ -80,7 +94,6 @@ export const HistoryPanel: React.FC = () => {
                         {(() => {
                           const stateToShow = item.fullState || (item as any).changes || {};
                           
-                          // Additional safety check to ensure stateToShow is an object
                           if (!stateToShow || typeof stateToShow !== 'object') {
                             return null;
                           }
