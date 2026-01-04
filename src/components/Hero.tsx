@@ -79,13 +79,6 @@ const Hero = () => {
             >
               07809 441074
             </a>
-            <span className="text-white/50 hidden md:inline" aria-hidden="true">|</span>
-            <a 
-              href="tel:07943115966"
-              className="text-primary hover:text-white transition-colors duration-300 tracking-wide"
-            >
-              07943 115966
-            </a>
             <a 
               href="mailto:contact@sahiyaslays.com"
               className="text-primary hover:text-white transition-colors duration-300 tracking-wide"
