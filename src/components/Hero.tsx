@@ -32,9 +32,6 @@ const Hero = () => {
           <h2 className="text-primary text-xl md:text-2xl tracking-wider">
             HAIR • BEAUTY • NAILS
           </h2>
-          <p className="text-white/80 text-base md:text-lg mt-4 max-w-xl mx-auto">
-            Premium hair salon in East London specializing in silk press, hair extensions, braiding and natural hair care for textured hair 3c-4c
-          </p>
         </div>
       </div>
 

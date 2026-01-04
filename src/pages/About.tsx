@@ -115,7 +115,7 @@ const About = () => {
             as="p" 
             className="text-[17px] md:text-[18px] font-medium text-[#121212] leading-[1.6] max-w-[800px] mx-auto"
           >
-            We offer highly skilled specialists for all your hairdressing, beauty, nail, and spa treatments. Bridal and event services available.
+            Premium hair salon in East London specializing in silk press, hair extensions, braiding, hair colouring and natural hair care for textured hair 3c-4c. We offer highly skilled specialists for all your hairdressing, beauty, nail, and spa treatments. Bridal and event services available.
           </EditableText>
         </div>
       </section>
