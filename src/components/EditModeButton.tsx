@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Edit3, Save, X, History, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEditMode } from '@/contexts/EditModeContext';
@@ -6,7 +6,24 @@ import { HistoryPanel } from '@/components/HistoryPanel';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 
+// Wrapper component that handles SSR safety
 export const EditModeButton: React.FC = () => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Don't render during SSR
+  if (!mounted) {
+    return null;
+  }
+
+  return <EditModeButtonContent />;
+};
+
+// Inner component that safely uses hooks after mount
+const EditModeButtonContent: React.FC = () => {
   const { isEditMode, toggleEditMode, saveChanges, hasChanges, toggleHistory, showHistory, highlightMode, toggleHighlightMode } = useEditMode();
   const { user } = useAuth();
   
