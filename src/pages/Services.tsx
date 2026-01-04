@@ -169,10 +169,17 @@ const Services = () => {
       });
     });
 
-    // Sort categories: move "brows-and-lashes" to the bottom
+    // Sort categories: move "facials" and "brows-and-lashes" to the bottom
+    const bottomCategories = ['brows-and-lashes', 'facials'];
     result.sort((a, b) => {
-      if (a.id === 'brows-and-lashes') return 1;
-      if (b.id === 'brows-and-lashes') return -1;
+      const aIsBottom = bottomCategories.includes(a.id);
+      const bIsBottom = bottomCategories.includes(b.id);
+      if (aIsBottom && !bIsBottom) return 1;
+      if (!aIsBottom && bIsBottom) return -1;
+      // If both are bottom categories, facials comes last
+      if (aIsBottom && bIsBottom) {
+        return a.id === 'facials' ? 1 : -1;
+      }
       return 0;
     });
 
