@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet';
 
 interface SchemaMarkupProps {
-  type: 'LocalBusiness' | 'Organization' | 'WebSite' | 'BreadcrumbList' | 'Product' | 'Service' | 'FAQPage';
+  type: 'LocalBusiness' | 'Organization' | 'WebSite' | 'BreadcrumbList' | 'Product' | 'Service' | 'FAQPage' | 'Review' | 'ProfessionalService';
   data?: any;
 }
 
@@ -16,7 +16,7 @@ const localBusinessSchema = {
   "alternateName": "Sahiya Slays Hair Beauty Nails",
   "description": "Premium hair salon in East London specializing in silk press, hair extensions, braiding, keratin treatments and natural hair care for textured hair types 3c-4c.",
   "url": BASE_URL,
-  "telephone": "+447809441074",
+  "telephone": ["+447809441074", "+447943115966"],
   "email": "contact@sahiyaslays.com",
   "address": {
     "@type": "PostalAddress",
@@ -54,11 +54,47 @@ const localBusinessSchema = {
   "priceRange": "££",
   "currenciesAccepted": "GBP",
   "paymentAccepted": "Cash, Credit Card, Debit Card",
-  "image": `${BASE_URL}/lovable-uploads/ab3846e2-d8b3-4cac-99bf-c43a3d7fd10d.png`,
+  "image": [
+    `${BASE_URL}/lovable-uploads/ab3846e2-d8b3-4cac-99bf-c43a3d7fd10d.png`,
+    `${BASE_URL}/lovable-uploads/sahiya-new.jpeg`,
+    `${BASE_URL}/lovable-uploads/hiba-new.jpeg`
+  ],
   "logo": `${BASE_URL}/lovable-uploads/57d4284b-6e51-42fd-93a0-cfc1a8afc314.png`,
   "sameAs": [
     "https://www.instagram.com/sahiyaslays/"
   ],
+  "founder": {
+    "@type": "Person",
+    "name": "Sahiya"
+  },
+  "areaServed": [
+    { "@type": "City", "name": "London" },
+    { "@type": "Place", "name": "East London" },
+    { "@type": "Place", "name": "Bow" },
+    { "@type": "Place", "name": "Hackney" },
+    { "@type": "Place", "name": "Stratford" },
+    { "@type": "Place", "name": "Mile End" },
+    { "@type": "Place", "name": "Bethnal Green" }
+  ],
+  "knowsAbout": [
+    "Silk Press",
+    "Hair Extensions",
+    "Box Braids",
+    "Knotless Braids",
+    "Cornrows",
+    "Locs",
+    "Natural Hair Care",
+    "4c Hair",
+    "Textured Hair",
+    "Keratin Treatment"
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "127",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Hair & Beauty Services",
@@ -166,6 +202,36 @@ export const SchemaMarkup = ({ type, data }: SchemaMarkupProps) => {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": data?.questions || []
+      };
+      break;
+    case 'Review':
+      schema = {
+        "@context": "https://schema.org",
+        "@type": "Review",
+        "itemReviewed": {
+          "@type": "LocalBusiness",
+          "name": "Sahiya Slays",
+          "@id": `${BASE_URL}/#business`
+        },
+        ...data
+      };
+      break;
+    case 'ProfessionalService':
+      schema = {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "@id": `${BASE_URL}/#service`,
+        "name": "Sahiya Slays Hair Services",
+        "provider": {
+          "@type": "LocalBusiness",
+          "@id": `${BASE_URL}/#business`
+        },
+        "serviceType": "Hair Salon Services",
+        "areaServed": {
+          "@type": "City",
+          "name": "London"
+        },
+        ...data
       };
       break;
     default:
