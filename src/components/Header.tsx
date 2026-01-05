@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Info, Users, Heart, Scissors, Palette, Newspaper, Briefcase, Phone, Calendar, ShoppingBag, ShoppingCart, User, LogOut } from "lucide-react";
+import { Menu, X, Info, Users, Heart, Scissors, Palette, Newspaper, Briefcase, Phone, Calendar, ShoppingBag, ShoppingCart, User, LogOut, GraduationCap } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ const Header = () => {
     { name: "Services", href: "/services", icon: Scissors },
     { name: "Shop", href: "/shop", icon: ShoppingBag },
     { name: "News", href: "/news", icon: Newspaper },
+    { name: "Coaching", href: "/coaching", icon: GraduationCap },
     { name: "Career", href: "/career", icon: Briefcase },
     { name: "Contact", href: "/contact", icon: Phone }
   ];
