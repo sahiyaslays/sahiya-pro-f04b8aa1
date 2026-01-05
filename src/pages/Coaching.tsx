@@ -136,16 +136,34 @@ const Coaching = () => {
         <section className="relative pt-24 pb-16 lg:pb-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Image */}
+              {/* Images Grid */}
               <div className="relative order-1 lg:order-1">
-                <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
-                  <img
-                    src="/lovable-uploads/sahiya-coaching.jpeg"
-                    alt="Sahiya - Business Coach for Beauty Professionals"
-                    className="w-full h-full object-cover object-center"
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Main large image */}
+                  <div className="col-span-2 aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl">
+                    <img
+                      src="/lovable-uploads/sahiya-coaching.jpeg"
+                      alt="Sahiya - Business Coach for Beauty Professionals"
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </div>
+                  {/* Two smaller images */}
+                  <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-lg">
+                    <img
+                      src="/lovable-uploads/sahiya-coaching-2.jpeg"
+                      alt="Sahiya during a professional photoshoot"
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </div>
+                  <div className="aspect-[4/3] rounded-xl overflow-hidden shadow-lg">
+                    <img
+                      src="/lovable-uploads/sahiya-coaching-3.jpeg"
+                      alt="Sahiya - Beauty Business Mentor"
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </div>
                 </div>
-                <div className="absolute -bottom-6 -right-6 bg-primary text-primary-foreground p-6 rounded-xl shadow-lg hidden md:block">
+                <div className="absolute -bottom-4 -right-4 bg-primary text-primary-foreground p-5 rounded-xl shadow-lg hidden md:block">
                   <p className="text-2xl font-semibold">1-1</p>
                   <p className="text-sm uppercase tracking-wide">Coaching</p>
                 </div>
