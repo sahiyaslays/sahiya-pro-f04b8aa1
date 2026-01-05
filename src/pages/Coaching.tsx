@@ -144,7 +144,7 @@ const Coaching = () => {
                     <img
                       src="/lovable-uploads/sahiya-coaching-2.jpeg"
                       alt="Sahiya during a professional photoshoot"
-                      className="w-full h-full object-cover object-[50%_90%] scale-150"
+                      className="w-full h-full object-cover object-[50%_100%] scale-150"
                     />
                   </div>
                   <div className="aspect-[3/4] rounded-xl overflow-hidden shadow-xl">
