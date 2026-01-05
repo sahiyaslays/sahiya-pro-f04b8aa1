@@ -57,7 +57,7 @@ const Career = () => {
                 <p className="text-[15px] text-[#121212] font-light">Applicants must have eligibility to work in the UK.</p>
               </div>
               <div className="pt-4">
-                <p className="text-[15px] text-[#121212] font-light">To apply please email your CV to <a href="mailto:sahiyaslays@gmail.com" className="text-primary hover:underline font-medium">sahiyaslays@gmail.com</a></p>
+                <p className="text-[15px] text-[#121212] font-light">To apply please email your CV to <a href="mailto:contact@sahiyaslays.com" className="text-primary hover:underline font-medium">contact@sahiyaslays.com</a></p>
               </div>
             </div>
           </div>
