@@ -138,20 +138,20 @@ const Coaching = () => {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Images Grid */}
               <div className="relative order-1 lg:order-1">
-                <div className="grid grid-cols-1 gap-4">
-                  {/* Two landscape images stacked */}
-                  <div className="aspect-[16/9] rounded-xl overflow-hidden shadow-xl">
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Two images side by side */}
+                  <div className="aspect-[3/4] rounded-xl overflow-hidden shadow-xl">
                     <img
                       src="/lovable-uploads/sahiya-coaching-2.jpeg"
                       alt="Sahiya during a professional photoshoot"
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-cover object-center"
                     />
                   </div>
-                  <div className="aspect-[16/9] rounded-xl overflow-hidden shadow-xl">
+                  <div className="aspect-[3/4] rounded-xl overflow-hidden shadow-xl">
                     <img
                       src="/lovable-uploads/sahiya-coaching-3.jpeg"
                       alt="Sahiya - Beauty Business Mentor"
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-cover object-center"
                     />
                   </div>
                 </div>
