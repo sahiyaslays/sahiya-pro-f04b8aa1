@@ -3,8 +3,6 @@ import Header from "@/components/Header";
 import { useEffect } from "react";
 import { Footer } from "@/components/Footer";
 import { EditableText } from "@/components/EditableText";
-import SEO from "@/components/SEO";
-import Breadcrumbs from "@/components/Breadcrumbs";
 
 const About = () => {
   // Scroll to top on route change
@@ -14,23 +12,11 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-white font-abel">
-      <SEO 
-        title="About Sahiya Slays | Textured Hair Specialist London | Our Story"
-        description="Meet Sahiya - certified hair extension specialist & textured hair expert in East London. 5+ years transforming 3c-4c hair with passion and creativity."
-        canonical="/about"
-        ogType="article"
-        keywords="about Sahiya Slays, hair stylist London, textured hair specialist, Black hair salon London"
-      />
       <Header />
       
       {/* Hero Section - Short, White */}
       <section className="h-[34vh] md:h-[40vh] bg-white flex items-center justify-center px-4 pt-20">
         <div className="text-center max-w-4xl mx-auto">
-          {/* Breadcrumbs */}
-          <div className="mb-4">
-            <Breadcrumbs />
-          </div>
-          
           {/* Optional small label */}
           <div className="text-primary text-xs md:text-sm tracking-widest mb-4 uppercase">
             <EditableText id="about-page-label">SS • HAIR • BEAUTY • NAILS</EditableText>
@@ -62,11 +48,8 @@ const About = () => {
         <div className="w-full h-[400px] md:h-[500px] overflow-hidden">
           <img 
             src="/lovable-uploads/ab3846e2-d8b3-4cac-99bf-c43a3d7fd10d.png"
-            alt="Sahiya Slays salon interior in Bow, East London"
+            alt="Sahiya Slays salon interior"
             className="w-full h-full object-cover"
-            loading="lazy"
-            width="1920"
-            height="500"
           />
         </div>
       </section>
@@ -115,7 +98,7 @@ const About = () => {
             as="p" 
             className="text-[17px] md:text-[18px] font-medium text-[#121212] leading-[1.6] max-w-[800px] mx-auto"
           >
-            Premium hair salon in East London specializing in silk press, hair extensions, braiding, hair colouring and natural hair care for textured hair 3c-4c. We offer highly skilled specialists for all your hairdressing, beauty, nail, and spa treatments. Bridal and event services available.
+            We offer highly skilled specialists for all your hairdressing, beauty, nail, and spa treatments. Bridal and event services available.
           </EditableText>
         </div>
       </section>
@@ -164,11 +147,8 @@ const About = () => {
         <div className="w-full h-[400px] md:h-[500px] overflow-hidden">
           <img 
             src="/lovable-uploads/2b027922-7899-439a-b980-764731d1f0f5.png"
-            alt="Sahiya Slays salon styling area"
+            alt="Sahiya Slays salon interior"
             className="w-full h-full object-cover"
-            loading="lazy"
-            width="1920"
-            height="500"
           />
         </div>
       </section>

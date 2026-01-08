@@ -77,45 +77,6 @@ export type Database = {
         }
         Relationships: []
       }
-      coaching_bookings: {
-        Row: {
-          booking_date: string
-          booking_time: string
-          created_at: string
-          email: string
-          id: string
-          message: string | null
-          name: string
-          phone: string | null
-          status: string
-          updated_at: string
-        }
-        Insert: {
-          booking_date: string
-          booking_time: string
-          created_at?: string
-          email: string
-          id?: string
-          message?: string | null
-          name: string
-          phone?: string | null
-          status?: string
-          updated_at?: string
-        }
-        Update: {
-          booking_date?: string
-          booking_time?: string
-          created_at?: string
-          email?: string
-          id?: string
-          message?: string | null
-          name?: string
-          phone?: string | null
-          status?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       orders: {
         Row: {
           created_at: string
@@ -166,18 +127,10 @@ export type Database = {
           description: string | null
           id: string
           image_url: string | null
-          images: Json | null
-          is_sale: boolean | null
-          long_description: string | null
           name: string
           price: number
-          price_max: number | null
-          price_min: number | null
-          short_description: string | null
-          slug: string | null
           stock_quantity: number | null
           updated_at: string | null
-          variants: Json | null
         }
         Insert: {
           active?: boolean | null
@@ -186,18 +139,10 @@ export type Database = {
           description?: string | null
           id?: string
           image_url?: string | null
-          images?: Json | null
-          is_sale?: boolean | null
-          long_description?: string | null
           name: string
           price: number
-          price_max?: number | null
-          price_min?: number | null
-          short_description?: string | null
-          slug?: string | null
           stock_quantity?: number | null
           updated_at?: string | null
-          variants?: Json | null
         }
         Update: {
           active?: boolean | null
@@ -206,18 +151,10 @@ export type Database = {
           description?: string | null
           id?: string
           image_url?: string | null
-          images?: Json | null
-          is_sale?: boolean | null
-          long_description?: string | null
           name?: string
           price?: number
-          price_max?: number | null
-          price_min?: number | null
-          short_description?: string | null
-          slug?: string | null
           stock_quantity?: number | null
           updated_at?: string | null
-          variants?: Json | null
         }
         Relationships: []
       }
@@ -258,9 +195,7 @@ export type Database = {
           id: string
           image_url: string | null
           name: string
-          options: Json | null
           price: number
-          subcategory: string | null
           updated_at: string | null
         }
         Insert: {
@@ -272,9 +207,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           name: string
-          options?: Json | null
           price: number
-          subcategory?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -286,9 +219,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           name?: string
-          options?: Json | null
           price?: number
-          subcategory?: string | null
           updated_at?: string | null
         }
         Relationships: []

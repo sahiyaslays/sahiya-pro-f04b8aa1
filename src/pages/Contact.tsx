@@ -1,11 +1,8 @@
 import Header from "@/components/Header";
 import { useEffect } from "react";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Instagram, Phone, Mail, MapPin, Clock } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { EditableText } from "@/components/EditableText";
-import SEO from "@/components/SEO";
-import SchemaMarkup from "@/components/SchemaMarkup";
-import Breadcrumbs from "@/components/Breadcrumbs";
 
 const Contact = () => {
   // Scroll to top on route change
@@ -15,24 +12,11 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background font-abel">
-      <SEO 
-        title="Contact Sahiya Slays | Book Appointment | Hair Salon London E3"
-        description="Contact Sahiya Slays hair salon in Bow, London E3. Call +44 7809 441074, email or book online. Located at 415 Wick Lane. Open 7 days."
-        canonical="/contact"
-        ogType="article"
-        keywords="contact Sahiya Slays, hair salon Bow, London E3 salon, book hair appointment"
-      />
-      <SchemaMarkup type="LocalBusiness" />
       <Header />
       
       {/* Hero Section */}
       <section className="h-[34vh] md:h-[40vh] bg-background flex items-center justify-center px-4 pt-20">
         <div className="text-center max-w-4xl mx-auto">
-          {/* Breadcrumbs */}
-          <div className="mb-4">
-            <Breadcrumbs />
-          </div>
-          
           {/* Small label */}
           <div className="text-primary text-xs md:text-sm tracking-widest mb-4 uppercase">
             <EditableText id="contact-page-label">SS • HAIR • BEAUTY • NAILS</EditableText>
@@ -70,7 +54,7 @@ const Contact = () => {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Sahiya Slays salon location at 415 Wick Lane, Bow, London E3 2JG"
+            title="Sahiya Slays Location"
           ></iframe>
         </div>
       </section>
@@ -80,37 +64,29 @@ const Contact = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8 md:gap-12 text-center">
             {/* Address */}
-            <address className="space-y-4 not-italic">
+            <div className="space-y-4">
               <div className="flex justify-center mb-4">
-                <MapPin className="w-6 h-6 text-primary" aria-hidden="true" />
+                <MapPin className="w-6 h-6 text-primary" />
               </div>
-              <h2 className="text-lg font-normal tracking-wide uppercase text-foreground">
+              <h3 className="text-lg font-normal tracking-wide uppercase text-foreground">
                 ADDRESS
-              </h2>
+              </h3>
               <div className="text-sm leading-relaxed text-muted-foreground space-y-1">
                 <EditableText id="contact-address-line1" as="div">415 WICK LANE</EditableText>
                 <EditableText id="contact-address-line2" as="div">TRADESTARS BLOCK G</EditableText>
                 <EditableText id="contact-address-line3" as="div">BOW</EditableText>
                 <EditableText id="contact-address-line4" as="div">LONDON E3 2JG</EditableText>
               </div>
-              <a 
-                href="https://maps.google.com/?q=415+Wick+Lane,+Bow,+London+E3+2JG"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-2 text-primary hover:underline text-sm"
-              >
-                Get Directions →
-              </a>
-            </address>
+            </div>
             
             {/* Hours */}
             <div className="space-y-4">
               <div className="flex justify-center mb-4">
-                <Clock className="w-6 h-6 text-primary" aria-hidden="true" />
+                <Clock className="w-6 h-6 text-primary" />
               </div>
-              <h2 className="text-lg font-normal tracking-wide uppercase text-foreground">
+              <h3 className="text-lg font-normal tracking-wide uppercase text-foreground">
                 HOURS
-              </h2>
+              </h3>
               <div className="text-sm leading-relaxed text-muted-foreground space-y-1">
                 <EditableText id="contact-hours-days" as="div" className="font-medium">MONDAY - SUNDAY</EditableText>
                 <EditableText id="contact-hours-time" as="div">9:30am - 8:00pm</EditableText>
@@ -122,23 +98,21 @@ const Contact = () => {
             {/* Contact */}
             <div className="space-y-4">
               <div className="flex justify-center mb-4">
-                <Phone className="w-6 h-6 text-primary" aria-hidden="true" />
+                <Phone className="w-6 h-6 text-primary" />
               </div>
-              <h2 className="text-lg font-normal tracking-wide uppercase text-foreground">
+              <h3 className="text-lg font-normal tracking-wide uppercase text-foreground">
                 CONTACT
-              </h2>
+              </h3>
               <div className="text-sm leading-relaxed text-muted-foreground space-y-2">
                 <a 
-                  href="tel:+447943115966"
+                  href="tel:07943115966"
                   className="block hover:text-primary transition-colors duration-300"
-                  aria-label="Call Sahiya Slays at 07943 115966"
                 >
                   <EditableText id="contact-phone">07943 115966</EditableText>
                 </a>
                 <a 
                   href="mailto:contact@sahiyaslays.com"
                   className="block hover:text-primary transition-colors duration-300"
-                  aria-label="Email Sahiya Slays"
                 >
                   <EditableText id="contact-email">contact@sahiyaslays.com</EditableText>
                 </a>

@@ -25,34 +25,31 @@ interface Booking {
   special_requests: string | null;
   stylist_id: string | null;
   stripe_payment_intent_id: string | null;
-  stripe_session_id: string | null;
   created_at: string;
   updated_at: string;
 }
 
 export default function AdminBookings() {
   const navigate = useNavigate();
-  const { user, loading: authLoading, isAdmin } = useAuth();
+  const { user } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!authLoading && !user) {
+    if (!user) {
       navigate("/auth");
       return;
     }
 
-    if (!authLoading && user && !isAdmin) {
+    if (user.email !== "sahiyaslays@gmail.com") {
       navigate("/user-dashboard");
       return;
     }
 
-    if (!authLoading && user && isAdmin) {
-      fetchBookings();
-    }
-  }, [user, authLoading, navigate, isAdmin]);
+    fetchBookings();
+  }, [user, navigate]);
 
   const fetchBookings = async () => {
     try {
@@ -113,7 +110,6 @@ export default function AdminBookings() {
                       <TableHead className="text-gray-700 font-semibold">Date</TableHead>
                       <TableHead className="text-gray-700 font-semibold">Time</TableHead>
                       <TableHead className="text-gray-700 font-semibold">Status</TableHead>
-                      <TableHead className="text-gray-700 font-semibold">Paid</TableHead>
                       <TableHead className="text-gray-700 font-semibold">Amount</TableHead>
                       <TableHead className="text-gray-700 font-semibold text-right">Action</TableHead>
                     </TableRow>
@@ -121,7 +117,7 @@ export default function AdminBookings() {
                   <TableBody>
                     {bookings.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={8} className="text-center text-gray-500 py-8">
+                        <TableCell colSpan={7} className="text-center text-gray-500 py-8">
                           No bookings found
                         </TableCell>
                       </TableRow>
@@ -144,19 +140,8 @@ export default function AdminBookings() {
                               {booking.status}
                             </Badge>
                           </TableCell>
-                          <TableCell>
-                            {booking.stripe_session_id ? (
-                              <Badge className="bg-green-100 text-green-800 border-green-300">
-                                ✓ Yes
-                              </Badge>
-                            ) : (
-                              <Badge className="bg-gray-100 text-gray-600 border-gray-300">
-                                No
-                              </Badge>
-                            )}
-                          </TableCell>
                           <TableCell className="font-semibold text-gray-900">
-                            £{booking.total_amount.toFixed(2)}
+                            ${booking.total_amount.toFixed(2)}
                           </TableCell>
                           <TableCell className="text-right">
                             <Button

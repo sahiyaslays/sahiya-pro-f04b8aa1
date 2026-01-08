@@ -243,43 +243,6 @@ serve(async (req) => {
       .update({ stripe_session_id: session.id })
       .eq("id", booking.id);
 
-    // Send initial booking request email immediately (before payment completes)
-    // This ensures both customer and admin are notified of the booking request
-    try {
-      console.log("[CREATE-BOOKING] Sending initial booking emails for paid booking:", booking.id);
-      const emailResponse = await fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-booking-email`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${Deno.env.get("SUPABASE_ANON_KEY")}`,
-        },
-        body: JSON.stringify({
-          emailType: 'initial',
-          bookingId: booking.id,
-          customerEmail: bookingData.guestEmail || customerEmail,
-          customerName: bookingData.guestName || customerEmail.split('@')[0] || 'Customer',
-          customerPhone: bookingData.guestPhone || '',
-          services: bookingData.services.map(s => ({
-            name: s.name,
-            duration: s.duration,
-            price: `£${s.price.toFixed(2)}`,
-          })),
-          bookingDate: bookingData.bookingDate,
-          bookingTime: bookingData.bookingTime,
-          totalAmount: bookingData.totalAmount,
-          paymentType: bookingData.paymentType,
-          specialRequests: bookingData.specialRequests,
-          stylistId: bookingData.stylistId,
-        }),
-      });
-      const emailResult = await emailResponse.text();
-      console.log("[CREATE-BOOKING] Initial email response status:", emailResponse.status);
-      console.log("[CREATE-BOOKING] Initial email response:", emailResult);
-    } catch (emailError) {
-      console.error("[CREATE-BOOKING] Initial email sending error:", emailError);
-      // Don't fail the booking creation if email fails
-    }
-
     return new Response(JSON.stringify({ url: session.url, bookingId: booking.id }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,

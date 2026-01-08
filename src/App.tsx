@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { CartProvider } from "@/hooks/useCart";
@@ -36,21 +36,15 @@ import AdminServicesManagement from "./pages/AdminServicesManagement";
 import AdminProductsManagement from "./pages/AdminProductsManagement";
 import AdminBookings from "./pages/AdminBookings";
 import AdminOrders from "./pages/AdminOrders";
-import AdminUsersManagement from "./pages/AdminUsersManagement";
-import FAQ from "./pages/FAQ";
-import Reviews from "./pages/Reviews";
-import Coaching from "./pages/Coaching";
 
 const queryClient = new QueryClient();
 
-// Component to handle scroll to top on route change (SSR-safe)
+// Component to handle scroll to top on route change
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.scrollTo(0, 0);
-    }
+    window.scrollTo(0, 0);
   }, [pathname]);
   
   return null;
@@ -60,12 +54,13 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <AuthProvider>
-          <CartProvider>
-            <EditModeProvider>
-              <Toaster />
-              <Sonner />
-              <ScrollToTop />
+        <BrowserRouter>
+          <AuthProvider>
+            <CartProvider>
+              <EditModeProvider>
+                <Toaster />
+                <Sonner />
+                <ScrollToTop />
               <CartDrawer />
               <EditModeButton />
               <Routes>
@@ -80,9 +75,6 @@ const App = () => {
                 <Route path="/career" element={<Career />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/our-customers" element={<OurCustomers />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/reviews" element={<Reviews />} />
-                <Route path="/coaching" element={<Coaching />} />
                 <Route path="/booking" element={<Booking />} />
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/:slug" element={<ProductDetail />} />
@@ -92,19 +84,21 @@ const App = () => {
                 <Route path="/terms-and-conditions" element={<TermsConditions />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/user-dashboard" element={<UserDashboard />} />
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin/services" element={<AdminServicesManagement />} />
-                <Route path="/admin/products" element={<AdminProductsManagement />} />
-                <Route path="/admin/bookings" element={<AdminBookings />} />
-                <Route path="/admin/orders" element={<AdminOrders />} />
-                <Route path="/admin/users" element={<AdminUsersManagement />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/services" element={<AdminServicesManagement />} />
+            <Route path="/admin/products" element={<AdminProductsManagement />} />
+            <Route path="/admin/bookings" element={<AdminBookings />} />
+            <Route path="/admin/orders" element={<AdminOrders />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <CartDrawer />
+              <EditModeButton />
             </EditModeProvider>
           </CartProvider>
         </AuthProvider>
-      </TooltipProvider>
+      </BrowserRouter>
+    </TooltipProvider>
     </QueryClientProvider>
   );
 };

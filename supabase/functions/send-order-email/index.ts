@@ -47,39 +47,24 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const requestData: OrderEmailRequest = await req.json();
     console.log("Processing order email for:", requestData.orderId);
-    console.log("Received data - customerEmail:", requestData.customerEmail, "items count:", requestData.items?.length, "total:", requestData.total);
 
-    // Check if we have all required data from the request
-    const hasFullData = requestData.customerEmail && 
-                        requestData.items && 
-                        requestData.items.length > 0 && 
-                        requestData.customerName && 
-                        requestData.total !== undefined;
-    
-    // Check if orderId looks like a UUID (database IDs are UUIDs)
-    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestData.orderId);
-    
+    // Initialize Supabase client
+    const supabaseClient = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+    );
+
+    // If full order data not provided, fetch from database
     let orderData = requestData;
-    
-    // Only fetch from database if we don't have full data AND the orderId is a valid UUID
-    if (!hasFullData && isUUID) {
-      console.log("Fetching order from database for UUID:", requestData.orderId);
-      
-      // Initialize Supabase client
-      const supabaseClient = createClient(
-        Deno.env.get("SUPABASE_URL") ?? "",
-        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-      );
-
+    if (!orderData.customerEmail || !orderData.items) {
       const { data: order, error } = await supabaseClient
         .from('orders')
         .select('*')
         .eq('id', requestData.orderId)
-        .maybeSingle();
+        .single();
 
       if (error || !order) {
-        console.error("Order not found in database:", requestData.orderId, error);
-        throw new Error('Order not found in database');
+        throw new Error('Order not found');
       }
 
       const shippingAddress = order.shipping_address as any;
@@ -97,12 +82,6 @@ const handler = async (req: Request): Promise<Response> => {
         },
         paymentMethod: 'stripe',
       };
-    } else if (!hasFullData && !isUUID) {
-      // Non-UUID order ID without full data - this shouldn't happen but handle gracefully
-      console.error("Cannot process order: non-UUID order ID without full data:", requestData.orderId);
-      throw new Error('Incomplete order data provided');
-    } else {
-      console.log("Using provided order data (no database fetch needed)");
     }
 
     // Format order items for email
@@ -133,7 +112,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email to customer
     const customerEmailResponse = await resend.emails.send({
-      from: "Sahiya Slays <contact@sahiyaslays.com>",
+      from: "Sahiya Slays <onboarding@resend.dev>",
       to: [orderData.customerEmail || ''],
       subject: `Order Confirmation - #${orderData.orderId.substring(0, 8)}`,
       html: `
@@ -192,7 +171,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification email to salon
     const salonEmailResponse = await resend.emails.send({
-      from: "Sahiya Slays Orders <contact@sahiyaslays.com>",
+      from: "Sahiya Slays Orders <onboarding@resend.dev>",
       to: ["sahiyaslays@gmail.com", "contact@sahiyaslays.com"],
       subject: `New Order - #${orderData.orderId.substring(0, 8)}`,
       html: `

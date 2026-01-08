@@ -45,10 +45,8 @@ export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) 
   const [persistedContent, setPersistedContent] = useState<Record<string, string>>({});
   const [highlightMode, setHighlightMode] = useState(false);
 
-  // Load persisted content and history on mount (SSR-safe)
+  // Load persisted content and history on mount
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
     const savedContent = localStorage.getItem('editableContent');
     const savedHistory = localStorage.getItem('editHistory');
     
@@ -70,10 +68,8 @@ export const EditModeProvider: React.FC<EditModeProviderProps> = ({ children }) 
     }
   }, []);
 
-  // Apply persisted content when DOM updates (SSR-safe)
+  // Apply persisted content when DOM updates
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
     Object.entries(persistedContent).forEach(([id, content]) => {
       const element = document.querySelector(`[data-edit-id="${id}"]`);
       if (element && element.textContent !== content) {

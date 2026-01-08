@@ -6,9 +6,7 @@ import {
   Package, 
   Calendar, 
   ShoppingBag,
-  Users,
-  LogOut,
-  ExternalLink
+  LogOut
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -22,7 +20,6 @@ export default function AdminSidebar() {
     { path: '/admin/products', label: 'Manage Products', icon: Package },
     { path: '/admin/bookings', label: 'All Bookings', icon: Calendar },
     { path: '/admin/orders', label: 'All Orders', icon: ShoppingBag },
-    { path: '/admin/users', label: 'Manage Users', icon: Users },
   ];
 
   const isActive = (path: string) => {
@@ -60,16 +57,7 @@ export default function AdminSidebar() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-gray-200 space-y-2">
-        <Link to="/" target="_blank">
-          <Button
-            variant="outline"
-            className="w-full gap-2 border-gray-200 text-gray-700 hover:bg-gray-100"
-          >
-            <ExternalLink className="h-4 w-4" />
-            View Website
-          </Button>
-        </Link>
+      <div className="p-4 border-t border-gray-200">
         <Button
           onClick={signOut}
           variant="outline"

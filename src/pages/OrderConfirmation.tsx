@@ -1,4 +1,4 @@
-import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
+import { useParams, useLocation, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -13,7 +13,6 @@ import { CheckCircle, Download, MessageCircle, Loader2 } from 'lucide-react';
 export default function OrderConfirmation() {
   const { orderId } = useParams<{ orderId: string }>();
   const location = useLocation();
-  const navigate = useNavigate();
   const [orderData, setOrderData] = useState<any>(location.state?.orderData);
   const [loading, setLoading] = useState(!location.state?.orderData);
 
@@ -21,10 +20,8 @@ export default function OrderConfirmation() {
     if (orderId && !orderData) {
       fetchOrderAndSendEmails();
     } else if (orderId && orderData) {
+      // If we have order data from state, still send emails
       sendEmails(orderId);
-      // Show success toast and redirect
-      toast.success('Order confirmed! Check your email for details.');
-      setTimeout(() => navigate('/', { replace: true }), 5000);
     }
   }, [orderId]);
 
