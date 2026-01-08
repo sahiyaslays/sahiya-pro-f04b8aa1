@@ -78,12 +78,19 @@ const Hero = () => {
           </div>
 
           {/* Contact */}
-          <div className="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-8 text-base md:text-lg">
+          <div className="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-4 text-base md:text-lg">
             <a 
               href="tel:07943115966"
               className="text-primary hover:text-white transition-colors duration-300 tracking-wide"
             >
               <EditableText id="phone-number">07943 115966</EditableText>
+            </a>
+            <span className="text-white/50 hidden md:inline">|</span>
+            <a 
+              href="tel:07809441074"
+              className="text-primary hover:text-white transition-colors duration-300 tracking-wide"
+            >
+              <EditableText id="phone-number-2">07809 441074</EditableText>
             </a>
             <a 
               href="mailto:contact@sahiyaslays.com"

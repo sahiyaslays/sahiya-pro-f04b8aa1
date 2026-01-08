@@ -57,33 +57,8 @@ const Booking = () => {
 
       setBookingReference(bookingId.substring(0, 8).toUpperCase());
       
-      // Send confirmation emails
-      try {
-        const services = Array.isArray(booking.services) ? booking.services : [];
-        await supabase.functions.invoke('send-booking-email', {
-          body: {
-            emailType: 'initial',
-            bookingId: bookingId,
-            customerEmail: booking.guest_email,
-            customerName: booking.guest_name || 'Customer',
-            customerPhone: booking.guest_phone || '',
-            services: services.map((s: any) => ({
-              name: s.name || 'Service',
-              duration: s.duration || 0,
-              price: typeof s.price === 'number' ? `£${s.price.toFixed(2)}` : s.price || '£0.00',
-            })),
-            bookingDate: booking.booking_date,
-            bookingTime: booking.booking_time,
-            totalAmount: booking.total_amount,
-            paymentType: booking.payment_type,
-            specialRequests: booking.special_requests,
-            stylistId: booking.stylist_id,
-          }
-        });
-        console.log('Booking confirmation email sent successfully');
-      } catch (emailError) {
-        console.error('Email error:', emailError);
-      }
+      // Note: Confirmation emails are now sent by the Stripe webhook for reliability
+      console.log('Booking success - emails handled by webhook');
 
       // Try to create account for guest users
       if (booking.guest_email && !booking.user_id) {
