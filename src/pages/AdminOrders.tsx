@@ -21,23 +21,25 @@ interface Order {
 
 export default function AdminOrders() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading: authLoading, isAdmin } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    if (!authLoading && !user) {
       navigate("/auth");
       return;
     }
 
-    if (user.email !== "sahiyaslays@gmail.com") {
+    if (!authLoading && user && !isAdmin) {
       navigate("/user-dashboard");
       return;
     }
 
-    fetchOrders();
-  }, [user, navigate]);
+    if (!authLoading && user && isAdmin) {
+      fetchOrders();
+    }
+  }, [user, authLoading, navigate, isAdmin]);
 
   const fetchOrders = async () => {
     try {

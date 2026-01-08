@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import DOMPurify from 'dompurify';
 import Header from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/shop/ProductCard';
@@ -18,6 +19,14 @@ import { useToast } from '@/hooks/use-toast';
 import { EditableText } from '@/components/EditableText';
 import { EditableVariants } from '@/components/shop/EditableVariants';
 import { useEditMode } from '@/contexts/EditModeContext';
+
+// Configure DOMPurify for safe HTML rendering
+const sanitizeHTML = (html: string): string => {
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'h3', 'h4', 'span', 'b', 'i'],
+    ALLOWED_ATTR: ['class'],
+  });
+};
 export default function ProductDetail() {
   const {
     slug
@@ -359,7 +368,7 @@ export default function ProductDetail() {
                       </EditableText>
                     ) : (
                       <div 
-                        dangerouslySetInnerHTML={{ __html: product.description_long }}
+                        dangerouslySetInnerHTML={{ __html: sanitizeHTML(product.description_long) }}
                         className="[&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mb-2 [&_strong]:font-semibold"
                       />
                     )}
