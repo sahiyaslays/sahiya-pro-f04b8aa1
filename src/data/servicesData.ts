@@ -290,9 +290,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'full-head-hl-cut-blow-dry',
             name: 'Full Head HL + Cut & Blow Dry',
             options: [
-              { label: 'Long', duration: 180, price: 310 },
-              { label: 'Medium', duration: 150, price: 290 },
-              { label: 'Short', duration: 120, price: 270 }
+              { label: 'Long', duration: 180, price: 270 },
+              { label: 'Medium', duration: 150, price: 250 },
+              { label: 'Short', duration: 120, price: 230 }
             ]
           },
           {
@@ -339,7 +339,7 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'colour-correction',
             name: 'Colour Correction',
-            options: [{ label: 'Standard', duration: 240, price: 600 }]
+            options: [{ label: 'Standard', duration: 240, price: 390 }]
           },
           {
             id: 'afro-colour-treat',
@@ -358,7 +358,7 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'add-on-toner',
             name: 'Add-on Toner',
-            options: [{ label: 'Standard', duration: 30, price: 65 }]
+            options: [{ label: 'Standard', duration: 30, price: 45 }]
           },
           {
             id: 'toner-cut-blow-dry',
@@ -368,15 +368,15 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'root-bleach-tone',
             name: 'Root Bleach + Tone',
-            options: [{ label: 'Standard', duration: 90, price: 150 }]
+            options: [{ label: 'Standard', duration: 90, price: 105 }]
           },
           {
             id: 'full-tint-perm-cut-blow-dry',
             name: 'Full Tint Perm + Cut & Blow Dry',
             options: [
               { label: 'Short', duration: 90, price: 120 },
-              { label: 'Medium', duration: 75, price: 140 },
-              { label: 'Long', duration: 75, price: 160 }
+              { label: 'Medium', duration: 75, price: 90 },
+              { label: 'Long', duration: 75, price: 90 }
             ]
           },
           {
@@ -392,11 +392,16 @@ export const servicesData: ServiceCategory[] = [
             id: 'airtouch-balayage-cut-blow-dry',
             name: 'AirTouch Balayage + Cut & Blow Dry',
             options: [
-              { label: 'Short', duration: 150, price: 760 },
-              { label: 'Medium', duration: 180, price: 780 },
-              { label: 'Long', duration: 210, price: 800 }
+              { label: 'Medium', duration: 180, price: 335 },
+              { label: 'Short', duration: 150, price: 310 },
+              { label: 'Long', duration: 210, price: 360 }
             ]
           },
+          {
+            id: 'hair-nails-combo',
+            name: 'Hair & Nails Combo',
+            options: [{ label: 'Standard', duration: 120, price: 190 }]
+          }
         ]
       },
       {
@@ -568,7 +573,7 @@ export const servicesData: ServiceCategory[] = [
         services: [
           {
             id: 'ladies-braids',
-            name: 'Braids (Single)',
+            name: 'Braids',
             options: [
               { label: 'Long Hair', duration: 90, price: 85 },
               { label: 'Medium Hair', duration: 75, price: 75 },
@@ -697,7 +702,7 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'hair-wash-only',
             name: 'Hair Wash Only',
-            options: [{ label: 'Standard', duration: 15, price: 20 }]
+            options: [{ label: 'Standard', duration: 15, price: 18 }]
           }
         ]
       },
@@ -706,39 +711,19 @@ export const servicesData: ServiceCategory[] = [
         title: "Ladies' - Weaves & Wigs",
         services: [
           {
-            id: 'ladies-traditional-weave',
-            name: 'Ladies - Traditional Weave (Signature Service)',
-            options: [{ label: 'Standard', duration: 120, price: 125 }]
+            id: 'weave-per-row',
+            name: 'Weave (Per Row)',
+            options: [{ label: 'Standard', duration: 30, price: 35 }]
           },
           {
-            id: 'ladies-versatile-weave',
-            name: 'Ladies - Versatile Weave',
-            options: [{ label: 'Standard', duration: 150, price: 165 }]
+            id: 'weave-half-head',
+            name: 'Weave (Half Head)',
+            options: [{ label: 'Standard', duration: 90, price: 90 }]
           },
           {
-            id: 'ladies-weave-3-part-sew-in',
-            name: 'Ladies - Weave - 3 Part Sew In',
-            options: [{ label: 'Standard', duration: 150, price: 185 }]
-          },
-          {
-            id: 'ladies-weave-maintenance',
-            name: 'Ladies Weave Maintenance',
-            options: [{ label: 'Standard', duration: 60, price: 95 }]
-          },
-          {
-            id: 'weft-installation-per-row',
-            name: 'Weft Installation (Per Row)',
-            options: [{ label: 'Standard', duration: 30, price: 65 }]
-          },
-          {
-            id: 'weft-installation-2-3-rows',
-            name: 'Weft Installation 2-3 Rows',
-            options: [{ label: 'Standard', duration: 60, price: 125 }]
-          },
-          {
-            id: 'weft-installation-full-head',
-            name: 'Weft Installation Full Head',
-            options: [{ label: 'Standard', duration: 90, price: 165 }]
+            id: 'weave-full-head',
+            name: 'Weave (Full Head)',
+            options: [{ label: 'Standard', duration: 120, price: 130 }]
           },
           {
             id: 'wig-install',
@@ -749,11 +734,6 @@ export const servicesData: ServiceCategory[] = [
             id: 'wig-styling',
             name: 'Wig Styling',
             options: [{ label: 'Standard', duration: 60, price: 45 }]
-          },
-          {
-            id: 'wig-braid-down',
-            name: 'Wig Braid Down',
-            options: [{ label: 'Standard', duration: 30, price: 35 }]
           }
         ]
       },

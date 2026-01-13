@@ -119,20 +119,6 @@ All colors MUST be HSL.
     @apply bg-background text-foreground font-abel;
   }
 
-  /* Hide scrollbars for horizontal scroll containers */
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Smooth scroll behavior */
-  html {
-    scroll-behavior: smooth;
-  }
-
   /* Optimize image rendering for crystal clear display */
   img {
     image-rendering: -webkit-optimize-contrast;

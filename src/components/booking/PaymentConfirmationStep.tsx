@@ -6,9 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Service } from '@/data/servicesData';
 import { BookingFormData } from './ServiceBookingModal';
-import { AddServiceModal, SelectedAdditionalService } from './AddServiceModal';
 import { format } from 'date-fns';
-import { CheckCircle, Calendar, Clock, User, Phone, Mail, MessageSquare, Users, CreditCard, Plus, Trash2 } from 'lucide-react';
+import { CheckCircle, Calendar, Clock, User, Phone, Mail, MessageSquare, Users, CreditCard } from 'lucide-react';
 
 interface PaymentConfirmationStepProps {
   service: Service;
@@ -26,8 +25,6 @@ export function PaymentConfirmationStep({
   const [paymentType, setPaymentType] = useState<'deposit' | 'full'>('deposit');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const [additionalServices, setAdditionalServices] = useState<SelectedAdditionalService[]>([]);
-  const [showAddServiceModal, setShowAddServiceModal] = useState(false);
 
   const formatPrice = (price: number) => {
     return price === 0 ? 'Free' : `£${price}`;
@@ -45,62 +42,26 @@ export function PaymentConfirmationStep({
     return `${hours}h ${remainingMinutes}min`;
   };
 
-  // Calculate totals including additional services
-  const primaryServicePrice = bookingData.selectedOption?.price || 0;
-  const primaryServiceDuration = bookingData.selectedOption?.duration || 0;
-  const additionalServicesPrice = additionalServices.reduce((sum, s) => sum + s.selectedOption.price, 0);
-  const additionalServicesDuration = additionalServices.reduce((sum, s) => sum + s.selectedOption.duration, 0);
-  const totalPrice = primaryServicePrice + additionalServicesPrice;
-  const totalDuration = primaryServiceDuration + additionalServicesDuration;
-
-  const handleAddService = (newService: SelectedAdditionalService) => {
-    setAdditionalServices(prev => [...prev, newService]);
-    setShowAddServiceModal(false);
-  };
-
-  const handleRemoveService = (index: number) => {
-    setAdditionalServices(prev => prev.filter((_, i) => i !== index));
-  };
-
-  // Create existing services list for the modal (to prevent duplicates)
-  const existingServices: SelectedAdditionalService[] = [
-    { service, selectedOption: bookingData.selectedOption! },
-    ...additionalServices
-  ];
-
   const handleConfirm = async () => {
     setIsProcessing(true);
     
     try {
       const { supabase } = await import('@/integrations/supabase/client');
       
-      // Build services array including additional services
-      const allServices = [
-        {
-          id: service.id,
-          name: service.name,
-          option: bookingData.selectedOption?.label,
-          price: bookingData.selectedOption?.price || 0,
-          duration: bookingData.selectedOption?.duration || 0,
-        },
-        ...additionalServices.map(s => ({
-          id: s.service.id,
-          name: s.service.name,
-          option: s.selectedOption.label,
-          price: s.selectedOption.price,
-          duration: s.selectedOption.duration,
-        }))
-      ];
-      
       // Create payment with Stripe
       const { data, error } = await supabase.functions.invoke('create-booking-payment', {
         body: {
-          services: allServices,
+          services: [{
+            id: service.id,
+            name: service.name,
+            price: bookingData.selectedOption?.price || 0,
+            duration: bookingData.selectedOption?.duration || 0,
+          }],
           stylistId: bookingData.selectedStylist?.id,
           bookingDate: bookingData.date ? format(new Date(bookingData.date), 'yyyy-MM-dd') : '',
           bookingTime: bookingData.time || '',
-          totalDuration: totalDuration,
-          totalAmount: totalPrice,
+          totalDuration: bookingData.selectedOption?.duration || 0,
+          totalAmount: bookingData.selectedOption?.price || 0,
           paymentType: paymentType,
           guestName: bookingData.customerDetails.fullName,
           guestEmail: bookingData.customerDetails.email,
@@ -196,7 +157,7 @@ export function PaymentConfirmationStep({
                   <div className="flex justify-between font-medium">
                     <span>Total:</span>
                     <span className="text-primary">
-                      {formatPrice(totalPrice)}
+                      {formatPrice(bookingData.selectedOption?.price || 0)}
                     </span>
                   </div>
                 </div>
@@ -227,66 +188,15 @@ export function PaymentConfirmationStep({
           <CardTitle className="text-sm md:text-lg">Booking Summary</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 md:space-y-4 pt-0">
-          {/* Primary Service */}
           <div className="flex justify-between items-start">
-            <div className="flex-1">
+            <div>
               <h5 className="font-medium text-foreground text-xs md:text-sm">{service.name}</h5>
               <p className="text-xs text-muted-foreground">
                 {bookingData.selectedOption?.label} - {formatDuration(bookingData.selectedOption?.duration || 0)}
               </p>
             </div>
-            <span className="text-sm md:text-base font-medium text-primary">
+            <span className="text-sm md:text-lg font-medium text-primary">
               {formatPrice(bookingData.selectedOption?.price || 0)}
-            </span>
-          </div>
-
-          {/* Additional Services */}
-          {additionalServices.map((addService, index) => (
-            <div key={index} className="flex justify-between items-start bg-muted/30 p-2 rounded-lg">
-              <div className="flex-1">
-                <h5 className="font-medium text-foreground text-xs md:text-sm">{addService.service.name}</h5>
-                <p className="text-xs text-muted-foreground">
-                  {addService.selectedOption.label} - {formatDuration(addService.selectedOption.duration)}
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-primary">
-                  {formatPrice(addService.selectedOption.price)}
-                </span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-6 w-6 p-0 text-destructive hover:text-destructive"
-                  onClick={() => handleRemoveService(index)}
-                >
-                  <Trash2 className="h-3 w-3" />
-                </Button>
-              </div>
-            </div>
-          ))}
-
-          {/* Add Another Service Button */}
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full border-dashed text-xs"
-            onClick={() => setShowAddServiceModal(true)}
-          >
-            <Plus className="h-3 w-3 mr-2" />
-            Add Another Service
-          </Button>
-
-          <Separator />
-
-          {/* Totals */}
-          <div className="flex justify-between items-center text-xs md:text-sm">
-            <span className="text-muted-foreground">Total Duration:</span>
-            <span className="font-medium">{formatDuration(totalDuration)}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="font-medium text-sm md:text-base">Total:</span>
-            <span className="text-lg md:text-xl font-bold text-primary">
-              {formatPrice(totalPrice)}
             </span>
           </div>
 
@@ -370,7 +280,7 @@ export function PaymentConfirmationStep({
                     <div>
                       <h6 className="font-medium text-xs md:text-sm">Pay Full Amount</h6>
                       <p className="text-xs text-muted-foreground">
-                        Pay {formatPrice(totalPrice)} now
+                        Pay {formatPrice(bookingData.selectedOption?.price || 0)} now
                       </p>
                     </div>
                   </div>
@@ -396,14 +306,6 @@ export function PaymentConfirmationStep({
           {isProcessing ? 'Processing...' : 'Continue to Payment'}
         </Button>
       </div>
-
-      {/* Add Service Modal */}
-      <AddServiceModal
-        isOpen={showAddServiceModal}
-        onClose={() => setShowAddServiceModal(false)}
-        onAddService={handleAddService}
-        existingServices={existingServices}
-      />
     </div>
   );
 }

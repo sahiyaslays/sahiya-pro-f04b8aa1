@@ -18,34 +18,24 @@ export const EditableText: React.FC<EditableTextProps> = ({
   const { isEditMode, editedContent, updateContent, highlightMode } = useEditMode();
   const [isEditing, setIsEditing] = useState(false);
   const [tempContent, setTempContent] = useState('');
-  const [mounted, setMounted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  // SSR-safe: mark as mounted on client
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Get current content from edited state, localStorage, or original children
   const getInitialContent = () => {
     if (editedContent[id]) return editedContent[id];
     
-    // Only check localStorage on client side
-    if (typeof window !== 'undefined') {
-      const savedContent = localStorage.getItem('editableContent');
-      if (savedContent) {
-        const parsed = JSON.parse(savedContent);
-        if (parsed[id]) return parsed[id];
-      }
+    // Check localStorage for persisted content
+    const savedContent = localStorage.getItem('editableContent');
+    if (savedContent) {
+      const parsed = JSON.parse(savedContent);
+      if (parsed[id]) return parsed[id];
     }
     
     return typeof children === 'string' ? children : '';
   };
 
-  // During SSR, always use children; on client, use getInitialContent
-  const childrenString = typeof children === 'string' ? children : '';
-  const currentContent = mounted ? getInitialContent() : childrenString;
+  const currentContent = getInitialContent();
   const isMultiline = currentContent.length > 50 || currentContent.includes('\n');
 
   useEffect(() => {

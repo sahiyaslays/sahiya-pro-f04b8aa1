@@ -592,6 +592,97 @@ export const PRODUCTS: Product[] = [
     related_slugs: ["curly-brown-highlights", "curly-natural-black"]
   },
   
+  // Glueless Wigs
+  {
+    id: "p100",
+    slug: "anya-glueless-wig",
+    title: "ANYA — Glueless Wig",
+    category: "Extensions",
+    short_description: "Premium glueless wig with natural hairline. Easy wear-and-go styling.",
+    images: ["/lovable-uploads/anya-glueless-remake.webp"],
+    variants: [
+      { length: "One Size", price: 540, in_stock: true, sku: "ANYA-GL" }
+    ],
+    price_min: 540,
+    price_max: 540,
+    processing_time_note: "Processing time: 7–10 business days",
+    description_long: "<p>The ANYA glueless wig features a natural-looking hairline and secure fit without adhesive. Premium human hair for versatile styling options.</p><ul><li>Glueless construction for easy application</li><li>Adjustable straps and combs for secure fit</li><li>Pre-plucked hairline with baby hairs</li><li>Heat-friendly for custom styling</li></ul>"
+  },
+  {
+    id: "p101",
+    slug: "aubree-glueless-wig",
+    title: "AUBREE — Limited Edition",
+    category: "Extensions",
+    short_description: "Limited edition glueless wig with luxurious finish. Exclusive styling.",
+    images: ["/lovable-uploads/aubree-limited-edition.webp"],
+    variants: [
+      { length: "One Size", price: 650, in_stock: true, sku: "AUBREE-LE" }
+    ],
+    price_min: 650,
+    price_max: 650,
+    processing_time_note: "Processing time: 7–10 business days",
+    description_long: "<p>The AUBREE Limited Edition glueless wig delivers salon-quality results with effortless wear. Crafted from premium human hair for natural movement and shine.</p><ul><li>Limited edition exclusive design</li><li>Glueless secure-fit technology</li><li>Pre-styled and ready to wear</li><li>Natural density and movement</li></ul>"
+  },
+  {
+    id: "p102",
+    slug: "ayla-glueless-wig",
+    title: "AYLA — Glueless Wig",
+    category: "Extensions",
+    short_description: "Elegant glueless wig with seamless blend. Premium quality hair.",
+    images: ["/lovable-uploads/ayla-glueless-remake.webp"],
+    variants: [
+      { length: "One Size", price: 640, in_stock: true, sku: "AYLA-GL" }
+    ],
+    price_min: 640,
+    price_max: 640,
+    processing_time_note: "Processing time: 7–10 business days",
+    description_long: "<p>The AYLA glueless wig combines elegance with convenience. Features an invisible lace front and secure glueless construction for all-day comfort.</p><ul><li>Invisible lace front technology</li><li>Glueless wear-and-go design</li><li>Adjustable for perfect fit</li><li>Premium human hair construction</li></ul>"
+  },
+  {
+    id: "p103",
+    slug: "india-glueless-wig",
+    title: "INDIA — Glueless Wig",
+    category: "Extensions",
+    short_description: "Luxurious glueless wig with natural texture. Premium craftsmanship.",
+    images: ["/lovable-uploads/india-glueless-remake.webp"],
+    variants: [
+      { length: "One Size", price: 680, in_stock: true, sku: "INDIA-GL" }
+    ],
+    price_min: 680,
+    price_max: 680,
+    processing_time_note: "Processing time: 7–10 business days",
+    description_long: "<p>The INDIA glueless wig showcases luxurious texture and natural movement. Designed for those who want premium quality with easy application.</p><ul><li>Natural-looking texture and shine</li><li>Secure glueless fit system</li><li>Pre-plucked and pre-styled</li><li>Versatile for any occasion</li></ul>"
+  },
+  {
+    id: "p104",
+    slug: "londyn-glueless-wig",
+    title: "LONDYN — Golden Spice",
+    category: "Extensions",
+    short_description: "Stunning golden spice tones in a glueless wig. Bold and beautiful.",
+    images: ["/lovable-uploads/londyn-golden-spice.webp"],
+    variants: [
+      { length: "One Size", price: 740, in_stock: true, sku: "LONDYN-GS" }
+    ],
+    price_min: 740,
+    price_max: 740,
+    processing_time_note: "Processing time: 7–10 business days",
+    description_long: "<p>The LONDYN Golden Spice glueless wig features warm, dimensional tones for a sun-kissed look. Premium quality with easy glueless application.</p><ul><li>Rich golden spice color blend</li><li>Glueless construction for easy wear</li><li>Secure adjustable fit</li><li>Heat-friendly for custom styling</li></ul>"
+  },
+  {
+    id: "p105",
+    slug: "nevaeh-glueless-wig",
+    title: "NEVAEH — Limited Edition",
+    category: "Extensions",
+    short_description: "Limited edition glueless wig with premium finish. Exclusive design.",
+    images: ["/lovable-uploads/nevaeh-limited-edition.webp"],
+    variants: [
+      { length: "One Size", price: 640, in_stock: true, sku: "NEVAEH-LE" }
+    ],
+    price_min: 640,
+    price_max: 640,
+    processing_time_note: "Processing time: 7–10 business days",
+    description_long: "<p>The NEVAEH Limited Edition glueless wig offers exclusive styling with premium materials. Easy wear-and-go design with a natural, undetectable hairline.</p><ul><li>Limited edition exclusive release</li><li>Natural undetectable hairline</li><li>Glueless secure-fit design</li><li>Premium human hair quality</li></ul>"
+  }
 ];
 
 export const formatPrice = (price: number): string => {

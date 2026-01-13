@@ -33,22 +33,14 @@ interface BookingEmailRequest {
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  console.log("[SEND-BOOKING-EMAIL] Function invoked");
-  console.log("[SEND-BOOKING-EMAIL] Request method:", req.method);
-  
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const rawBody = await req.text();
-    console.log("[SEND-BOOKING-EMAIL] Raw request body:", rawBody);
-    
-    const bookingData: BookingEmailRequest = JSON.parse(rawBody);
-    console.log("[SEND-BOOKING-EMAIL] Parsed data - Type:", bookingData.emailType, "ID:", bookingData.bookingId);
-    console.log("[SEND-BOOKING-EMAIL] Customer email:", bookingData.customerEmail);
-    console.log("[SEND-BOOKING-EMAIL] RESEND_API_KEY configured:", !!Deno.env.get("RESEND_API_KEY"));
+    const bookingData: BookingEmailRequest = await req.json();
+    console.log("Processing booking email, type:", bookingData.emailType, "ID:", bookingData.bookingId);
 
     const paymentTypeText = 
       bookingData.paymentType === "deposit" ? "£20 Deposit Paid" :
@@ -65,7 +57,7 @@ const handler = async (req: Request): Promise<Response> => {
       // Email to customer
       emailPromises.push(
         resend.emails.send({
-          from: "Sahiya Slays <contact@sahiyaslays.com>",
+          from: "Sahiya Slays <onboarding@resend.dev>",
           to: bookingData.customerEmail,
           subject: "Booking Request Received - Awaiting Confirmation",
           html: `
@@ -117,7 +109,7 @@ const handler = async (req: Request): Promise<Response> => {
       // Email to admin
       emailPromises.push(
         resend.emails.send({
-          from: "Sahiya Slays Bookings <contact@sahiyaslays.com>",
+          from: "Sahiya Slays Bookings <onboarding@resend.dev>",
           to: "sahiyaslays@gmail.com",
           subject: `🔔 NEW BOOKING REQUEST - ${bookingData.customerName}`,
           html: `
@@ -164,12 +156,11 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // CONFIRMATION EMAIL - Send to customer AND admin
+    // CONFIRMATION EMAIL - Send to customer
     if (bookingData.emailType === 'confirmation') {
-      // Email to customer
       emailPromises.push(
         resend.emails.send({
-          from: "Sahiya Slays <contact@sahiyaslays.com>",
+          from: "Sahiya Slays <onboarding@resend.dev>",
           to: bookingData.customerEmail,
           subject: "✅ Booking Confirmed - We Look Forward to Seeing You!",
           html: `
@@ -196,7 +187,7 @@ const handler = async (req: Request): Promise<Response> => {
                 <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0; border-radius: 5px;">
                   <h3 style="margin: 0 0 10px 0; color: #000;">Your Services</h3>
                   ${servicesHtml}
-                  <p style="margin: 15px 0 5px 0;"><strong>Total Amount:</strong> £${typeof bookingData.totalAmount === 'number' ? bookingData.totalAmount.toFixed(2) : bookingData.totalAmount}</p>
+                  <p style="margin: 15px 0 5px 0;"><strong>Total Amount:</strong> £${bookingData.totalAmount.toFixed(2)}</p>
                   <p style="margin: 5px 0;"><strong>Payment:</strong> ${paymentTypeText}</p>
                 </div>
 
@@ -223,62 +214,13 @@ const handler = async (req: Request): Promise<Response> => {
           `,
         })
       );
-
-      // Email to admin - notify of confirmed booking
-      emailPromises.push(
-        resend.emails.send({
-          from: "Sahiya Slays Bookings <contact@sahiyaslays.com>",
-          to: "sahiyaslays@gmail.com",
-          subject: `✅ BOOKING CONFIRMED & PAID - ${bookingData.customerName}`,
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <div style="background-color: #4caf50; color: #fff; padding: 20px;">
-                <h1 style="margin: 0;">✅ Booking Confirmed & Paid</h1>
-              </div>
-              
-              <div style="padding: 30px 20px;">
-                <div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 20px 0;">
-                  <p style="margin: 0; color: #2e7d32; font-weight: bold;">Payment received - Booking auto-confirmed!</p>
-                </div>
-
-                <div style="background-color: #e3f2fd; border-left: 4px solid #2196F3; padding: 15px; margin: 20px 0;">
-                  <h3 style="margin: 0 0 10px 0; color: #000; font-size: 16px;">👤 Customer Information</h3>
-                  <p style="margin: 5px 0;"><strong>Name:</strong> ${bookingData.customerName}</p>
-                  <p style="margin: 5px 0;"><strong>Email:</strong> ${bookingData.customerEmail}</p>
-                  <p style="margin: 5px 0;"><strong>Phone:</strong> ${bookingData.customerPhone}</p>
-                </div>
-
-                <div style="background-color: #fff3cd; border-left: 4px solid #D4AF37; padding: 15px; margin: 20px 0;">
-                  <h3 style="margin: 0 0 10px 0; color: #000; font-size: 16px;">📅 Appointment Details</h3>
-                  <p style="margin: 5px 0;"><strong>Date:</strong> ${bookingData.bookingDate}</p>
-                  <p style="margin: 5px 0;"><strong>Time:</strong> ${bookingData.bookingTime}</p>
-                </div>
-
-                <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0; border-radius: 5px;">
-                  <h3 style="margin: 0 0 10px 0; color: #000;">Services</h3>
-                  ${servicesHtml}
-                  <p style="margin: 15px 0 5px 0;"><strong>Total:</strong> £${typeof bookingData.totalAmount === 'number' ? bookingData.totalAmount.toFixed(2) : bookingData.totalAmount}</p>
-                  <p style="margin: 5px 0;"><strong>Payment:</strong> ${paymentTypeText}</p>
-                </div>
-
-                ${bookingData.specialRequests ? `
-                <div style="background-color: #fff9e6; border-left: 4px solid #FFC107; padding: 15px; margin: 20px 0;">
-                  <h3 style="margin: 0 0 10px 0; color: #000; font-size: 16px;">📝 Customer Notes</h3>
-                  <p style="margin: 5px 0;">${bookingData.specialRequests}</p>
-                </div>
-                ` : ''}
-              </div>
-            </div>
-          `,
-        })
-      );
     }
 
     // REJECTION EMAIL - Send to customer
     if (bookingData.emailType === 'rejection') {
       emailPromises.push(
         resend.emails.send({
-          from: "Sahiya Slays <contact@sahiyaslays.com>",
+          from: "Sahiya Slays <onboarding@resend.dev>",
           to: bookingData.customerEmail,
           subject: "Booking Update - Unable to Confirm",
           html: `
@@ -322,24 +264,13 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    console.log("[SEND-BOOKING-EMAIL] Sending", emailPromises.length, "email(s)...");
-    
     const results = await Promise.all(emailPromises);
-    console.log("[SEND-BOOKING-EMAIL] Resend API responses:", JSON.stringify(results));
-    
-    // Check for any errors in results
-    const errors = results.filter((r: any) => r.error);
-    if (errors.length > 0) {
-      console.error("[SEND-BOOKING-EMAIL] Some emails failed:", JSON.stringify(errors));
-    } else {
-      console.log("[SEND-BOOKING-EMAIL] All emails sent successfully!");
-    }
+    console.log("Booking emails sent:", results);
 
     return new Response(
       JSON.stringify({
         success: true,
         results,
-        emailCount: emailPromises.length,
       }),
       {
         status: 200,
@@ -350,9 +281,8 @@ const handler = async (req: Request): Promise<Response> => {
       }
     );
   } catch (error: any) {
-    console.error("[SEND-BOOKING-EMAIL] Error:", error.message);
-    console.error("[SEND-BOOKING-EMAIL] Stack:", error.stack);
-    return new Response(JSON.stringify({ error: error.message, stack: error.stack }), {
+    console.error("Error in send-booking-email function:", error);
+    return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { "Content-Type": "application/json", ...corsHeaders },
     });

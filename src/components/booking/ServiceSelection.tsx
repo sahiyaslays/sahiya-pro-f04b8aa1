@@ -4,7 +4,7 @@ import { services, serviceCategories } from '@/data/bookingData';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Minus, Clock, AlertTriangle, Sparkles, Star } from 'lucide-react';
+import { Plus, Minus, Clock, AlertTriangle, Scissors, Palette, Heart, Sparkles, Hand, MoreHorizontal } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface ServiceSelectionProps {
@@ -12,38 +12,6 @@ interface ServiceSelectionProps {
   onUpdate: (data: Partial<BookingData>) => void;
   onNext: () => void;
 }
-
-// Popular service combinations
-const popularCombos = [
-  {
-    id: 'cut-colour',
-    name: 'Cut & Colour',
-    emoji: '✂️🎨',
-    description: 'Full colour with a fresh cut & blow dry',
-    serviceIds: ['full-head-colour', 'ladies-cut-blow'],
-  },
-  {
-    id: 'highlight-treatment',
-    name: 'Highlight & Treat',
-    emoji: '✨💆‍♀️',
-    description: 'Half highlights with scalp treatment & blow dry',
-    serviceIds: ['half-highlight', 'scalp-treatment', 'shampoo-blow-dry'],
-  },
-  {
-    id: 'pamper-package',
-    name: 'Pamper Package',
-    emoji: '💅💇‍♀️',
-    description: 'Blow dry with gel manicure - perfect self-care day',
-    serviceIds: ['shampoo-blow-dry', 'gel-manicure'],
-  },
-  {
-    id: 'glam-ready',
-    name: 'Glam Ready',
-    emoji: '💄👰',
-    description: 'Make up with hair set upstyle',
-    serviceIds: ['makeup', 'hair-set'],
-  },
-];
 
 export function ServiceSelection({ bookingData, onUpdate, onNext }: ServiceSelectionProps) {
   const [selectedServices, setSelectedServices] = useState<SelectedService[]>(bookingData.services || []);
@@ -91,41 +59,8 @@ export function ServiceSelection({ bookingData, onUpdate, onNext }: ServiceSelec
     }
   };
 
-  const handleAddCombo = (combo: typeof popularCombos[0]) => {
-    const comboServices = combo.serviceIds
-      .map(id => services.find(s => s.id === id))
-      .filter((s): s is Service => s !== undefined);
-    
-    setSelectedServices(prev => {
-      const newServices = [...prev];
-      comboServices.forEach(service => {
-        const existing = newServices.find(s => s.id === service.id);
-        if (existing) {
-          existing.quantity += 1;
-        } else {
-          newServices.push({ ...service, quantity: 1 });
-        }
-      });
-      return newServices;
-    });
-  };
-
   const getServiceQuantity = (serviceId: string) => {
     return selectedServices.find(s => s.id === serviceId)?.quantity || 0;
-  };
-
-  const getComboPrice = (combo: typeof popularCombos[0]) => {
-    const comboServices = combo.serviceIds
-      .map(id => services.find(s => s.id === id))
-      .filter((s): s is Service => s !== undefined);
-    return comboServices.map(s => s.price).join(' + ');
-  };
-
-  const getComboTotalDuration = (combo: typeof popularCombos[0]) => {
-    const comboServices = combo.serviceIds
-      .map(id => services.find(s => s.id === id))
-      .filter((s): s is Service => s !== undefined);
-    return comboServices.reduce((total, s) => total + s.duration, 0);
   };
 
   const hasColouringService = selectedServices.some(s => s.category === 'Colouring');
@@ -162,51 +97,8 @@ export function ServiceSelection({ bookingData, onUpdate, onNext }: ServiceSelec
           Choose Your Services
         </h2>
         <p className="text-muted-foreground tracking-wide">
-          Select a package below or browse categories
+          Select a category below to browse available services
         </p>
-      </div>
-
-      {/* Popular Combos Section */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-center gap-2">
-          <Star className="h-5 w-5 text-primary fill-primary" />
-          <h3 className="text-lg font-medium tracking-wide uppercase text-center">Popular Packages</h3>
-          <Star className="h-5 w-5 text-primary fill-primary" />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {popularCombos.map((combo) => (
-            <Card 
-              key={combo.id} 
-              className="relative overflow-hidden transition-all duration-300 hover:shadow-lg border-primary/20 hover:border-primary/40 bg-gradient-to-br from-primary/5 to-transparent"
-            >
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xl">{combo.emoji}</span>
-                      <h4 className="font-semibold tracking-wide text-foreground">{combo.name}</h4>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-2">{combo.description}</p>
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {formatDuration(getComboTotalDuration(combo))}
-                      </div>
-                    </div>
-                  </div>
-                  <Button
-                    size="sm"
-                    onClick={() => handleAddCombo(combo)}
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 shrink-0"
-                  >
-                    <Plus className="h-4 w-4 mr-1" />
-                    Add
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
       </div>
 
       {/* Warning for colour services */}
