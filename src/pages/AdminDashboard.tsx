@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import AdminSidebar from '@/components/AdminSidebar';
 import {
   Table,
@@ -12,16 +13,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Loader2, Calendar, ShoppingBag, TrendingUp, Users, Scissors, Package } from 'lucide-react';
+import { 
+  Loader2, 
+  Calendar, 
+  ShoppingBag, 
+  TrendingUp, 
+  Scissors, 
+  Package,
+  Plus,
+  ArrowRight,
+  AlertCircle
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 
@@ -68,71 +70,45 @@ interface Product {
 }
 
 export default function AdminDashboard() {
-  const { user, signOut, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  // Filters
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [dateFrom, setDateFrom] = useState<string>('');
-  const [dateTo, setDateTo] = useState<string>('');
 
   useEffect(() => {
     if (!authLoading && !user) {
       navigate('/auth');
-    } else if (user && user.email?.toLowerCase() !== 'sahiyaslays@gmail.com') {
+    } else if (!authLoading && user && !isAdmin) {
       toast.error('Access denied. Admin only.');
       navigate('/user-dashboard');
-    } else if (user) {
-      setIsAdmin(true);
+    } else if (!authLoading && user && isAdmin) {
       fetchAdminData();
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, navigate, isAdmin]);
 
   const fetchAdminData = async () => {
     try {
       setLoading(true);
 
-      // Fetch all bookings
-      const { data: bookingsData, error: bookingsError } = await supabase
-        .from('bookings')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const [bookingsRes, ordersRes, servicesRes, productsRes] = await Promise.all([
+        supabase.from('bookings').select('*').order('created_at', { ascending: false }),
+        supabase.from('orders').select('*').order('created_at', { ascending: false }),
+        supabase.from('services').select('*').order('created_at', { ascending: false }),
+        supabase.from('products').select('*').order('created_at', { ascending: false }),
+      ]);
 
-      if (bookingsError) throw bookingsError;
-      setBookings(bookingsData || []);
+      if (bookingsRes.error) throw bookingsRes.error;
+      if (ordersRes.error) throw ordersRes.error;
+      if (servicesRes.error) throw servicesRes.error;
+      if (productsRes.error) throw productsRes.error;
 
-      // Fetch all orders
-      const { data: ordersData, error: ordersError } = await supabase
-        .from('orders')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (ordersError) throw ordersError;
-      setOrders(ordersData || []);
-
-      // Fetch all services
-      const { data: servicesData, error: servicesError } = await supabase
-        .from('services')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (servicesError) throw servicesError;
-      setServices(servicesData || []);
-
-      // Fetch all products
-      const { data: productsData, error: productsError } = await supabase
-        .from('products')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (productsError) throw productsError;
-      setProducts(productsData || []);
+      setBookings(bookingsRes.data || []);
+      setOrders(ordersRes.data || []);
+      setServices(servicesRes.data || []);
+      setProducts(productsRes.data || []);
     } catch (error: any) {
       console.error('Error fetching admin data:', error);
       toast.error('Failed to load admin data');
@@ -141,23 +117,24 @@ export default function AdminDashboard() {
     }
   };
 
-
   // Calculate stats
   const totalBookings = bookings.length;
   const confirmedBookings = bookings.filter((b) => b.status === 'confirmed').length;
+  const pendingBookings = bookings.filter((b) => b.status === 'pending').length;
   const totalOrders = orders.length;
   const totalRevenue =
     bookings.reduce((sum, b) => sum + Number(b.total_amount), 0) +
     orders.reduce((sum, o) => sum + Number(o.total_amount), 0);
   const activeServices = services.filter((s) => s.active).length;
   const activeProducts = products.filter((p) => p.active).length;
+  const lowStockProducts = products.filter((p) => p.stock_quantity !== null && p.stock_quantity < 5);
 
-  // Filter bookings
-  const filteredBookings = bookings.filter((booking) => {
-    if (statusFilter !== 'all' && booking.status !== statusFilter) return false;
-    if (dateFrom && booking.booking_date < dateFrom) return false;
-    if (dateTo && booking.booking_date > dateTo) return false;
-    return true;
+  // Upcoming bookings (next 7 days)
+  const today = new Date();
+  const next7Days = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const upcomingBookings = bookings.filter(b => {
+    const bookingDate = new Date(b.booking_date);
+    return bookingDate >= today && bookingDate <= next7Days && b.status !== 'cancelled';
   });
 
   if (authLoading || loading || !isAdmin) {
@@ -173,7 +150,73 @@ export default function AdminDashboard() {
       <AdminSidebar />
       
       <div className="flex-1 p-8 overflow-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Dashboard Overview</h1>
+        <div className="flex justify-between items-start mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+            <p className="text-gray-500 mt-1">Welcome back! Here's what's happening.</p>
+          </div>
+          
+          {/* Quick Actions */}
+          <div className="flex gap-3">
+            <Button 
+              onClick={() => navigate('/admin/products')}
+              className="gap-2 bg-primary hover:bg-primary/90 text-black font-semibold"
+            >
+              <Plus className="h-4 w-4" />
+              Add Product
+            </Button>
+            <Button 
+              onClick={() => navigate('/admin/services')}
+              variant="outline"
+              className="gap-2 border-gray-300"
+            >
+              <Plus className="h-4 w-4" />
+              Add Service
+            </Button>
+          </div>
+        </div>
+
+        {/* Alerts */}
+        {(pendingBookings > 0 || lowStockProducts.length > 0) && (
+          <div className="mb-6 space-y-3">
+            {pendingBookings > 0 && (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <AlertCircle className="h-5 w-5 text-yellow-600" />
+                  <span className="text-yellow-800">
+                    <strong>{pendingBookings}</strong> booking{pendingBookings > 1 ? 's' : ''} pending approval
+                  </span>
+                </div>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={() => navigate('/admin/bookings')}
+                  className="border-yellow-300 text-yellow-700 hover:bg-yellow-100"
+                >
+                  Review
+                </Button>
+              </div>
+            )}
+            {lowStockProducts.length > 0 && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <AlertCircle className="h-5 w-5 text-red-600" />
+                  <span className="text-red-800">
+                    <strong>{lowStockProducts.length}</strong> product{lowStockProducts.length > 1 ? 's' : ''} low on stock
+                  </span>
+                </div>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={() => navigate('/admin/products')}
+                  className="border-red-300 text-red-700 hover:bg-red-100"
+                >
+                  Manage
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
         
         {/* Stats Cards */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
@@ -187,7 +230,9 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-gray-900">{totalBookings}</div>
-              <p className="text-xs text-gray-500 mt-1">{confirmedBookings} confirmed</p>
+              <p className="text-xs text-gray-500 mt-1">
+                {confirmedBookings} confirmed • {pendingBookings} pending
+              </p>
             </CardContent>
           </Card>
 
@@ -248,155 +293,109 @@ export default function AdminDashboard() {
 
           <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Total Stock</CardTitle>
-              <Package className="h-4 w-4 text-primary" />
+              <CardTitle className="text-sm font-medium text-gray-600">Upcoming Bookings</CardTitle>
+              <Calendar className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-gray-900">
-                {products.reduce((sum, p) => sum + p.stock_quantity, 0)}
-              </div>
-              <p className="text-xs text-gray-500 mt-1">All products</p>
+              <div className="text-2xl font-bold text-gray-900">{upcomingBookings.length}</div>
+              <p className="text-xs text-gray-500 mt-1">Next 7 days</p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Recent Bookings Table */}
-        <Card className="mb-8 bg-white border-gray-200 shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-gray-900">Recent Bookings</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border border-gray-200">
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-gray-200 hover:bg-gray-50">
-                    <TableHead className="text-gray-700">Customer</TableHead>
-                    <TableHead className="text-gray-700">Services</TableHead>
-                    <TableHead className="text-gray-700">Date & Time</TableHead>
-                    <TableHead className="text-gray-700">Status</TableHead>
-                    <TableHead className="text-gray-700">Payment</TableHead>
-                    <TableHead className="text-right text-gray-700">Amount</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {bookings.slice(0, 10).length === 0 ? (
-                    <TableRow className="border-gray-200">
-                      <TableCell colSpan={6} className="text-center py-8 text-gray-500">
-                        No bookings found
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    bookings.slice(0, 10).map((booking) => (
-                      <TableRow key={booking.id} className="border-gray-200 hover:bg-gray-50">
-                        <TableCell>
-                          <div>
-                            <p className="font-medium text-gray-900">
-                              {booking.guest_name || 'Registered User'}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              {booking.guest_email || 'N/A'}
-                            </p>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-gray-700">
-                          {Array.isArray(booking.services)
-                            ? booking.services.map((s: any) => s.name).join(', ')
-                            : 'N/A'}
-                        </TableCell>
-                        <TableCell className="text-gray-700">
-                          {format(new Date(booking.booking_date), 'MMM dd, yyyy')} at{' '}
-                          {booking.booking_time}
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              booking.status === 'confirmed'
-                                ? 'bg-primary/20 text-primary'
-                                : booking.status === 'pending'
-                                ? 'bg-yellow-100 text-yellow-700'
-                                : 'bg-gray-100 text-gray-600'
-                            }`}
-                          >
-                            {booking.status}
-                          </span>
-                        </TableCell>
-                        <TableCell className="capitalize text-gray-700">{booking.payment_type}</TableCell>
-                        <TableCell className="text-right font-medium text-primary">
-                          £{Number(booking.total_amount).toFixed(2)}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* Recent Bookings */}
+          <Card className="bg-white border-gray-200 shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-gray-900">Recent Bookings</CardTitle>
+              <Link to="/admin/bookings">
+                <Button variant="ghost" size="sm" className="gap-1 text-gray-600">
+                  View all <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {bookings.slice(0, 5).length === 0 ? (
+                  <p className="text-center py-8 text-gray-500">No bookings yet</p>
+                ) : (
+                  bookings.slice(0, 5).map((booking) => (
+                    <div key={booking.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div>
+                        <p className="font-medium text-gray-900">
+                          {booking.guest_name || 'Registered User'}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {format(new Date(booking.booking_date), 'MMM dd')} at {booking.booking_time}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            booking.status === 'confirmed'
+                              ? 'bg-green-100 text-green-700'
+                              : booking.status === 'pending'
+                              ? 'bg-yellow-100 text-yellow-700'
+                              : 'bg-gray-100 text-gray-600'
+                          }`}
+                        >
+                          {booking.status}
+                        </span>
+                        <p className="text-primary font-medium mt-1">£{Number(booking.total_amount).toFixed(2)}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Recent Orders Table */}
-        <Card className="bg-white border-gray-200 shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-gray-900">Recent Orders</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border border-gray-200">
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-gray-200 hover:bg-gray-50">
-                    <TableHead className="text-gray-700">Order ID</TableHead>
-                    <TableHead className="text-gray-700">Customer</TableHead>
-                    <TableHead className="text-gray-700">Items</TableHead>
-                    <TableHead className="text-gray-700">Date</TableHead>
-                    <TableHead className="text-gray-700">Status</TableHead>
-                    <TableHead className="text-right text-gray-700">Amount</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {orders.slice(0, 10).length === 0 ? (
-                    <TableRow className="border-gray-200">
-                      <TableCell colSpan={6} className="text-center py-8 text-gray-500">
-                        No orders found
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    orders.slice(0, 10).map((order) => (
-                      <TableRow key={order.id} className="border-gray-200 hover:bg-gray-50">
-                        <TableCell className="font-mono text-sm text-gray-700">
+          {/* Recent Orders */}
+          <Card className="bg-white border-gray-200 shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-gray-900">Recent Orders</CardTitle>
+              <Link to="/admin/orders">
+                <Button variant="ghost" size="sm" className="gap-1 text-gray-600">
+                  View all <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {orders.slice(0, 5).length === 0 ? (
+                  <p className="text-center py-8 text-gray-500">No orders yet</p>
+                ) : (
+                  orders.slice(0, 5).map((order) => (
+                    <div key={order.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div>
+                        <p className="font-medium text-gray-900 font-mono text-sm">
                           #{order.id.slice(0, 8)}
-                        </TableCell>
-                        <TableCell className="text-gray-700">{order.guest_email || 'Registered User'}</TableCell>
-                        <TableCell className="text-gray-700">
-                          {Array.isArray(order.items)
-                            ? order.items.length + ' item(s)'
-                            : 'N/A'}
-                        </TableCell>
-                        <TableCell className="text-gray-700">
+                        </p>
+                        <p className="text-sm text-gray-500">
                           {format(new Date(order.created_at), 'MMM dd, yyyy')}
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              order.status === 'completed'
-                                ? 'bg-primary/20 text-primary'
-                                : order.status === 'pending'
-                                ? 'bg-yellow-100 text-yellow-700'
-                                : 'bg-gray-100 text-gray-600'
-                            }`}
-                          >
-                            {order.status}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-right font-medium text-primary">
-                          £{Number(order.total_amount).toFixed(2)}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            order.status === 'completed'
+                              ? 'bg-green-100 text-green-700'
+                              : order.status === 'pending'
+                              ? 'bg-yellow-100 text-yellow-700'
+                              : 'bg-gray-100 text-gray-600'
+                          }`}
+                        >
+                          {order.status}
+                        </span>
+                        <p className="text-primary font-medium mt-1">£{Number(order.total_amount).toFixed(2)}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

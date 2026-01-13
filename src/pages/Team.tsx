@@ -3,60 +3,56 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { EditableText } from "@/components/EditableText";
+import SEO from "@/components/SEO";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 const Team = () => {
   const teamMembers = [
     {
       id: 1,
       name: "Sahiya",
-      role: "Founder & CEO",
-      image: "/lovable-uploads/f0976d91-79f6-4699-b301-2ad6b3b93aab.png"
+      role: "Master Stylist / Owner",
+      image: "/lovable-uploads/sahiya-new-2.jpeg"
     },
     {
       id: 2,
-      name: "Zara Williams",
-      role: "Senior Stylist & Colorist",
-      image: "/lovable-uploads/88122a6d-de54-49bc-b338-283e59c66061.png"
+      name: "Shelese",
+      role: "Nail Technician",
+      image: "/lovable-uploads/shelese-nail-tech.jpeg"
     },
     {
       id: 3,
-      name: "Isla",
-      role: "Social Media & Admin",
-      image: "/lovable-uploads/7ce2fdd8-9a67-425e-822c-1ca15d355af9.png"
+      name: "Hiba",
+      role: "Braids Specialist",
+      image: "/lovable-uploads/hiba-new.jpeg"
     },
     {
       id: 4,
-      name: "Archie",
-      role: "Senior Stylist",
-      image: "/lovable-uploads/archie-updated.png"
-    },
-    {
-      id: 5,
-      name: "Florence",
-      role: "Acrylic/ design nail tech",
-      image: "/lovable-uploads/019f7acf-1146-41d6-8444-31ad109929bc.png"
-    },
-    {
-      id: 6,
-      name: "Ryan",
-      role: "Senior Hair Stylist",
-      image: "/lovable-uploads/090793d1-fe57-4a91-9ace-d9fd511c322d.png"
-    },
-    {
-      id: 7,
-      name: "Hassan Manzoor",
-      role: "Web Designer",
-      image: "/src/assets/hassan-manzoor.jpg"
+      name: "Sarah",
+      role: "Senior Stylist - Loc Specialist",
+      image: "/lovable-uploads/hiba-braids-specialist.jpeg"
     }
   ];
 
   return (
     <div className="min-h-screen bg-background font-abel">
+      <SEO 
+        title="Meet Our Team | Hair Stylists & Beauty Experts | Sahiya Slays London"
+        description="Meet our talented team of hair stylists, nail technicians & beauty experts at Sahiya Slays, East London. Specialists in textured hair, braids, and nails."
+        canonical="/team"
+        ogType="article"
+        keywords="hair stylists London, beauty experts East London, textured hair specialists, braids specialist"
+      />
       <Header />
       
       {/* Hero Section */}
       <section className="h-[34vh] md:h-[40vh] bg-white flex items-center justify-center px-4 pt-20">
         <div className="text-center max-w-4xl mx-auto">
+          {/* Breadcrumbs */}
+          <div className="mb-4">
+            <Breadcrumbs />
+          </div>
+          
           {/* Brand tagline */}
           <div className="text-primary text-xs md:text-sm tracking-widest mb-4 uppercase">
             <EditableText id="team-page-label">SS • HAIR • BEAUTY • NAILS</EditableText>
@@ -90,26 +86,29 @@ const Team = () => {
           {/* Team Grid - 3 columns desktop, 2 tablet, 1 mobile */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {teamMembers.map((member) => (
-              <div key={member.id} className="group text-center">
+              <article key={member.id} className="group text-center">
                 {/* Team Member Image - Smaller circular style */}
                 <div className="aspect-square max-w-[220px] mx-auto mb-3 overflow-hidden rounded-full">
                   <img 
                     src={member.image}
-                    alt={`${member.name} - ${member.role} at Sahiya Slays`}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    alt={`${member.name} - ${member.role} at Sahiya Slays hair salon London`}
+                    className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${member.name === "Hiba" ? "scale-150 object-[center_25%]" : "object-top"}`}
+                    loading="lazy"
+                    width="220"
+                    height="220"
                   />
                 </div>
                 
                 {/* Member Info */}
                 <div className="text-center">
-                  <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-wide text-foreground">
+                  <h2 className="text-xl md:text-2xl font-bold mb-2 tracking-wide text-foreground">
                     {member.name}
-                  </h3>
+                  </h2>
                   <p className="text-base text-muted-foreground font-light tracking-wide">
                     {member.role}
                   </p>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
 

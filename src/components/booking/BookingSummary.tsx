@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
-import { Edit3 } from 'lucide-react';
+import { Edit3, Plus } from 'lucide-react';
 
 interface BookingSummaryProps {
   bookingData: BookingData;
@@ -61,6 +61,15 @@ export function BookingSummary({ bookingData, onEditStep, className }: BookingSu
                 </div>
               </div>
             ))}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onEditStep(1)}
+              className="w-full mt-2 border-dashed border-primary/50 text-primary hover:bg-primary/5 hover:border-primary"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add More Services
+            </Button>
             <Separator />
           </div>
         )}
