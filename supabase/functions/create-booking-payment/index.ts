@@ -109,9 +109,8 @@ serve(async (req) => {
       throw new Error("Total amount mismatch");
     }
     
-    // Handle free bookings (only when full payment AND total is 0)
-    // If deposit is selected, we always charge £20 regardless of service cost
-    if (bookingData.totalAmount === 0 && bookingData.paymentType === "full") {
+    // Handle free bookings (e.g., consultations)
+    if (bookingData.totalAmount === 0) {
       // Create booking record without payment
       const { data: booking, error: bookingError } = await supabaseClient
         .from("bookings")
