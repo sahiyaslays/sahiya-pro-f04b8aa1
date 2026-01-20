@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import DOMPurify from 'dompurify';
 import Header from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/shop/ProductCard';
@@ -19,14 +18,6 @@ import { useToast } from '@/hooks/use-toast';
 import { EditableText } from '@/components/EditableText';
 import { EditableVariants } from '@/components/shop/EditableVariants';
 import { useEditMode } from '@/contexts/EditModeContext';
-
-// Configure DOMPurify for safe HTML rendering
-const sanitizeHTML = (html: string): string => {
-  return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'h3', 'h4', 'span', 'b', 'i'],
-    ALLOWED_ATTR: ['class'],
-  });
-};
 export default function ProductDetail() {
   const {
     slug
@@ -116,7 +107,7 @@ export default function ProductDetail() {
       <Helmet>
         <title>{product.title} | Sahiya Slays</title>
         <meta name="description" content={product.short_description} />
-        <link rel="canonical" href={`/shop/${product.slug}`} />
+        <link rel="canonical" href={`/product/${product.slug}`} />
         <meta property="og:title" content={`${product.title} | Sahiya Slays`} />
         <meta property="og:description" content={product.short_description} />
         <meta property="og:image" content={product.images[0]} />
@@ -359,19 +350,12 @@ export default function ProductDetail() {
                 
                 <TabsContent value="description" className="mt-6">
                   <div className="prose prose-sm max-w-none">
-                    {isEditMode ? (
-                      <EditableText 
-                        id={`product-detail-description-${product.id}`}
-                        className="prose prose-sm max-w-none"
-                      >
-                        {product.description_long}
-                      </EditableText>
-                    ) : (
-                      <div 
-                        dangerouslySetInnerHTML={{ __html: sanitizeHTML(product.description_long) }}
-                        className="[&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mb-2 [&_strong]:font-semibold"
-                      />
-                    )}
+                    <EditableText 
+                      id={`product-detail-description-${product.id}`}
+                      className="prose prose-sm max-w-none"
+                    >
+                      {product.description_long}
+                    </EditableText>
                   </div>
                 </TabsContent>
                 

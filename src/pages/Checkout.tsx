@@ -44,7 +44,7 @@ export default function Checkout() {
     address: '',
     city: '',
     postcode: '',
-    country: 'United Kingdom',
+    country: '',
     paymentMethod: 'card',
     agreeToTerms: false,
   });
@@ -59,7 +59,7 @@ export default function Checkout() {
 
   const isFormValid = () => {
     const requiredFields: (keyof CheckoutFormData)[] = [
-      'email', 'firstName', 'lastName', 'phone', 'address', 'city', 'postcode'
+      'email', 'firstName', 'lastName', 'phone', 'address', 'city', 'postcode', 'country'
     ];
     
     return requiredFields.every(field => formData[field]?.toString().trim()) && 
@@ -354,7 +354,7 @@ export default function Checkout() {
                           />
                         </div>
                         
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div>
                             <Label htmlFor="city">City *</Label>
                             <Input
@@ -372,6 +372,24 @@ export default function Checkout() {
                               onChange={(e) => updateFormData('postcode', e.target.value)}
                               required
                             />
+                          </div>
+                          <div>
+                            <Label htmlFor="country">Country *</Label>
+                            <Select 
+                              value={formData.country}
+                              onValueChange={(value) => updateFormData('country', value)}
+                            >
+                              <SelectTrigger id="country">
+                                <SelectValue placeholder="Select country" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {COUNTRIES.map(country => (
+                                  <SelectItem key={country} value={country}>
+                                    {country}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                           </div>
                         </div>
                       </CardContent>
@@ -529,7 +547,7 @@ export default function Checkout() {
                         ) : (
                           <Button
                             type="submit"
-                            className={`w-full py-3 text-lg ${!isFormValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className="w-full py-3 text-lg"
                             disabled={!isFormValid() || isProcessing}
                           >
                             {isProcessing 
@@ -538,12 +556,6 @@ export default function Checkout() {
                                 ? 'Continue to Payment' 
                                 : 'Place Order'}
                           </Button>
-                        )}
-                        
-                        {!isFormValid() && (
-                          <p className="text-xs text-destructive text-center mt-2">
-                            Please fill in all required fields including country
-                          </p>
                         )}
 
                         {/* Trust Badges */}

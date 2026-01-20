@@ -16,7 +16,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <div className="group relative bg-card rounded-lg border shadow-sm hover:shadow-elegant transition-shadow duration-300 h-full flex flex-col">
-      <Link to={`/shop/${product.slug}`} className="block">
+      <Link to={`/product/${product.slug}`} className="block">
         <div className="relative overflow-hidden rounded-t-lg group-hover:scale-[1.02] transition-transform duration-300">
           <ProductImage
             src={imageUrl}
@@ -33,7 +33,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       </Link>
       
       <div className="p-4 space-y-3 flex-1 flex flex-col">
-        <Link to={`/shop/${product.slug}`}>
+        <Link to={`/product/${product.slug}`}>
           <h3 className="font-semibold text-sm line-clamp-2 hover:text-primary transition-colors min-h-[2.5rem] flex-shrink-0">
             <EditableText 
               id={`product-title-${product.id}`}
@@ -56,7 +56,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         </div>
         
         <div className="mt-auto">
-          <Link to={`/shop/${product.slug}`}>
+          <Link to={`/product/${product.slug}`}>
             <Button variant="outline" className="w-full" size="sm">
               Select options
             </Button>

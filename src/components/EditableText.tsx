@@ -15,37 +15,27 @@ export const EditableText: React.FC<EditableTextProps> = ({
   className,
   as: Component = 'span'
 }) => {
-  const { isEditMode, editedContent, updateContent, highlightMode } = useEditMode();
+  const { isEditMode, editedContent, updateContent } = useEditMode();
   const [isEditing, setIsEditing] = useState(false);
   const [tempContent, setTempContent] = useState('');
-  const [mounted, setMounted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  // SSR-safe: mark as mounted on client
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Get current content from edited state, localStorage, or original children
   const getInitialContent = () => {
     if (editedContent[id]) return editedContent[id];
     
-    // Only check localStorage on client side
-    if (typeof window !== 'undefined') {
-      const savedContent = localStorage.getItem('editableContent');
-      if (savedContent) {
-        const parsed = JSON.parse(savedContent);
-        if (parsed[id]) return parsed[id];
-      }
+    // Check localStorage for persisted content
+    const savedContent = localStorage.getItem('editableContent');
+    if (savedContent) {
+      const parsed = JSON.parse(savedContent);
+      if (parsed[id]) return parsed[id];
     }
     
     return typeof children === 'string' ? children : '';
   };
 
-  // During SSR, always use children; on client, use getInitialContent
-  const childrenString = typeof children === 'string' ? children : '';
-  const currentContent = mounted ? getInitialContent() : childrenString;
+  const currentContent = getInitialContent();
   const isMultiline = currentContent.length > 50 || currentContent.includes('\n');
 
   useEffect(() => {
@@ -124,8 +114,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
       data-edit-id={id}
       className={cn(
         className,
-        isEditMode && "cursor-pointer hover:bg-primary/10 hover:outline hover:outline-2 hover:outline-primary/30 rounded transition-all duration-200",
-        highlightMode && !isEditMode && "outline outline-2 outline-primary/50 bg-primary/5 rounded animate-pulse shadow-lg shadow-primary/20"
+        isEditMode && "cursor-pointer hover:bg-primary/10 hover:outline hover:outline-2 hover:outline-primary/30 rounded transition-all duration-200"
       )}
       onClick={handleClick}
     >

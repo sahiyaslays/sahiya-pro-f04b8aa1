@@ -1,36 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Edit3, Save, X, History, Eye, EyeOff } from 'lucide-react';
+import React from 'react';
+import { Edit3, Save, X, History } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEditMode } from '@/contexts/EditModeContext';
 import { HistoryPanel } from '@/components/HistoryPanel';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/contexts/AuthContext';
 
-// Wrapper component that handles SSR safety
 export const EditModeButton: React.FC = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Don't render during SSR
-  if (!mounted) {
-    return null;
-  }
-
-  return <EditModeButtonContent />;
-};
-
-// Inner component that safely uses hooks after mount
-const EditModeButtonContent: React.FC = () => {
-  const { isEditMode, toggleEditMode, saveChanges, hasChanges, toggleHistory, showHistory, highlightMode, toggleHighlightMode } = useEditMode();
-  const { user } = useAuth();
-  
-  // Only show for admin user
-  if (!user || user.email !== 'sahiyaslays@gmail.com') {
-    return null;
-  }
+  const { isEditMode, toggleEditMode, saveChanges, hasChanges, toggleHistory, showHistory } = useEditMode();
 
   return (
     <>
@@ -51,25 +27,6 @@ const EditModeButtonContent: React.FC = () => {
             <X className="h-5 w-5" />
           ) : (
             <Edit3 className="h-5 w-5" />
-          )}
-        </Button>
-
-        {/* Highlight Mode Button */}
-        <Button
-          onClick={toggleHighlightMode}
-          size="icon"
-          variant={highlightMode ? "default" : "outline"}
-          className={cn(
-            "h-10 w-10 rounded-full shadow-lg transition-all duration-300",
-            highlightMode 
-              ? "bg-primary hover:bg-primary/90" 
-              : "bg-background hover:bg-accent"
-          )}
-        >
-          {highlightMode ? (
-            <Eye className="h-4 w-4" />
-          ) : (
-            <EyeOff className="h-4 w-4" />
           )}
         </Button>
 

@@ -1,138 +1,16 @@
-import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
+import { useParams, useLocation, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
 import Header from '@/components/Header';
 import { formatPrice } from '@/data/shopData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { CheckCircle, Download, MessageCircle, Loader2 } from 'lucide-react';
+import { CheckCircle, Download, MessageCircle } from 'lucide-react';
 
 export default function OrderConfirmation() {
   const { orderId } = useParams<{ orderId: string }>();
   const location = useLocation();
-  const navigate = useNavigate();
-  const [orderData, setOrderData] = useState<any>(location.state?.orderData);
-  const [loading, setLoading] = useState(!location.state?.orderData);
-
-  useEffect(() => {
-    if (orderId && !orderData) {
-      fetchOrderAndSendEmails();
-    } else if (orderId && orderData) {
-      sendEmails(orderId);
-      // Show success toast and redirect
-      toast.success('Order confirmed! Check your email for details.');
-      setTimeout(() => navigate('/', { replace: true }), 5000);
-    }
-  }, [orderId]);
-
-  const fetchOrderAndSendEmails = async () => {
-    if (!orderId) return;
-
-    try {
-      const { data: order, error } = await supabase
-        .from('orders')
-        .select('*')
-        .eq('id', orderId)
-        .single();
-
-      if (error) throw error;
-
-      if (order) {
-        const shippingAddress = order.shipping_address as any;
-        
-        // Convert database format to UI format
-        const formattedData = {
-          email: order.guest_email,
-          items: order.items,
-          total: order.total_amount,
-          firstName: shippingAddress.fullName?.split(' ')[0] || '',
-          lastName: shippingAddress.fullName?.split(' ').slice(1).join(' ') || '',
-          address: shippingAddress.addressLine1,
-          city: shippingAddress.city,
-          postcode: shippingAddress.postcode,
-          country: 'United Kingdom',
-          paymentMethod: 'stripe',
-        };
-
-        setOrderData(formattedData);
-        
-        // Send emails
-        await sendEmails(orderId);
-
-        // Try to create account for guest
-        if (order.guest_email && !order.user_id) {
-          await createGuestAccount(order.guest_email, shippingAddress.fullName || 'Guest');
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching order:', error);
-      toast.error('Failed to load order details');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const sendEmails = async (orderId: string) => {
-    try {
-      await supabase.functions.invoke('send-order-email', {
-        body: { orderId }
-      });
-    } catch (error) {
-      console.error('Email error:', error);
-    }
-  };
-
-  const createGuestAccount = async (email: string, fullName: string) => {
-    try {
-      const randomPassword = Math.random().toString(36).slice(-12) + 'A1!';
-      const names = fullName.split(' ');
-      const firstName = names[0] || '';
-      const lastName = names.slice(1).join(' ') || '';
-
-      const { error } = await supabase.auth.signUp({
-        email,
-        password: randomPassword,
-        options: {
-          emailRedirectTo: `${window.location.origin}/user-dashboard`,
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-            phone: '',
-          },
-        },
-      });
-
-      if (error && !error.message.includes('already registered')) {
-        throw error;
-      }
-
-      console.log('Account created for:', email);
-    } catch (error) {
-      console.error('Account creation error:', error);
-    }
-  };
-
-  if (loading) {
-    return (
-      <>
-        <Helmet>
-          <title>Order Confirmation | Sahiya Slays</title>
-        </Helmet>
-        <div className="min-h-screen bg-background">
-          <Header />
-          <main className="pt-20">
-            <div className="container mx-auto px-4 py-8 text-center">
-              <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-              <p>Loading order details...</p>
-            </div>
-          </main>
-        </div>
-      </>
-    );
-  }
+  const orderData = location.state?.orderData;
 
   if (!orderData) {
     return (

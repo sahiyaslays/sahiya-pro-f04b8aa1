@@ -590,8 +590,7 @@ export const PRODUCTS: Product[] = [
     processing_time_note: "Processing time: 7–10 business days",
     description_long: "<p>Multi-shade golden browns blended through tight curls for a bright, dimensional finish.</p><ul><li>Texture: Defined tight curls; moves naturally</li><li>Construction: Double-wefted for volume; minimal shedding</li><li>Styling: Refresh with spray bottle; seal with lightweight oil</li><li>Care: Co-wash, deep-condition weekly; protect at night</li></ul>",
     related_slugs: ["curly-brown-highlights", "curly-natural-black"]
-  },
-  
+  }
 ];
 
 export const formatPrice = (price: number): string => {
