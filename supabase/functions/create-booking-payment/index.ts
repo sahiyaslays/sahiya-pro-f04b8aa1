@@ -11,7 +11,7 @@ const corsHeaders = {
 const ServiceSchema = z.object({
   id: z.string().max(50),
   name: z.string().min(1).max(200),
-  price: z.number().nonnegative().max(10000), // Allow 0 for free services
+  price: z.number().positive().max(10000),
   duration: z.number().positive().max(600),
 });
 
@@ -21,7 +21,7 @@ const BookingRequestSchema = z.object({
   bookingDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   bookingTime: z.string().regex(/^\d{2}:\d{2}$/),
   totalDuration: z.number().positive().max(600),
-  totalAmount: z.number().nonnegative().max(50000), // Allow 0 for free bookings
+  totalAmount: z.number().positive().max(50000),
   paymentType: z.enum(["deposit", "full"]),
   guestName: z.string().min(1).max(100).optional(),
   guestEmail: z.string().email().max(255).optional(),
@@ -109,44 +109,7 @@ serve(async (req) => {
       throw new Error("Total amount mismatch");
     }
     
-    // Handle free bookings (e.g., consultations)
-    if (bookingData.totalAmount === 0) {
-      // Create booking record without payment
-      const { data: booking, error: bookingError } = await supabaseClient
-        .from("bookings")
-        .insert({
-          user_id: user?.id || null,
-          guest_email: user ? null : bookingData.guestEmail,
-          guest_name: user ? null : bookingData.guestName,
-          guest_phone: user ? null : bookingData.guestPhone,
-          services: bookingData.services,
-          stylist_id: bookingData.stylistId,
-          booking_date: bookingData.bookingDate,
-          booking_time: bookingData.bookingTime,
-          total_duration: bookingData.totalDuration,
-          total_amount: bookingData.totalAmount,
-          payment_type: "full",
-          status: "confirmed", // Auto-confirm free bookings
-          special_requests: bookingData.specialRequests,
-        })
-        .select()
-        .single();
-
-      if (bookingError) {
-        console.error("Booking creation error:", bookingError);
-        throw new Error("Failed to create booking");
-      }
-
-      return new Response(JSON.stringify({ 
-        url: `${req.headers.get("origin")}/booking?success=true&bookingId=${booking.id}`,
-        bookingId: booking.id 
-      }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 200,
-      });
-    }
-    
-    // Calculate payment amount for paid bookings
+    // Calculate payment amount
     const paymentAmount = bookingData.paymentType === "deposit" ? 20 : bookingData.totalAmount;
 
     // Create booking record in database
