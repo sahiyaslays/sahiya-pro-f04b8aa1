@@ -520,9 +520,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'full-tint-semi-permanent-cut-blow',
             name: 'Full Tint Semi-Permanent Colour, Haircut & Blow Dry',
             options: [
-              { label: 'Short', duration: 105, price: 100 },
-              { label: 'Medium', duration: 105, price: 80 },
-              { label: 'Long', duration: 105, price: 70 }
+              { label: 'Short', duration: 105, price: 120 },
+              { label: 'Medium', duration: 105, price: 140 },
+              { label: 'Long', duration: 105, price: 160 }
             ]
           }
         ]
