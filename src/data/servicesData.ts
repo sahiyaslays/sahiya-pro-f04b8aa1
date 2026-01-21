@@ -505,7 +505,11 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'toner-cut-blow-dry',
             name: "Ladies' - Toner with Haircut & Blow Dry",
-            options: [{ label: '1h 30min', duration: 90, price: 75 }]
+            options: [
+              { label: 'Short', duration: 90, price: 125 },
+              { label: 'Medium', duration: 90, price: 135 },
+              { label: 'Long', duration: 90, price: 145 }
+            ]
           },
           {
             id: 'full-tint-permanent-cut-blow',
