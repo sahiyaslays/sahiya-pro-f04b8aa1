@@ -491,7 +491,11 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'toner-blow-dry',
             name: "Ladies' - Toner with Blow Dry",
-            options: [{ label: '1h 30min', duration: 90, price: 70 }]
+            options: [
+              { label: 'Short', duration: 90, price: 115 },
+              { label: 'Medium', duration: 90, price: 125 },
+              { label: 'Long', duration: 90, price: 135 }
+            ]
           },
           {
             id: 'add-on-toner',
