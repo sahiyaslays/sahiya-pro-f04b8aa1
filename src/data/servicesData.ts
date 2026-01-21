@@ -453,9 +453,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'air-touch-balayage-cut-blow',
             name: 'Air Touch Balayage, Cut and Blowdry',
             options: [
-              { label: 'Short', duration: 135, price: 300 },
-              { label: 'Medium', duration: 150, price: 325 },
-              { label: 'Long', duration: 180, price: 350 }
+              { label: 'Short', duration: 135, price: 450 },
+              { label: 'Medium', duration: 150, price: 550 },
+              { label: 'Long', duration: 180, price: 650 }
             ]
           }
         ]
@@ -611,7 +611,7 @@ export const servicesData: ServiceCategory[] = [
             id: 'ghd-curls',
             name: "Ladies' - GHD Curls",
             options: [
-              { label: 'Short', duration: 15, price: 0 },
+              { label: 'Short', duration: 15, price: 25 },
               { label: 'Medium', duration: 30, price: 35 },
               { label: 'Long', duration: 30, price: 45 }
             ]
@@ -750,9 +750,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'afro-relaxer-blowdry-trim',
             name: "Ladies' - Afro Relaxer, Blow dry & Trim",
             options: [
-              { label: 'Short', duration: 30, price: 65 },
-              { label: 'Medium', duration: 30, price: 75 },
-              { label: 'Long', duration: 30, price: 85 }
+              { label: 'Short', duration: 30, price: 145 },
+              { label: 'Medium', duration: 30, price: 150 },
+              { label: 'Long', duration: 30, price: 165 }
             ]
           },
           {
@@ -768,9 +768,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'japanese-straightening',
             name: 'Japanese Straightening',
             options: [
-              { label: 'Short', duration: 180, price: 310 },
-              { label: 'Medium', duration: 15, price: 340 },
-              { label: 'Long', duration: 240, price: 380 }
+              { label: 'Short', duration: 180, price: 450 },
+              { label: 'Medium', duration: 15, price: 550 },
+              { label: 'Long', duration: 240, price: 650 }
             ]
           }
         ]
@@ -813,9 +813,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'hydration-protein-scalp-silk-press',
             name: "Ladies' - Hydration, Protein, Scalp Treatment, Silk Press",
             options: [
-              { label: 'Short', duration: 15, price: 115 },
-              { label: 'Medium', duration: 15, price: 145 },
-              { label: 'Long', duration: 15, price: 165 }
+              { label: 'Short', duration: 15, price: 280 },
+              { label: 'Medium', duration: 15, price: 300 },
+              { label: 'Long', duration: 15, price: 320 }
             ]
           },
           {
