@@ -35,32 +35,32 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'patch-test',
             name: 'Patch Test',
-            options: [{ label: '30 min', duration: 30, price: 10 }]
+            options: [{ label: '30 min', duration: 30, price: 30 }]
           },
           {
             id: 'colour-consultation',
             name: 'Consultation - Colour',
-            options: [{ label: '1 hour', duration: 60, price: 10 }]
+            options: [{ label: '1 hour', duration: 60, price: 30 }]
           },
           {
             id: 'hair-extensions-consultation-coloured',
             name: 'Hair Extensions Consultation - Coloured Hair',
-            options: [{ label: '1 hour', duration: 60, price: 15 }]
+            options: [{ label: '1 hour', duration: 60, price: 35 }]
           },
           {
             id: 'hair-extensions-consultation-cambodian',
             name: 'Hair Extension Consultation - Cambodian Hair',
-            options: [{ label: '1 hour', duration: 60, price: 15 }]
+            options: [{ label: '1 hour', duration: 60, price: 35 }]
           },
           {
             id: 'video-consultation',
             name: 'Video Consultation',
-            options: [{ label: '1 hour', duration: 60, price: 10 }]
+            options: [{ label: '1 hour', duration: 60, price: 30 }]
           },
           {
             id: 'hair-therapy-consultation',
             name: 'Hair Therapy Consultation',
-            options: [{ label: '1 hour', duration: 60, price: 15 }]
+            options: [{ label: '1 hour', duration: 60, price: 35 }]
           }
         ]
       }
