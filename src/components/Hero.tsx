@@ -83,7 +83,7 @@ const Hero = () => {
               href="tel:07943115966"
               className="text-primary hover:text-white transition-colors duration-300 tracking-wide"
             >
-              <EditableText id="phone-number">07943 115966</EditableText>
+              <EditableText id="phone-number">07809 441074</EditableText>
             </a>
             <a 
               href="mailto:contact@sahiyaslays.com"
