@@ -833,17 +833,17 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'cornrows-stitch-large',
             name: "Ladies' - Cornrows Stitch Braids (large 4+)",
-            options: [{ label: '1h 30min', duration: 90, price: 35 }]
+            options: [{ label: '1h 30min', duration: 90, price: 65 }]
           },
           {
             id: 'cornrows-stitch-medium',
             name: "Ladies' - Cornrows Stitch Braids (medium 8+)",
-            options: [{ label: '1h 30min', duration: 90, price: 45 }]
+            options: [{ label: '1h 30min', duration: 90, price: 75 }]
           },
           {
             id: 'cornrows-stitch-small',
             name: "Ladies' - Cornrows Stitch Braids (small 10+)",
-            options: [{ label: '1h 30min', duration: 90, price: 55 }]
+            options: [{ label: '1h 30min', duration: 90, price: 85 }]
           }
         ]
       },
@@ -896,9 +896,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'freestyle-cornrows',
             name: "Ladies' - Freestyle Cornrows",
             options: [
-              { label: 'Short', duration: 90, price: 65 },
-              { label: 'Medium', duration: 90, price: 75 },
-              { label: 'Long', duration: 90, price: 85 }
+              { label: 'Short', duration: 90, price: 95 },
+              { label: 'Medium', duration: 90, price: 105 },
+              { label: 'Long', duration: 90, price: 115 }
             ]
           }
         ]
@@ -927,9 +927,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'men-stitch-cornrows',
             name: 'Men - Stitch Cornrows Braids',
             options: [
-              { label: 'Extra Short', duration: 90, price: 45 },
-              { label: 'Short', duration: 90, price: 55 },
-              { label: 'Medium', duration: 90, price: 65 }
+              { label: 'Extra Short', duration: 90, price: 75 },
+              { label: 'Short', duration: 90, price: 85 },
+              { label: 'Medium', duration: 90, price: 95 }
             ]
           }
         ]
@@ -975,9 +975,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'children-cornrows',
             name: 'Children - Cornrows',
             options: [
-              { label: 'Short', duration: 30, price: 25 },
-              { label: 'Medium', duration: 30, price: 35 },
-              { label: 'Long', duration: 40, price: 45 }
+              { label: 'Short', duration: 30, price: 55 },
+              { label: 'Medium', duration: 30, price: 65 },
+              { label: 'Long', duration: 40, price: 75 }
             ]
           },
           {
