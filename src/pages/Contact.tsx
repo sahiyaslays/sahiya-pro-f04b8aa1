@@ -105,10 +105,10 @@ const Contact = () => {
               </h3>
               <div className="text-sm leading-relaxed text-muted-foreground space-y-2">
                 <a 
-                  href="tel:07943115966"
+                  href="tel:07809441074"
                   className="block hover:text-primary transition-colors duration-300"
                 >
-                  <EditableText id="contact-phone">07943 115966</EditableText>
+                  <EditableText id="contact-phone">07809 441074</EditableText>
                 </a>
                 <a 
                   href="mailto:contact@sahiyaslays.com"
