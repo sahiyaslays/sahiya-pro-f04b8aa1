@@ -796,7 +796,11 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'trim',
             name: "Ladies' - Trim",
-            options: [{ label: '1h 30min', duration: 90, price: 25 }]
+            options: [
+              { label: 'Short', duration: 90, price: 25 },
+              { label: 'Medium', duration: 90, price: 35 },
+              { label: 'Long', duration: 90, price: 45 }
+            ]
           }
         ]
       },
