@@ -24,10 +24,10 @@ export const Footer = () => {
               CONTACT
             </h4>
             <a 
-              href="tel:07943115966"
+              href="tel:07809441074"
               className="text-sm text-[#EDEDED] hover:text-primary transition-colors duration-300"
             >
-              07943 115966
+              07809 441074
             </a>
           </div>
           
