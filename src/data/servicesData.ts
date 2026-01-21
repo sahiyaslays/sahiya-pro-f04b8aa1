@@ -368,7 +368,7 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'frontal-sew-in',
             name: 'Ladies - Frontal Sew-in',
-            options: [{ label: '3h 30min', duration: 210, price: 0 }]
+            options: [{ label: '3h 30min', duration: 210, price: 195 }]
           }
         ]
       },
