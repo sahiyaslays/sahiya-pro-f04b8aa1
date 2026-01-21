@@ -23,9 +23,10 @@ export interface ServiceSubcategory {
 }
 
 export const servicesData: ServiceCategory[] = [
+  // 1. CONSULTATION/PATCH TEST
   {
-    id: 'patch-test-consultations',
-    title: 'PATCH TEST & CONSULTATIONS',
+    id: 'consultation-patch-test',
+    title: 'CONSULTATION/PATCH TEST',
     subcategories: [
       {
         id: 'consultations',
@@ -65,10 +66,13 @@ export const servicesData: ServiceCategory[] = [
       }
     ]
   },
+
+  // 2. HAIR
   {
-    id: 'hair-extensions-applications',
-    title: 'LADIES - HAIR EXTENSIONS APPLICATIONS ONLY',
+    id: 'hair',
+    title: 'HAIR',
     subcategories: [
+      // Hair Extensions Applications
       {
         id: 'hollywood-weave-application',
         title: 'Hollywood Weave Applications',
@@ -173,13 +177,8 @@ export const servicesData: ServiceCategory[] = [
             options: [{ label: '2h 15min', duration: 135, price: 155 }]
           }
         ]
-      }
-    ]
-  },
-  {
-    id: 'hair-extension-removal-refitting',
-    title: 'HAIR EXTENSION REMOVAL & REFITTING SERVICES',
-    subcategories: [
+      },
+      // Hair Extension Removal & Refitting
       {
         id: 'hollywood-weave-refit',
         title: 'Hollywood Weave Refit',
@@ -335,13 +334,8 @@ export const servicesData: ServiceCategory[] = [
             options: [{ label: '2 hours', duration: 120, price: 50 }]
           }
         ]
-      }
-    ]
-  },
-  {
-    id: 'ladies-extensions-weaves-wigs',
-    title: 'LADIES - HAIR EXTENSIONS, WEAVES & WIGS',
-    subcategories: [
+      },
+      // Hair Extensions, Weaves & Wigs
       {
         id: 'weaves',
         title: 'Weaves',
@@ -398,13 +392,8 @@ export const servicesData: ServiceCategory[] = [
             options: [{ label: '3h 15min', duration: 195, price: 180 }]
           }
         ]
-      }
-    ]
-  },
-  {
-    id: 'hair-colour-treatments',
-    title: 'HAIR COLOUR & TREATMENTS',
-    subcategories: [
+      },
+      // Hair Colour & Treatments
       {
         id: 'highlights',
         title: 'Highlights',
@@ -534,23 +523,7 @@ export const servicesData: ServiceCategory[] = [
           }
         ]
       },
-      {
-        id: 'combo',
-        title: 'Combo',
-        services: [
-          {
-            id: 'hair-nails-combo',
-            name: 'Hair and Nails Combo',
-            options: [{ label: '4 hours', duration: 240, price: 180 }]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'ladies-haircut-hairdressing',
-    title: "LADIES - HAIRCUT & HAIR DRESSING",
-    subcategories: [
+      // Ladies Haircut & Hairdressing
       {
         id: 'wash-cut-blow',
         title: 'Wash, Cut & Blow Dry',
@@ -682,13 +655,8 @@ export const servicesData: ServiceCategory[] = [
             ]
           }
         ]
-      }
-    ]
-  },
-  {
-    id: 'ladies-hair-treatments',
-    title: "LADIES - HAIR TREATMENTS",
-    subcategories: [
+      },
+      // Hair Treatments
       {
         id: 'brazilian-keratin',
         title: 'Brazilian & Keratin Treatments',
@@ -791,15 +759,19 @@ export const servicesData: ServiceCategory[] = [
               { label: 'Medium', duration: 180, price: 345 },
               { label: 'Long', duration: 180, price: 355 }
             ]
+          },
+          {
+            id: 'japanese-straightening',
+            name: 'Japanese Straightening',
+            options: [
+              { label: 'Short', duration: 180, price: 310 },
+              { label: 'Medium', duration: 15, price: 340 },
+              { label: 'Long', duration: 240, price: 380 }
+            ]
           }
         ]
-      }
-    ]
-  },
-  {
-    id: 'silk-press-treatments',
-    title: 'SILK PRESS & TREATMENTS',
-    subcategories: [
+      },
+      // Silk Press & Treatments
       {
         id: 'silk-press',
         title: 'Silk Press',
@@ -852,13 +824,8 @@ export const servicesData: ServiceCategory[] = [
             ]
           }
         ]
-      }
-    ]
-  },
-  {
-    id: 'ladies-braids-cornrows-twists',
-    title: "LADIES' - BRAIDS, CORNROWS & TWISTS",
-    subcategories: [
+      },
+      // Braids, Cornrows & Twists - Ladies
       {
         id: 'cornrows-stitch',
         title: 'Cornrows Stitch Braids',
@@ -935,16 +902,11 @@ export const servicesData: ServiceCategory[] = [
             ]
           }
         ]
-      }
-    ]
-  },
-  {
-    id: 'men-braids-cornrows-twists',
-    title: 'MEN - BRAIDS, CORNROWS & TWISTS',
-    subcategories: [
+      },
+      // Braids, Cornrows & Twists - Men
       {
         id: 'men-afro-braids',
-        title: 'Afro Braids',
+        title: 'Men - Afro Braids',
         services: [
           {
             id: 'men-afro-braids',
@@ -959,7 +921,7 @@ export const servicesData: ServiceCategory[] = [
       },
       {
         id: 'men-stitch-cornrows',
-        title: 'Stitch Cornrows Braids',
+        title: 'Men - Stitch Cornrows Braids',
         services: [
           {
             id: 'men-stitch-cornrows',
@@ -974,7 +936,7 @@ export const servicesData: ServiceCategory[] = [
       },
       {
         id: 'men-twists',
-        title: 'Twists',
+        title: 'Men - Twists',
         services: [
           {
             id: 'men-twists',
@@ -986,13 +948,8 @@ export const servicesData: ServiceCategory[] = [
             ]
           }
         ]
-      }
-    ]
-  },
-  {
-    id: 'children-haircuts-hairdressing',
-    title: 'CHILDREN - HAIRCUTS & HAIR DRESSING',
-    subcategories: [
+      },
+      // Children Haircuts
       {
         id: 'children-cuts',
         title: 'Children Haircuts',
@@ -1008,16 +965,11 @@ export const servicesData: ServiceCategory[] = [
             options: [{ label: '20 min', duration: 20, price: 25 }]
           }
         ]
-      }
-    ]
-  },
-  {
-    id: 'children-braids-cornrows-twists',
-    title: 'CHILDREN - BRAIDS, CORNROWS & TWISTS',
-    subcategories: [
+      },
+      // Children Braids
       {
-        id: 'children-cornrows',
-        title: 'Children Cornrows',
+        id: 'children-braids',
+        title: 'Children Braids, Cornrows & Twists',
         services: [
           {
             id: 'children-cornrows',
@@ -1027,13 +979,7 @@ export const servicesData: ServiceCategory[] = [
               { label: 'Medium', duration: 30, price: 35 },
               { label: 'Long', duration: 40, price: 45 }
             ]
-          }
-        ]
-      },
-      {
-        id: 'children-twists',
-        title: 'Children Twists',
-        services: [
+          },
           {
             id: 'children-twists',
             name: 'Children - Twists',
@@ -1042,13 +988,7 @@ export const servicesData: ServiceCategory[] = [
               { label: 'Medium', duration: 30, price: 35 },
               { label: 'Long', duration: 30, price: 45 }
             ]
-          }
-        ]
-      },
-      {
-        id: 'children-afro-braids',
-        title: 'Children Afro Braids',
-        services: [
+          },
           {
             id: 'children-afro-braids',
             name: 'Children - Afro Braids',
@@ -1059,12 +999,173 @@ export const servicesData: ServiceCategory[] = [
             ]
           }
         ]
+      },
+      // Locs & Interlock
+      {
+        id: 'starter-locs',
+        title: 'Starting / Starter Locs',
+        services: [
+          {
+            id: 'starter-locs',
+            name: 'Starting / Starter Locs',
+            options: [
+              { label: 'Small', duration: 120, price: 0 },
+              { label: 'Medium', duration: 90, price: 0 },
+              { label: 'Large', duration: 60, price: 0 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'retwist-style',
+        title: 'Re-twist & Style',
+        services: [
+          {
+            id: 'retwist-style',
+            name: 'Re-twist & Style',
+            options: [
+              { label: 'Small', duration: 120, price: 0 },
+              { label: 'Medium', duration: 90, price: 0 },
+              { label: 'Large', duration: 75, price: 0 }
+            ]
+          },
+          {
+            id: 'retwist-two-strand',
+            name: 'Re-twist (with two-strand/rope twists)',
+            options: [
+              { label: 'Small', duration: 150, price: 0 },
+              { label: 'Medium', duration: 120, price: 0 },
+              { label: 'Large', duration: 90, price: 0 }
+            ]
+          },
+          {
+            id: 'wash-retwist-style',
+            name: 'Wash, Retwist & Style',
+            options: [
+              { label: 'Small', duration: 150, price: 0 },
+              { label: 'Medium', duration: 120, price: 0 },
+              { label: 'Large', duration: 90, price: 0 }
+            ]
+          },
+          {
+            id: 'wash-retwist',
+            name: 'Wash & Retwist',
+            options: [
+              { label: 'Small', duration: 120, price: 0 },
+              { label: 'Medium', duration: 90, price: 0 },
+              { label: 'Large', duration: 75, price: 0 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'interlock',
+        title: 'Interlock',
+        services: [
+          {
+            id: 'interlock',
+            name: 'Interlock',
+            options: [
+              { label: 'Small', duration: 150, price: 0 },
+              { label: 'Medium', duration: 120, price: 0 },
+              { label: 'Large', duration: 90, price: 0 }
+            ]
+          },
+          {
+            id: 'interlock-styling',
+            name: 'Interlock & Styling',
+            options: [
+              { label: 'Small', duration: 165, price: 0 },
+              { label: 'Medium', duration: 120, price: 0 },
+              { label: 'Large', duration: 90, price: 0 }
+            ]
+          },
+          {
+            id: 'wash-interlock',
+            name: 'Wash & Interlock',
+            options: [
+              { label: 'Small', duration: 180, price: 0 },
+              { label: 'Medium', duration: 150, price: 0 },
+              { label: 'Large', duration: 120, price: 0 }
+            ]
+          },
+          {
+            id: 'wash-interlock-style',
+            name: 'Wash, Interlock & Style',
+            options: [
+              { label: 'Small', duration: 210, price: 0 },
+              { label: 'Medium', duration: 180, price: 0 },
+              { label: 'Large', duration: 150, price: 0 }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'acv-detox',
+        title: 'ACV Detox',
+        services: [
+          {
+            id: 'acv-detox-treatment',
+            name: 'ACV Detox Treatment',
+            options: [{ label: '30 min', duration: 30, price: 0 }]
+          },
+          {
+            id: 'retwist-acv-detox',
+            name: 'Retwist & ACV Detox Treatment',
+            options: [
+              { label: 'Small', duration: 180, price: 0 },
+              { label: 'Medium', duration: 150, price: 0 },
+              { label: 'Large', duration: 90, price: 0 }
+            ]
+          }
+        ]
+      },
+      // Training Days
+      {
+        id: 'training',
+        title: 'Training Courses',
+        services: [
+          {
+            id: 'hair-extensions-training',
+            name: 'Hair Extensions Day Training',
+            options: [{ label: '6h 15min', duration: 375, price: 1000 }]
+          },
+          {
+            id: 'highlight-training',
+            name: 'Highlight Day Training',
+            options: [{ label: '6h 15min', duration: 375, price: 550 }]
+          },
+          {
+            id: 'silk-press-training',
+            name: 'Silk Press Day Training',
+            options: [{ label: '4h 15min', duration: 255, price: 350 }]
+          },
+          {
+            id: 'balayage-training',
+            name: 'Balayage Day Training',
+            options: [{ label: '6h 30min', duration: 390, price: 500 }]
+          }
+        ]
+      },
+      // Hair & Nails Combo
+      {
+        id: 'combo',
+        title: 'Combo',
+        services: [
+          {
+            id: 'hair-nails-combo',
+            name: 'Hair and Nails Combo',
+            options: [{ label: '4 hours', duration: 240, price: 180 }]
+          }
+        ]
       }
     ]
   },
+
+  // 3. NAILS
   {
-    id: 'manicures-pedicures',
-    title: 'MANICURES & PEDICURES',
+    id: 'nails',
+    title: 'NAILS',
     subcategories: [
       {
         id: 'manicures',
@@ -1107,13 +1208,7 @@ export const servicesData: ServiceCategory[] = [
             options: [{ label: '1 hour', duration: 60, price: 35 }]
           }
         ]
-      }
-    ]
-  },
-  {
-    id: 'nail-extensions-enhancements',
-    title: 'NAIL EXTENSIONS & ENHANCEMENTS',
-    subcategories: [
+      },
       {
         id: 'acrylic-extensions',
         title: 'Acrylic Extensions',
@@ -1230,6 +1325,8 @@ export const servicesData: ServiceCategory[] = [
       }
     ]
   },
+
+  // 4. FACIALS
   {
     id: 'facials',
     title: 'FACIALS',
@@ -1391,9 +1488,11 @@ export const servicesData: ServiceCategory[] = [
       }
     ]
   },
+
+  // 5. WAXING AND THREADING
   {
-    id: 'facial-threading',
-    title: 'FACIAL THREADING',
+    id: 'waxing-threading',
+    title: 'WAXING AND THREADING',
     subcategories: [
       {
         id: 'threading-services',
@@ -1413,11 +1512,6 @@ export const servicesData: ServiceCategory[] = [
             id: 'upper-lip-threading',
             name: 'Upper Lip',
             options: [{ label: '10 min', duration: 10, price: 20 }]
-          },
-          {
-            id: 'eyebrows-threading',
-            name: 'Eyebrows',
-            options: [{ label: '10 min', duration: 10, price: 25 }]
           },
           {
             id: 'forehead-threading',
@@ -1443,6 +1537,27 @@ export const servicesData: ServiceCategory[] = [
       }
     ]
   },
+
+  // 6. BROWS AND LASHES
+  {
+    id: 'brows-lashes',
+    title: 'BROWS AND LASHES',
+    subcategories: [
+      {
+        id: 'eyebrow-services',
+        title: 'Eyebrow Services',
+        services: [
+          {
+            id: 'eyebrows-threading',
+            name: 'Eyebrows Threading',
+            options: [{ label: '10 min', duration: 10, price: 25 }]
+          }
+        ]
+      }
+    ]
+  },
+
+  // 7. MAKE UP
   {
     id: 'makeup',
     title: 'MAKE UP',
@@ -1542,178 +1657,66 @@ export const servicesData: ServiceCategory[] = [
       }
     ]
   },
+
+  // 8. TANNING
   {
-    id: 'training-days',
-    title: 'TRAINING DAYS',
+    id: 'tanning',
+    title: 'TANNING',
     subcategories: [
       {
-        id: 'training',
-        title: 'Training Courses',
+        id: 'tanning-services',
+        title: 'Tanning Services',
         services: [
           {
-            id: 'hair-extensions-training',
-            name: 'Hair Extensions Day Training',
-            options: [{ label: '6h 15min', duration: 375, price: 1000 }]
-          },
-          {
-            id: 'highlight-training',
-            name: 'Highlight Day Training',
-            options: [{ label: '6h 15min', duration: 375, price: 550 }]
-          },
-          {
-            id: 'silk-press-training',
-            name: 'Silk Press Day Training',
-            options: [{ label: '4h 15min', duration: 255, price: 350 }]
-          },
-          {
-            id: 'balayage-training',
-            name: 'Balayage Day Training',
-            options: [{ label: '6h 30min', duration: 390, price: 500 }]
+            id: 'spray-tan',
+            name: 'Spray Tan',
+            options: [{ label: '30 min', duration: 30, price: 30 }]
           }
         ]
       }
     ]
   },
+
+  // 9. PIERCING
   {
-    id: 'locs-interlock',
-    title: 'LADIES & GENTS - LOCS & INTERLOCK',
+    id: 'piercing',
+    title: 'PIERCING',
     subcategories: [
       {
-        id: 'starter-locs',
-        title: 'Starting / Starter Locs',
+        id: 'piercing-services',
+        title: 'Piercing Services',
         services: [
           {
-            id: 'starter-locs',
-            name: 'Starting / Starter Locs',
-            options: [
-              { label: 'Small', duration: 120, price: 0 },
-              { label: 'Medium', duration: 90, price: 0 },
-              { label: 'Large', duration: 60, price: 0 }
-            ]
-          }
-        ]
-      },
-      {
-        id: 'retwist-style',
-        title: 'Re-twist & Style',
-        services: [
-          {
-            id: 'retwist-style',
-            name: 'Re-twist & Style',
-            options: [
-              { label: 'Small', duration: 120, price: 0 },
-              { label: 'Medium', duration: 90, price: 0 },
-              { label: 'Large', duration: 75, price: 0 }
-            ]
+            id: 'ear-piercing',
+            name: 'Ear Piercing',
+            options: [{ label: '15 min', duration: 15, price: 25 }]
           },
           {
-            id: 'retwist-two-strand',
-            name: 'Re-twist (with two-strand/rope twists)',
-            options: [
-              { label: 'Small', duration: 150, price: 0 },
-              { label: 'Medium', duration: 120, price: 0 },
-              { label: 'Large', duration: 90, price: 0 }
-            ]
-          },
-          {
-            id: 'wash-retwist-style',
-            name: 'Wash, Retwist & Style',
-            options: [
-              { label: 'Small', duration: 150, price: 0 },
-              { label: 'Medium', duration: 120, price: 0 },
-              { label: 'Large', duration: 90, price: 0 }
-            ]
-          },
-          {
-            id: 'wash-retwist',
-            name: 'Wash & Retwist',
-            options: [
-              { label: 'Small', duration: 120, price: 0 },
-              { label: 'Medium', duration: 90, price: 0 },
-              { label: 'Large', duration: 75, price: 0 }
-            ]
-          }
-        ]
-      },
-      {
-        id: 'interlock',
-        title: 'Interlock',
-        services: [
-          {
-            id: 'interlock',
-            name: 'Interlock',
-            options: [
-              { label: 'Small', duration: 150, price: 0 },
-              { label: 'Medium', duration: 120, price: 0 },
-              { label: 'Large', duration: 90, price: 0 }
-            ]
-          },
-          {
-            id: 'interlock-styling',
-            name: 'Interlock & Styling',
-            options: [
-              { label: 'Small', duration: 165, price: 0 },
-              { label: 'Medium', duration: 120, price: 0 },
-              { label: 'Large', duration: 90, price: 0 }
-            ]
-          },
-          {
-            id: 'wash-interlock',
-            name: 'Wash & Interlock',
-            options: [
-              { label: 'Small', duration: 180, price: 0 },
-              { label: 'Medium', duration: 150, price: 0 },
-              { label: 'Large', duration: 120, price: 0 }
-            ]
-          },
-          {
-            id: 'wash-interlock-style',
-            name: 'Wash, Interlock & Style',
-            options: [
-              { label: 'Small', duration: 210, price: 0 },
-              { label: 'Medium', duration: 180, price: 0 },
-              { label: 'Large', duration: 150, price: 0 }
-            ]
-          }
-        ]
-      },
-      {
-        id: 'acv-detox',
-        title: 'ACV Detox',
-        services: [
-          {
-            id: 'acv-detox-treatment',
-            name: 'ACV Detox Treatment',
-            options: [{ label: '30 min', duration: 30, price: 0 }]
-          },
-          {
-            id: 'retwist-acv-detox',
-            name: 'Retwist & ACV Detox Treatment',
-            options: [
-              { label: 'Small', duration: 180, price: 0 },
-              { label: 'Medium', duration: 150, price: 0 },
-              { label: 'Large', duration: 90, price: 0 }
-            ]
+            id: 'nose-piercing',
+            name: 'Nose Piercing',
+            options: [{ label: '15 min', duration: 15, price: 30 }]
           }
         ]
       }
     ]
   },
+
+  // 10. BODY
   {
-    id: 'japanese-straightening',
-    title: 'JAPANESE STRAIGHTENING',
+    id: 'body',
+    title: 'BODY',
     subcategories: [
       {
-        id: 'japanese',
-        title: 'Japanese Straightening',
+        id: 'body-treatments',
+        title: 'Body Treatments',
         services: [
           {
-            id: 'japanese-straightening',
-            name: 'Japanese Straightening',
+            id: 'body-massage',
+            name: 'Body Massage',
             options: [
-              { label: 'Short', duration: 180, price: 310 },
-              { label: 'Medium', duration: 15, price: 340 },
-              { label: 'Long', duration: 240, price: 380 }
+              { label: '30 min', duration: 30, price: 45 },
+              { label: '60 min', duration: 60, price: 75 },
+              { label: '90 min', duration: 90, price: 105 }
             ]
           }
         ]
