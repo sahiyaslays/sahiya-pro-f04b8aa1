@@ -760,15 +760,6 @@ export const servicesData: ServiceCategory[] = [
             ]
           },
           {
-            id: 'japanese-momoko-straightening',
-            name: "Ladies' - Japanese Momoko Hair Straightening",
-            options: [
-              { label: 'Short', duration: 180, price: 325 },
-              { label: 'Medium', duration: 180, price: 345 },
-              { label: 'Long', duration: 180, price: 355 }
-            ]
-          },
-          {
             id: 'japanese-straightening',
             name: 'Japanese Straightening',
             options: [
