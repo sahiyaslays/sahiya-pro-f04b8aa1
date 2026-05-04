@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams, Link } from 'react-router-dom';
 import { BookingData, BookingStep } from '@/types/booking';
 import Header from '@/components/Header';
 import { ProgressBar } from '@/components/booking/ProgressBar';
@@ -9,8 +10,52 @@ import { DateTimeSelection } from '@/components/booking/DateTimeSelection';
 import { CustomerDetails } from '@/components/booking/CustomerDetails';
 import { ReviewAndPay } from '@/components/booking/ReviewAndPay';
 import { BookingSuccess } from '@/components/booking/BookingSuccess';
+import { Button } from '@/components/ui/button';
+import { CheckCircle } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const Booking = () => {
+  const [searchParams] = useSearchParams();
+  const isStripeSuccess = searchParams.get('success') === 'true';
+  const stripeBookingId = searchParams.get('bookingId');
+
+  const [stripeBookingData, setStripeBookingData] = useState<BookingData | null>(null);
+  const [stripeLoading, setStripeLoading] = useState(isStripeSuccess);
+
+  useEffect(() => {
+    if (!isStripeSuccess || !stripeBookingId) return;
+    supabase
+      .from('bookings')
+      .select('*')
+      .eq('id', stripeBookingId)
+      .single()
+      .then(({ data, error }) => {
+        if (!error && data) {
+          const services = Array.isArray(data.services) ? (data.services as any[]) : [];
+          setStripeBookingData({
+            services: services.map((s: any) => ({
+              id: s.id || '',
+              name: s.name || '',
+              category: s.category || '',
+              duration: Number(s.duration) || 0,
+              price: String(s.price || '0'),
+              quantity: 1,
+            })),
+            date: data.booking_date,
+            time: data.booking_time,
+            customerDetails: {
+              firstName: data.guest_name?.split(' ')[0] || '',
+              lastName: data.guest_name?.split(' ').slice(1).join(' ') || '',
+              email: data.guest_email || '',
+              phone: data.guest_phone || '',
+              agreesToPolicy: true,
+            },
+          });
+        }
+        setStripeLoading(false);
+      });
+  }, [isStripeSuccess, stripeBookingId]);
+
   const [currentStep, setCurrentStep] = useState<BookingStep>(1);
   const [bookingData, setBookingData] = useState<BookingData>({
     services: [],
@@ -95,6 +140,58 @@ const Booking = () => {
         return null;
     }
   };
+
+  if (isStripeSuccess) {
+    if (stripeLoading) {
+      return (
+        <div className="min-h-screen bg-gray-50 font-abel flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading your booking confirmation...</p>
+          </div>
+        </div>
+      );
+    }
+
+    if (stripeBookingData) {
+      return (
+        <div className="min-h-screen bg-gray-50 font-abel">
+          <Header />
+          <div className="pt-16">
+            <main className="py-8">
+              <div className="max-w-4xl mx-auto px-4">
+                <BookingSuccess
+                  bookingData={stripeBookingData}
+                  bookingReference={`SS${stripeBookingId?.slice(-6).toUpperCase()}`}
+                />
+              </div>
+            </main>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="min-h-screen bg-gray-50 font-abel">
+        <Header />
+        <div className="pt-16">
+          <main className="py-8">
+            <div className="max-w-2xl mx-auto px-4 text-center space-y-6 py-16">
+              <CheckCircle className="h-16 w-16 text-green-500 mx-auto" />
+              <h2 className="text-2xl font-normal tracking-[0.15em] uppercase">Booking Confirmed!</h2>
+              <p className="text-muted-foreground">
+                Your payment was successful and your booking is confirmed.
+                A confirmation email will be sent to you shortly.
+              </p>
+              <Button asChild variant="outline">
+                <Link to="/">Return Home</Link>
+              </Button>
+            </div>
+          </main>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 font-abel">
