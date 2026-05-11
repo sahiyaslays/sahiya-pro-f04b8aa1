@@ -3,6 +3,8 @@ import Hero from "@/components/Hero";
 import { Footer } from "@/components/Footer";
 import { EditableText } from "@/components/EditableText";
 import aboutPortrait from "@/assets/about-portrait.jpeg";
+import salon1 from "@/assets/salon-1.jpeg";
+import salon2 from "@/assets/salon-2.jpeg";
 
 const Index = () => {
   return (
@@ -41,6 +43,14 @@ const Index = () => {
               className="w-full h-auto rounded-lg object-cover shadow-md"
             />
           </div>
+        </div>
+      </section>
+
+      {/* Salon Gallery */}
+      <section className="px-4 pb-16 bg-white">
+        <div className="max-w-[1200px] mx-auto grid md:grid-cols-2 gap-6">
+          <img src={salon1} alt="Sahiya Slays salon interior" loading="lazy" className="w-full h-auto rounded-lg object-cover shadow-md" />
+          <img src={salon2} alt="Sahiya Slays salon styling stations" loading="lazy" className="w-full h-auto rounded-lg object-cover shadow-md" />
         </div>
       </section>
 
