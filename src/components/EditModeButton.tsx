@@ -8,6 +8,11 @@ import { cn } from '@/lib/utils';
 export const EditModeButton: React.FC = () => {
   const { isEditMode, toggleEditMode, saveChanges, hasChanges, toggleHistory, showHistory } = useEditMode();
 
+  // Hide edit button on published/production builds
+  if (import.meta.env.PROD) {
+    return null;
+  }
+
   return (
     <>
       <div className="fixed bottom-6 left-6 z-50 flex flex-col gap-2">
