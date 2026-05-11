@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import { Footer } from "@/components/Footer";
 import { EditableText } from "@/components/EditableText";
+import aboutPortrait from "@/assets/about-portrait.jpeg";
 
 const Index = () => {
   return (
@@ -11,25 +12,35 @@ const Index = () => {
 
       {/* About Section */}
       <section className="py-20 md:py-24 px-4 bg-white font-abel">
-        <div className="max-w-[1040px] mx-auto text-center">
-          <div className="text-primary text-xs md:text-sm tracking-widest mb-4 uppercase">
-            <EditableText id="home-about-label">SS • HAIR • BEAUTY • NAILS</EditableText>
+        <div className="max-w-[1200px] mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+          <div className="order-2 md:order-1 text-left">
+            <div className="text-primary text-xs md:text-sm tracking-widest mb-4 uppercase">
+              <EditableText id="home-about-label">SS • HAIR • BEAUTY • NAILS</EditableText>
+            </div>
+            <EditableText
+              id="home-about-title"
+              as="h2"
+              className="text-[27px] md:text-[37px] font-normal tracking-[0.2em] mb-6 text-[#121212] uppercase"
+            >
+              ABOUT
+            </EditableText>
+            <div className="w-10 h-[2px] bg-primary mb-8"></div>
+            <EditableText
+              id="home-about-description"
+              as="p"
+              className="text-base leading-[1.7] text-[#121212]"
+            >
+              Sahiya Slays blends quality, care, and style in the heart of East London. Our talented team of hair, beauty, and nail professionals deliver an exclusive salon experience in a warm, welcoming environment. Combining experience and creativity, we provide a personal service tailored to your natural beauty. Book your appointment today and enjoy cutting-edge style with effortless elegance.
+            </EditableText>
           </div>
-          <EditableText
-            id="home-about-title"
-            as="h2"
-            className="text-[27px] md:text-[37px] font-normal tracking-[0.2em] mb-6 text-[#121212] uppercase"
-          >
-            ABOUT
-          </EditableText>
-          <div className="w-10 h-[2px] bg-primary mx-auto mb-8"></div>
-          <EditableText
-            id="home-about-description"
-            as="p"
-            className="text-base leading-[1.7] text-[#121212] max-w-[920px] mx-auto"
-          >
-            Sahiya Slays blends quality, care, and style in the heart of East London. Our talented team of hair, beauty, and nail professionals deliver an exclusive salon experience in a warm, welcoming environment. Combining experience and creativity, we provide a personal service tailored to your natural beauty. Book your appointment today and enjoy cutting-edge style with effortless elegance.
-          </EditableText>
+          <div className="order-1 md:order-2">
+            <img
+              src={aboutPortrait}
+              alt="Sahiya Slays salon portrait"
+              loading="lazy"
+              className="w-full h-auto rounded-lg object-cover shadow-md"
+            />
+          </div>
         </div>
       </section>
 
