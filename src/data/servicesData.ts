@@ -803,18 +803,18 @@ export const servicesData: ServiceCategory[] = [
             id: 'hydration-scalp-silk-press',
             name: "Ladies' - Hydration, Scalp Treatment, Silk Press",
             options: [
-              { label: 'Short', duration: 105, price: 135 },
-              { label: 'Medium', duration: 120, price: 165 },
-              { label: 'Long', duration: 135, price: 185 }
+              { label: 'Short', duration: 105, price: 155 },
+              { label: 'Medium', duration: 120, price: 185 },
+              { label: 'Long', duration: 135, price: 205 }
             ]
           },
           {
             id: 'hydration-protein-scalp-silk-press',
             name: "Ladies' - Hydration, Protein, Scalp Treatment, Silk Press",
             options: [
-              { label: 'Short', duration: 15, price: 300 },
-              { label: 'Medium', duration: 15, price: 320 },
-              { label: 'Long', duration: 15, price: 340 }
+              { label: 'Short', duration: 15, price: 320 },
+              { label: 'Medium', duration: 15, price: 340 },
+              { label: 'Long', duration: 15, price: 360 }
             ]
           },
           {
