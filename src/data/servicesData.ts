@@ -779,9 +779,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'silk-press-trim',
             name: 'Silk Press + Trim',
             options: [
-              { label: 'Short', duration: 90, price: 125 },
-              { label: 'Medium', duration: 90, price: 140 },
-              { label: 'Long', duration: 75, price: 155 }
+              { label: 'Short', duration: 90, price: 155 },
+              { label: 'Medium', duration: 90, price: 170 },
+              { label: 'Long', duration: 75, price: 185 }
             ]
           },
           {
