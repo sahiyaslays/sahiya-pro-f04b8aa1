@@ -444,9 +444,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'balayage-treatment-cut-blow',
             name: 'Balayage & Treatment with Haircut & Blow Dry',
             options: [
-              { label: 'Short', duration: 135, price: 240 },
-              { label: 'Medium', duration: 135, price: 380 },
-              { label: 'Long', duration: 135, price: 420 }
+              { label: 'Short', duration: 135, price: 245 },
+              { label: 'Medium', duration: 135, price: 385 },
+              { label: 'Long', duration: 135, price: 425 }
             ]
           },
           {
@@ -483,9 +483,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'afro-hair-colouring-treatment',
             name: 'Ladies - Afro Hair Colouring & Treatment',
             options: [
-              { label: 'Short', duration: 120, price: 270 },
-              { label: 'Medium', duration: 120, price: 290 },
-              { label: 'Long', duration: 120, price: 320 }
+              { label: 'Short', duration: 120, price: 275 },
+              { label: 'Medium', duration: 120, price: 295 },
+              { label: 'Long', duration: 120, price: 325 }
             ]
           },
           {
@@ -715,9 +715,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'hair-bond-repair-blowdry',
             name: 'Hair Bond Repair Treatment & Blowdry',
             options: [
-              { label: 'Short', duration: 30, price: 145 },
-              { label: 'Medium', duration: 30, price: 165 },
-              { label: 'Long', duration: 30, price: 175 }
+              { label: 'Short', duration: 30, price: 150 },
+              { label: 'Medium', duration: 30, price: 170 },
+              { label: 'Long', duration: 30, price: 180 }
             ]
           }
         ]
@@ -730,9 +730,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'olaplex-addon-blowdry',
             name: 'Add On - Olaplex Treatment with blowdry',
             options: [
-              { label: 'Short', duration: 15, price: 165 },
-              { label: 'Medium', duration: 15, price: 185 },
-              { label: 'Long', duration: 15, price: 205 }
+              { label: 'Short', duration: 15, price: 170 },
+              { label: 'Medium', duration: 15, price: 190 },
+              { label: 'Long', duration: 15, price: 210 }
             ]
           },
           {
@@ -779,9 +779,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'silk-press-trim',
             name: 'Silk Press + Trim',
             options: [
-              { label: 'Short', duration: 90, price: 155 },
-              { label: 'Medium', duration: 90, price: 170 },
-              { label: 'Long', duration: 75, price: 185 }
+              { label: 'Short', duration: 90, price: 175 },
+              { label: 'Medium', duration: 90, price: 190 },
+              { label: 'Long', duration: 75, price: 205 }
             ]
           },
           {
@@ -803,27 +803,27 @@ export const servicesData: ServiceCategory[] = [
             id: 'hydration-scalp-silk-press',
             name: "Ladies' - Hydration, Scalp Treatment, Silk Press",
             options: [
-              { label: 'Short', duration: 105, price: 135 },
-              { label: 'Medium', duration: 120, price: 165 },
-              { label: 'Long', duration: 135, price: 185 }
+              { label: 'Short', duration: 105, price: 155 },
+              { label: 'Medium', duration: 120, price: 185 },
+              { label: 'Long', duration: 135, price: 205 }
             ]
           },
           {
             id: 'hydration-protein-scalp-silk-press',
             name: "Ladies' - Hydration, Protein, Scalp Treatment, Silk Press",
             options: [
-              { label: 'Short', duration: 15, price: 300 },
-              { label: 'Medium', duration: 15, price: 320 },
-              { label: 'Long', duration: 15, price: 340 }
+              { label: 'Short', duration: 15, price: 320 },
+              { label: 'Medium', duration: 15, price: 340 },
+              { label: 'Long', duration: 15, price: 360 }
             ]
           },
           {
             id: 'protein-hydration-silk-press',
             name: 'Protein, Hydration Treatment & Silk press',
             options: [
-              { label: 'Short', duration: 60, price: 245 },
-              { label: 'Medium', duration: 60, price: 265 },
-              { label: 'Long', duration: 60, price: 285 }
+              { label: 'Short', duration: 60, price: 270 },
+              { label: 'Medium', duration: 60, price: 290 },
+              { label: 'Long', duration: 60, price: 310 }
             ]
           }
         ]
@@ -1011,22 +1011,22 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'hair-extensions-training',
             name: 'Hair Extensions Day Training',
-            options: [{ label: '6h 15min', duration: 375, price: 1020 }]
+            options: [{ label: '6h 15min', duration: 375, price: 4000 }]
           },
           {
             id: 'highlight-training',
             name: 'Highlight Day Training',
-            options: [{ label: '6h 15min', duration: 375, price: 570 }]
+            options: [{ label: '6h 15min', duration: 375, price: 5600 }]
           },
           {
             id: 'silk-press-training',
             name: 'Silk Press Day Training',
-            options: [{ label: '4h 15min', duration: 255, price: 370 }]
+            options: [{ label: '4h 15min', duration: 255, price: 4500 }]
           },
           {
             id: 'balayage-training',
             name: 'Balayage Day Training',
-            options: [{ label: '6h 30min', duration: 390, price: 520 }]
+            options: [{ label: '6h 30min', duration: 390, price: 6000 }]
           }
         ]
       },
@@ -1038,7 +1038,7 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'hair-nails-combo',
             name: 'Hair and Nails Combo',
-            options: [{ label: '4 hours', duration: 240, price: 200 }]
+            options: [{ label: '4 hours', duration: 240, price: 550 }]
           }
         ]
       }
@@ -1187,37 +1187,37 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'facial-classic',
             name: 'Facial - Classic',
-            options: [{ label: '1 hour', duration: 60, price: 165 }]
+            options: [{ label: '1 hour', duration: 60, price: 185 }]
           },
           {
             id: 'facial-eye-treatment',
             name: 'Facial - Eye Treatment',
-            options: [{ label: '1 hour', duration: 60, price: 140 }]
+            options: [{ label: '1 hour', duration: 60, price: 160 }]
           },
           {
             id: 'facial-dermalogica',
             name: 'Facial - Dermalogica',
-            options: [{ label: '1h 50min', duration: 110, price: 170 }]
+            options: [{ label: '1h 50min', duration: 110, price: 190 }]
           },
           {
             id: 'facial-gold',
             name: 'Facial - Gold',
-            options: [{ label: '1 hour', duration: 60, price: 160 }]
+            options: [{ label: '1 hour', duration: 60, price: 180 }]
           },
           {
             id: 'facial-hydrating',
             name: 'Facial - Hydrating',
-            options: [{ label: '1 hour', duration: 60, price: 115 }]
+            options: [{ label: '1 hour', duration: 60, price: 135 }]
           },
           {
             id: 'facial-deep-cleansing',
             name: 'Facial - Deep Cleansing',
-            options: [{ label: '2 hours', duration: 120, price: 200 }]
+            options: [{ label: '2 hours', duration: 120, price: 220 }]
           },
           {
             id: 'facial-anti-ageing',
             name: 'Facial - Anti-Ageing',
-            options: [{ label: '2 hours', duration: 120, price: 240 }]
+            options: [{ label: '2 hours', duration: 120, price: 260 }]
           }
         ]
       },
@@ -1228,32 +1228,32 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'facial-skin-peel',
             name: 'Facial - Skin Peel',
-            options: [{ label: '1 hour', duration: 60, price: 95 }]
+            options: [{ label: '1 hour', duration: 60, price: 115 }]
           },
           {
             id: 'facial-microdermabrasion',
             name: 'Facial - Microdermabrasion',
-            options: [{ label: '1h 30min', duration: 90, price: 140 }]
+            options: [{ label: '1h 30min', duration: 90, price: 160 }]
           },
           {
             id: 'facial-dermaplaning',
             name: 'Facial - Dermaplaning',
-            options: [{ label: '1h 45min', duration: 105, price: 115 }]
+            options: [{ label: '1h 45min', duration: 105, price: 135 }]
           },
           {
             id: 'facial-dermapen',
             name: 'Facial - Dermapen',
-            options: [{ label: '1h 30min', duration: 90, price: 170 }]
+            options: [{ label: '1h 30min', duration: 90, price: 190 }]
           },
           {
             id: 'facial-micro-needling',
             name: 'Facial - Micro Needling',
-            options: [{ label: '1h 30min', duration: 90, price: 165 }]
+            options: [{ label: '1h 30min', duration: 90, price: 185 }]
           },
           {
             id: 'facial-chemical-peel',
             name: 'Facial - Chemical Peel',
-            options: [{ label: '1 hour', duration: 60, price: 90 }]
+            options: [{ label: '1 hour', duration: 60, price: 110 }]
           }
         ]
       },
@@ -1264,27 +1264,27 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'facial-radio-frequency',
             name: 'Facial - Radio Frequency Skin Tightening',
-            options: [{ label: '2h 50min', duration: 170, price: 370 }]
+            options: [{ label: '2h 50min', duration: 170, price: 390 }]
           },
           {
             id: 'facial-led-light',
             name: 'Facial - LED Light Therapy',
-            options: [{ label: '1h 20min', duration: 80, price: 130 }]
+            options: [{ label: '1h 20min', duration: 80, price: 150 }]
           },
           {
             id: 'facial-skin-rejuvenation',
             name: 'Facial - Skin Rejuvenation',
-            options: [{ label: '2h 45min', duration: 165, price: 310 }]
+            options: [{ label: '2h 45min', duration: 165, price: 330 }]
           },
           {
             id: 'facial-laser-rejuvenation',
             name: 'Facial - Laser Skin Rejuvenation',
-            options: [{ label: '2h 45min', duration: 165, price: 310 }]
+            options: [{ label: '2h 45min', duration: 165, price: 330 }]
           },
           {
             id: 'facial-pigmentation',
             name: 'Facial - Pigmentation Treatment',
-            options: [{ label: '1h 45min', duration: 105, price: 170 }]
+            options: [{ label: '1h 45min', duration: 105, price: 190 }]
           }
         ]
       },
@@ -1295,27 +1295,27 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'facial-caci-face-lift',
             name: 'Facial - CACI Non-Surgical Face Lift',
-            options: [{ label: '1h 30min', duration: 90, price: 115 }]
+            options: [{ label: '1h 30min', duration: 90, price: 135 }]
           },
           {
             id: 'facial-caci-jowl-lift',
             name: 'Facial - CACI Jowl Lift',
-            options: [{ label: '1 hour', duration: 60, price: 65 }]
+            options: [{ label: '1 hour', duration: 60, price: 85 }]
           },
           {
             id: 'facial-caci-eye-revive',
             name: 'Facial - CACI Eye Revive',
-            options: [{ label: '1h 15min', duration: 75, price: 75 }]
+            options: [{ label: '1h 15min', duration: 75, price: 95 }]
           },
           {
             id: 'facial-caci-hydratone',
             name: 'Facial - CACI Hydratone',
-            options: [{ label: '1 hour', duration: 60, price: 60 }]
+            options: [{ label: '1 hour', duration: 60, price: 80 }]
           },
           {
             id: 'facial-caci-rejuvenation',
             name: 'Facial - CACI Skin Rejuvenation',
-            options: [{ label: '1 hour', duration: 60, price: 130 }]
+            options: [{ label: '1 hour', duration: 60, price: 150 }]
           }
         ]
       },
@@ -1326,12 +1326,12 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'facial-acne-treatment',
             name: 'Facial - Acne Treatment',
-            options: [{ label: '1 hour', duration: 60, price: 115 }]
+            options: [{ label: '1 hour', duration: 60, price: 135 }]
           },
           {
             id: 'facial-high-frequency',
             name: 'Facial - High Frequency',
-            options: [{ label: '1 hour', duration: 60, price: 80 }]
+            options: [{ label: '1 hour', duration: 60, price: 100 }]
           }
         ]
       }
@@ -1400,6 +1400,16 @@ export const servicesData: ServiceCategory[] = [
             id: 'eyebrows-threading',
             name: 'Eyebrows Threading',
             options: [{ label: '10 min', duration: 10, price: 45 }]
+          },
+          {
+            id: 'brow-lamination',
+            name: 'Brow Lamination',
+            options: [{ label: '45 min', duration: 45, price: 95 }]
+          },
+          {
+            id: 'lash-lift',
+            name: 'Lash Lift',
+            options: [{ label: '45 min', duration: 45, price: 85 }]
           }
         ]
       }
@@ -1454,12 +1464,12 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'eye-makeup',
             name: 'Eye Makeup',
-            options: [{ label: '30 min', duration: 30, price: 50 }]
+            options: [{ label: '30 min', duration: 30, price: 85 }]
           },
           {
             id: 'eye-makeup-strip-lashes',
             name: 'Eye Makeup incl. Strip Lashes',
-            options: [{ label: '45 min', duration: 45, price: 60 }]
+            options: [{ label: '45 min', duration: 45, price: 95 }]
           }
         ]
       },
@@ -1470,17 +1480,17 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'wedding-makeup-bridesmaid',
             name: 'Wedding Makeup (Bridesmaid)',
-            options: [{ label: '2h 10min', duration: 130, price: 140 }]
+            options: [{ label: '2h 10min', duration: 130, price: 340 }]
           },
           {
             id: 'wedding-makeup-mother',
             name: 'Wedding Makeup (Mother of The Bride)',
-            options: [{ label: '2h 45min', duration: 165, price: 165 }]
+            options: [{ label: '2h 45min', duration: 165, price: 265 }]
           },
           {
             id: 'wedding-makeup-bride',
             name: 'Wedding Makeup (Bride)',
-            options: [{ label: '2h 30min', duration: 150, price: 170 }]
+            options: [{ label: '2h 30min', duration: 150, price: 270 }]
           },
           {
             id: 'bridal-makeup',
@@ -1490,17 +1500,17 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'bridal-hair-makeup',
             name: 'Bridal Hair & Makeup',
-            options: [{ label: '4h 30min', duration: 270, price: 470 }]
+            options: [{ label: '4h 30min', duration: 270, price: 570 }]
           },
           {
             id: 'makeup-hair-up',
             name: 'Makeup & Hair Up',
-            options: [{ label: '4 hours', duration: 240, price: 380 }]
+            options: [{ label: '4 hours', duration: 240, price: 480 }]
           },
           {
             id: 'bridal-hair-makeup-trial',
             name: 'Bridal Hair & Makeup - Trial',
-            options: [{ label: '4h 30min', duration: 270, price: 270 }]
+            options: [{ label: '4h 30min', duration: 270, price: 370 }]
           }
         ]
       }
