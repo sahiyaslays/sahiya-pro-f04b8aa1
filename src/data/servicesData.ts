@@ -858,9 +858,9 @@ export const servicesData: ServiceCategory[] = [
             id: 'fulani-braids',
             name: "Ladies' - Fulani Braids",
             options: [
-              { label: 'Large', duration: 180, price: 115 },
-              { label: 'Medium', duration: 180, price: 145 },
-              { label: 'Small', duration: 180, price: 165 }
+              { label: 'Large', duration: 180, price: 145 },
+              { label: 'Medium', duration: 180, price: 175 },
+              { label: 'Small', duration: 180, price: 195 }
             ]
           }
         ]
@@ -873,20 +873,20 @@ export const servicesData: ServiceCategory[] = [
             id: 'medium-box-braids-knotless',
             name: "Ladies' - Medium length Box Braids/Knotless Braids",
             options: [
-              { label: 'Large', duration: 180, price: 135 },
-              { label: 'Medium', duration: 180, price: 165 },
-              { label: 'Small', duration: 180, price: 205 },
-              { label: 'Extra Small', duration: 180, price: 220 }
+              { label: 'Large', duration: 180, price: 165 },
+              { label: 'Medium', duration: 180, price: 195 },
+              { label: 'Small', duration: 180, price: 235 },
+              { label: 'Extra Small', duration: 180, price: 250 }
             ]
           },
           {
             id: 'long-box-braids-knotless',
             name: "Ladies' - Long length Box Braids/Knotless Braids",
             options: [
-              { label: 'Large', duration: 180, price: 145 },
-              { label: 'Medium', duration: 180, price: 215 },
-              { label: 'Small', duration: 180, price: 215 },
-              { label: 'Extra Small', duration: 180, price: 235 }
+              { label: 'Large', duration: 180, price: 175 },
+              { label: 'Medium', duration: 180, price: 245 },
+              { label: 'Small', duration: 180, price: 245 },
+              { label: 'Extra Small', duration: 180, price: 265 }
             ]
           }
         ]
