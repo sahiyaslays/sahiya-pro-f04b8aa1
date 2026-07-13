@@ -285,12 +285,12 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'micro-ring-refit',
             name: 'Micro Ring Refit',
-            options: [{ label: '2 hours', duration: 120, price: 30 }]
+            options: [{ label: '2 hours', duration: 120, price: 180 }]
           },
           {
             id: 'micro-ring-removal',
             name: 'Micro Ring Hair Extension Removal',
-            options: [{ label: '1 hour', duration: 60, price: 70 }]
+            options: [{ label: '1 hour', duration: 60, price: 220 }]
           },
           {
             id: 'micro-ring-refit-100gr',
@@ -316,12 +316,12 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'hollywood-weave-removal',
             name: 'Hollywood Weave Hair Extension Removal',
-            options: [{ label: '30 min', duration: 30, price: 70 }]
+            options: [{ label: '30 min', duration: 30, price: 140 }]
           },
           {
             id: 'extension-removal-nutrition',
             name: 'Hair Extension Removal & Essential Nutrition',
-            options: [{ label: '2 hours', duration: 120, price: 155 }]
+            options: [{ label: '2 hours', duration: 120, price: 180 }]
           },
           {
             id: 'made-to-measure-clip-ins',
