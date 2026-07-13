@@ -243,7 +243,7 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'tape-removal',
             name: 'Tape Removal',
-            options: [{ label: '1 hour', duration: 60, price: 70 }]
+            options: [{ label: '1 hour', duration: 60, price: 140 }]
           }
         ]
       },
@@ -301,37 +301,6 @@ export const servicesData: ServiceCategory[] = [
             id: 'micro-ring-refit-150gr',
             name: 'Micro Ring Refit - Up To 150gr',
             options: [{ label: '2 hours', duration: 120, price: 290 }]
-          }
-        ]
-      },
-      {
-        id: 'other-removal-services',
-        title: 'Other Removal Services',
-        services: [
-          {
-            id: 'enhanced-weave-removal',
-            name: 'Enhanced Weave Removal',
-            options: [{ label: '15 min', duration: 15, price: 90 }]
-          },
-          {
-            id: 'hollywood-weave-removal',
-            name: 'Hollywood Weave Hair Extension Removal',
-            options: [{ label: '30 min', duration: 30, price: 140 }]
-          },
-          {
-            id: 'extension-removal-nutrition',
-            name: 'Hair Extension Removal & Essential Nutrition',
-            options: [{ label: '2 hours', duration: 120, price: 180 }]
-          },
-          {
-            id: 'made-to-measure-clip-ins',
-            name: 'Made-to-measure Clip Ins',
-            options: [{ label: '2 hours', duration: 120, price: 95 }]
-          },
-          {
-            id: 'extension-removal-services',
-            name: 'Hair Extension Removal Services',
-            options: [{ label: '2 hours', duration: 120, price: 70 }]
           }
         ]
       },
