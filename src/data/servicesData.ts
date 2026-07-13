@@ -243,7 +243,7 @@ export const servicesData: ServiceCategory[] = [
           {
             id: 'tape-removal',
             name: 'Tape Removal',
-            options: [{ label: '1 hour', duration: 60, price: 70 }]
+            options: [{ label: '1 hour', duration: 60, price: 140 }]
           }
         ]
       },
